@@ -1,6 +1,7 @@
 FROM redhat/ubi8
 
 ARG SLURM_TAG=slurm-20-02-5-1
+LABEL slurm=20-02-5-1
 
 # Install any system tools required to build and to install Slurm
 RUN yum -y install git gcc make python3 \
