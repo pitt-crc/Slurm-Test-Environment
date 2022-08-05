@@ -12,6 +12,10 @@ RUN yum -y install git gcc make python3 python-pip \
     && yum clean all \
     && rm -rf /var/cache/yum
 
+# Define aliases
+RUN echo alias python=\"python3\" >> /etc/bash.bashrc \
+    && alias pip=\"pip3\" >> /etc/bash.bashrc
+
 # Fetch the Slurm source code
 RUN set -x \
     && git clone https://github.com/SchedMD/slurm.git \
@@ -20,7 +24,6 @@ RUN set -x \
 
 # Build and install Slurm
 RUN pushd slurm \
-    && alias python="python3" \
     && ./configure --enable-debug --enable-front-end \
     && make install \
     && popd \
