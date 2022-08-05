@@ -1,10 +1,9 @@
 # This file is designed to be configured from the commandline
 # Specify the following args to use different Slurm and RHEL versions
-ARG SLURM_TAG
 ARG RHEL_TAG
-
 FROM redhat/$RHEL_TAG
 
+ARG SLURM_TAG
 LABEL edu.pitt.crc.slurm-version=$SLURM_TAG
 LABEL edu.pitt.crc.rhel-version=$RHEL_TAG
 
