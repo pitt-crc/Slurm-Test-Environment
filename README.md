@@ -20,7 +20,7 @@ The following example builds an image using RHEL8 and slurm version 20.02.5.1
 docker build --build-arg RHEL_TAG=ubi8 --build-arg SLURM_TAG=slurm-20-02-5-1 .
 ```
 
-To see a list of valid slurm tags, see the [slurm github release tags](https://github.com/SchedMD/slurm/tags).
+To see a list of valid slurm tags, see the [slurm GitHub release tags](https://github.com/SchedMD/slurm/tags).
 
 To see a list of valid RHEL tags, see the [RHEL DockerHub images](https://hub.docker.com/u/redhat).
 

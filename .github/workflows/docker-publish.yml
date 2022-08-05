@@ -62,5 +62,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            RHEL_TAG=${{ matrix.rhel-tag }}
             SLURM_TAG=${{ matrix.slurm-tag }}
+            RHEL_TAG=${{ matrix.rhel-tag }}
