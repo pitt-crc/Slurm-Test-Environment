@@ -3,7 +3,7 @@ name: Deploy Docker Images
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "latest" ]
 
 env:
   REGISTRY: ghcr.io
@@ -62,7 +62,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: latest
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
