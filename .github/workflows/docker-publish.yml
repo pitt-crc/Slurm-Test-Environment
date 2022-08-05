@@ -1,4 +1,4 @@
-name: Docker
+name: Deploy Docker Images
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:    
+  build:
     strategy:
       fail-fast: false
       matrix:

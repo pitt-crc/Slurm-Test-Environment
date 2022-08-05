@@ -1,5 +1,7 @@
 # CRC Test Environments
 
+[![Deploy Docker Images](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/docker-publish.yml)
+
 Dockerized environments for software development against RedHat linux and Slurm.
 
 TODO: Add a description here
