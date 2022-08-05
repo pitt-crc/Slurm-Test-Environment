@@ -4,24 +4,28 @@ Dockerized environments for software development against RedHat linux and Slurm.
 
 TODO: Add a description here
 
-# Building and Image
+## Using an Image
 
-The Dockerfile is designed to be reusable for different RHEL and Slurm.
+TODO: Add instructions for building a workflow here
+
+## Building an Image
+
+The Dockerfile is designed to be reusable for different RHEL and Slurm versions.
 Both of these versions need to be specified when building the image.
 Failure to specify the necessary arguments will cause a failed build.
 
 The following example builds an image using RHEL8 and slurm version 20.02.5.1
 
 ```bash
-docker build --build-arg SLURM_TAG=ubi8 --build-arg RHEL_TAG=slurm-20-02-5-1 .
+docker build --build-arg RHEL_TAG=ubi8 --build-arg SLURM_TAG=slurm-20-02-5-1 .
 ```
 
-TODO: Add link to available RHEL and slurm versions
+To see a list of valid slurm tags, see the [slurm github release tags](https://github.com/SchedMD/slurm/tags).
 
-# CI/CD
+To see a list of valid RHEL tags, see the [RHEL DockerHub images](https://hub.docker.com/u/redhat).
 
-New images are automatically built and deployed to the GitHub package registry for 
-a variety of RHEL and Slurm and versions. 
+# Deploying an Image
+
+Updating the `main` branch of this repository will automatically build and 
+deploy new images a variety of RHEL and Slurm and versions. 
 These versions are defined in the GitHub actions workflow file.
-
-TODO: Add instructions for building a workflow here
