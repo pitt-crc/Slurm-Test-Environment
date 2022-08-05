@@ -62,4 +62,6 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: SLURM_TAG=ubi8 RHEL_TAG=slurm-20-02-5-1
+          build-args: |
+            SLURM_TAG=ubi8 
+            RHEL_TAG=slurm-20-02-5-1
