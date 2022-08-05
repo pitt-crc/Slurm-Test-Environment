@@ -16,6 +16,8 @@ The following example builds an image using RHEL8 and slurm version 20.02.5.1
 docker build --build-arg SLURM_TAG=ubi8 --build-arg RHEL_TAG=slurm-20-02-5-1 .
 ```
 
+TODO: Add link to available RHEL and slurm versions
+
 # CI/CD
 
 New images are automatically built and deployed to the GitHub package registry for 
