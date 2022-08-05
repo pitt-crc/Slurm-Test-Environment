@@ -8,7 +8,7 @@ LABEL edu.pitt.crc.slurm-version=$SLURM_TAG
 LABEL edu.pitt.crc.rhel-version=$RHEL_TAG
 
 # Install any system tools required to build and to install Slurm
-RUN yum -y install git gcc make python3 python-pip \
+RUN yum -y install git gcc make python3 python3-pip \
     && yum clean all \
     && rm -rf /var/cache/yum
 
