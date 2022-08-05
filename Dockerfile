@@ -3,9 +3,6 @@
 ARG SLURM_TAG
 ARG RHEL_TAG
 
-RUN test -n "$SLURM_TAG" || (echo "SLURM_TAG variable was not set" && false)
-RUN test -n "$RHEL_TAG" || (echo "RHEL_TAG  not set" && false)
-
 FROM redhat/$RHEL_TAG
 
 LABEL edu.pitt.crc.slurm-version=$SLURM_TAG
