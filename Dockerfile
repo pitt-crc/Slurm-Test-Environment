@@ -1,7 +1,12 @@
-FROM redhat/ubi8
+# This file is configurable from the commandline to use
+# customizable Slurm and RHEL versions
+ARG slurm_tag
+ARG rhel_tag
 
-ARG SLURM_TAG=slurm-20-02-5-1
-LABEL edu.pitt.crc.slurm-version=20-02-5-1
+FROM redhat/ubi$rhel_version
+
+LABEL edu.pitt.crc.slurm-version=$slurm_tag
+LABEL edu.pitt.crc.rhel-version=$rhel_tag
 
 # Install any system tools required to build and to install Slurm
 RUN yum -y install git gcc make python3 \
@@ -12,7 +17,7 @@ RUN yum -y install git gcc make python3 \
 RUN set -x \
     && git clone https://github.com/SchedMD/slurm.git \
     && cd slurm \
-    && git checkout tags/$SLURM_TAG
+    && git checkout tags/slurm_tag
 
 # Build and install Slurm
 RUN pushd slurm \
