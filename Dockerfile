@@ -17,7 +17,7 @@ RUN yum -y install git gcc make python3 \
 RUN set -x \
     && git clone https://github.com/SchedMD/slurm.git \
     && cd slurm \
-    && git checkout tags/slurm_tag
+    && git checkout tags/$SLURM_TAG
 
 # Build and install Slurm
 RUN pushd slurm \

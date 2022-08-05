@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}-test-image
+  IMAGE_NAME: slurm-test-env
 
 jobs:
   build:
