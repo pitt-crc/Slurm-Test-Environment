@@ -1,12 +1,12 @@
 # This file is configurable from the commandline to use
 # customizable Slurm and RHEL versions
-ARG slurm_tag
-ARG rhel_tag
+ARG SLURM_TAG
+ARG RHEL_TAG
 
-FROM redhat/ubi$rhel_version
+FROM redhat/$RHEL_TAG
 
-LABEL edu.pitt.crc.slurm-version=$slurm_tag
-LABEL edu.pitt.crc.rhel-version=$rhel_tag
+LABEL edu.pitt.crc.slurm-version=$SLURM_TAG
+LABEL edu.pitt.crc.rhel-version=$RHEL_TAG
 
 # Install any system tools required to build and to install Slurm
 RUN yum -y install git gcc make python3 \
