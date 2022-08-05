@@ -1,5 +1,5 @@
-# This file is configurable from the commandline to use
-# customizable Slurm and RHEL versions
+# This file is designed to be configured from the commandline
+# Specify the following args to use different Slurm and RHEL versions
 ARG SLURM_TAG
 ARG RHEL_TAG
 
