@@ -4,7 +4,9 @@
 
 Dockerized environments for software development against RedHat linux and Slurm.
 
-TODO: Add a description here
+This repository provides containerized testing environments that include:
+- A Red Hat Linux OS
+- Pre-installed slurm utilities
 
 ## Using an Image
 
