@@ -13,6 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        python-tag: [ "python37", "python38", "python39" ]
         rhel-tag: [ "ubi8" ]
         slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
 
@@ -52,7 +53,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/test-env-${{ matrix.rhel-tag }}-${{ matrix.slurm-tag }}
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/test-env-${{ matrix.rhel-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
 
       # Build and push Docker image with Buildx
       # https://github.com/docker/build-push-action
@@ -67,3 +68,4 @@ jobs:
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
             RHEL_TAG=${{ matrix.rhel-tag }}
+            PYTHON_TAG=${{ matrix.python-tag }}
