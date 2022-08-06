@@ -2,11 +2,7 @@
 
 [![Deploy Docker Images](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/docker-publish.yml)
 
-Dockerized environments for software development against RedHat linux and Slurm.
-
-This repository provides containerized testing environments that include:
-- A Red Hat Linux OS
-- Pre-installed slurm utilities
+Dockerized testing environments for software development against Red Hat linux and Slurm.
 
 ## Using an Image
 
