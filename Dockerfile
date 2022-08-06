@@ -17,9 +17,8 @@ RUN yum -y install git gcc make $PYTHON_TAG \
 # Install slurm
 RUN set -x \
     && git clone https://github.com/SchedMD/slurm.git \
-    && cd slurm \
-    && git checkout tags/$SLURM_TAG \
     && pushd slurm \
+    && git checkout tags/$SLURM_TAG \
     && ./configure --enable-debug --enable-front-end \
     && make -j ${nproc} \
     && make install \
