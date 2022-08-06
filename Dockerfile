@@ -12,9 +12,9 @@ RUN yum -y install git gcc make python3 python3-pip \
     && yum clean all \
     && rm -rf /var/cache/yum
 
-# Define aliases
+# Define common aliases for python
 RUN echo alias python=\"python3\" >> /etc/bash.bashrc \
-    && alias pip=\"pip3\" >> /etc/bash.bashrc
+    && echo alias pip=\"pip3\" >> /etc/bash.bashrc
 
 # Fetch the Slurm source code
 RUN set -x \
