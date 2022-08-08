@@ -32,7 +32,7 @@ RUN set -x \
     && install -D -m644 etc/slurmdbd.conf.example /etc/slurm/slurmdbd.conf.example \
     && install -D -m644 contribs/slurm_completion_help/slurm_completion.sh /etc/profile.d/slurm_completion.sh \
     && popd \
-    && rm -rf slurm \
+    && rm -rf slurm
 
 # Add config file required for using Slurm
 COPY slurm.conf /etc/slurm/slurm.conf
@@ -40,3 +40,6 @@ COPY slurmdbd.conf /etc/slurm/slurmdbd.conf
 COPY supervisord.conf /etc/
 
 VOLUME ["/var/lib/mysql", "/var/lib/slurmd", "/var/spool/slurmd", "/var/log/slurm"]
+
+# This is a check to make sure everything installed correctly
+RUN sacctmgr -v
