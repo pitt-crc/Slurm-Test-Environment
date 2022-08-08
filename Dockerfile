@@ -33,15 +33,6 @@ RUN set -x \
     && install -D -m644 contribs/slurm_completion_help/slurm_completion.sh /etc/profile.d/slurm_completion.sh \
     && popd \
     && rm -rf slurm \
-    && mkdir -m 0755 /var/run/munge \
-    && mkdir /var/log/supervisor \
-    && chown munge:munge /var/run/munge \
-    && mkdir /etc/sysconfig/slurm \
-        /var/spool/slurmd \
-        /var/run/slurmd \
-        /var/lib/slurmd \
-        /var/log/slurm \
-    && /usr/sbin/create-munge-key
 
 # Add config file required for using Slurm
 COPY slurm.conf /etc/slurm/slurm.conf
