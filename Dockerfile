@@ -49,5 +49,3 @@ COPY slurmdbd.conf /etc/slurm/slurmdbd.conf
 COPY supervisord.conf /etc/
 
 VOLUME ["/var/lib/mysql", "/var/lib/slurmd", "/var/spool/slurmd", "/var/log/slurm"]
-
-RUN sacctmgr -V
