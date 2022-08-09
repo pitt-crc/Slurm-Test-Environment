@@ -1,0 +1,8 @@
+# MariaDB 10.8 RedHat repository list - created 2022-08-09 20:45 UTC
+# https://mariadb.org/download/
+[mariadb]
+name = MariaDB
+baseurl = https://ftp.osuosl.org/pub/mariadb/yum/10.8/rhel8-amd64
+module_hotfixes=1
+gpgkey=file:///etc/pki/rpm-gpg/mariadb.key
+gpgcheck=1

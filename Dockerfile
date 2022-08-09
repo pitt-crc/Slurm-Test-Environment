@@ -7,6 +7,10 @@ LABEL edu.pitt.crc.slurm-version=$SLURM_TAG
 LABEL edu.pitt.crc.rhel-version=$RHEL_TAG
 LABEL edu.pitt.crc.python-version=$PYTHON_TAG
 
+# Add RPM repos and GPG keys to allow yum installs of necessary software
+COPY repos/mariadb.repo /etc/yum.repos.d/mariadb.repo
+COPY repos/mariadb.key /etc/pki/rpm-gpg/mariadb.key
+
 # Install any required system tools
 RUN yum -y install git gcc make $PYTHON_TAG \
     && ln -s /usr/bin/python3 /usr/bin/python \
@@ -39,7 +43,8 @@ COPY slurm.conf /etc/slurm/slurm.conf
 COPY slurmdbd.conf /etc/slurm/slurmdbd.conf
 COPY supervisord.conf /etc/
 
-VOLUME ["/var/lib/mysql", "/var/lib/slurmd", "/var/spool/slurmd", "/var/log/slurm"]
+# Install and setup mariadb for the Slurm to use in the backend
+RUN yum -y install mariadb-server
 
 # This is a check to make sure everything installed correctly
 RUN sacctmgr -v
