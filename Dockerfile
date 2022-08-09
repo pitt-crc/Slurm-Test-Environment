@@ -39,9 +39,9 @@ RUN set -x \
     && rm -rf slurm
 
 # Add config file required for using Slurm
-COPY slurm.conf /etc/slurm/slurm.conf
-COPY slurmdbd.conf /etc/slurm/slurmdbd.conf
-COPY supervisord.conf /etc/
+COPY slurm_config/slurm.conf /etc/slurm/slurm.conf
+COPY slurm_config/slurmdbd.conf /etc/slurm/slurmdbd.conf
+COPY slurm_config/supervisord.conf /etc/
 
 # Install and setup mariadb for the Slurm to use in the backend
 RUN yum -y install mariadb-server
