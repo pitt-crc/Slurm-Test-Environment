@@ -3,9 +3,9 @@ FROM redhat/$RHEL_TAG
 
 ARG SLURM_TAG
 ARG PYTHON_TAG
-LABEL edu.pitt.crc.slurm-version=$SLURM_TAG
-LABEL edu.pitt.crc.rhel-version=$RHEL_TAG
-LABEL edu.pitt.crc.python-version=$PYTHON_TAG
+LABEL edu.pitt.crc.slurm-tag=$SLURM_TAG
+LABEL edu.pitt.crc.rhel-tag=$RHEL_TAG
+LABEL edu.pitt.crc.python-tag=$PYTHON_TAG
 
 # Add RPM repos and GPG keys to allow yum installs of necessary software
 COPY repos/mariadb.repo /etc/yum.repos.d/mariadb.repo
