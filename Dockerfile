@@ -12,7 +12,7 @@ COPY repos/mariadb.repo /etc/yum.repos.d/mariadb.repo
 COPY repos/mariadb.key /etc/pki/rpm-gpg/mariadb.key
 
 # Install any required system tools
-RUN yum -y install git gcc make $PYTHON_TAG \
+RUN yum -y install git gcc make $PYTHON_TAG mariadb-server \
     && ln -s /usr/bin/python3 /usr/bin/python \
     && ln -s /usr/bin/pip3 /usr/bin/pip \
     && yum clean all \
@@ -42,9 +42,6 @@ RUN set -x \
 COPY slurm_config/slurm.conf /etc/slurm/slurm.conf
 COPY slurm_config/slurmdbd.conf /etc/slurm/slurmdbd.conf
 COPY slurm_config/supervisord.conf /etc/
-
-# Install and setup mariadb for the Slurm to use in the backend
-RUN yum -y install mariadb-server
 
 # This is a check to make sure everything installed correctly
 RUN sacctmgr -v
