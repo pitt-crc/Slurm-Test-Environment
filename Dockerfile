@@ -1,15 +1,11 @@
-ARG RHEL_TAG
-FROM redhat/$RHEL_TAG
+ARG ROCKY_TAG
+FROM rockylinux:$ROCKY_TAG
 
 ARG SLURM_TAG
 ARG PYTHON_TAG
 LABEL edu.pitt.crc.slurm-tag=$SLURM_TAG
-LABEL edu.pitt.crc.rhel-tag=$RHEL_TAG
+LABEL edu.pitt.crc.rhel-tag=$ROCKY_TAG
 LABEL edu.pitt.crc.python-tag=$PYTHON_TAG
-
-# Add RPM repos and GPG keys to allow yum installs of necessary software
-COPY repos/mariadb.repo /etc/yum.repos.d/mariadb.repo
-COPY repos/mariadb.key /etc/pki/rpm-gpg/mariadb.key
 
 # Install any required system tools
 RUN yum -y install git gcc make $PYTHON_TAG mariadb-server \
