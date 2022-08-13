@@ -8,9 +8,21 @@ LABEL edu.pitt.crc.rhel-tag=$ROCKY_TAG
 LABEL edu.pitt.crc.python-tag=$PYTHON_TAG
 
 # Install any required system tools
-RUN yum -y install git gcc make $PYTHON_TAG mariadb-server \
-    && ln -s /usr/bin/python3 /usr/bin/python \
-    && ln -s /usr/bin/pip3 /usr/bin/pip \
+
+RUN yum -y install epel-release \
+    && yum -y install \
+        $PYTHON_TAG \
+        wget \
+        bzip2 \
+        perl \
+        gcc \
+        gcc-c++\
+        vim-enhanced \
+        git \
+        make \
+        munge \
+        psmisc \
+        mariadb-server \
     && yum clean all \
     && rm -rf /var/cache/yum
 
@@ -19,18 +31,11 @@ RUN groupadd -r slurm && useradd -r -g slurm slurm
 
 # Install Slurm
 RUN set -x \
-    && git clone https://github.com/SchedMD/slurm.git \
+    && git clone https://github.com/SchedMD/slurm.git --branch $SLURM_TAG --depth 1  \
     && pushd slurm \
-    && git checkout tags/$SLURM_TAG \
     && ./configure --enable-debug --enable-front-end --prefix=/usr \
-       --sysconfdir=/etc/slurm --with-mysql_config=/usr/bin \
-       --libdir=/usr/lib64 \
+       --sysconfdir=/etc/slurm --with-mysql_config=/usr/bin --libdir=/usr/lib64 \
     && make install \
-    && install -D -m644 etc/cgroup.conf.example /etc/slurm/cgroup.conf.example \
-    && install -D -m644 etc/slurm.conf.example /etc/slurm/slurm.conf.example \
-    # && install -D -m644 etc/slurm.epilog.clean /etc/slurm/slurm.epilog.clean \
-    && install -D -m644 etc/slurmdbd.conf.example /etc/slurm/slurmdbd.conf.example \
-    && install -D -m644 contribs/slurm_completion_help/slurm_completion.sh /etc/profile.d/slurm_completion.sh \
     && popd \
     && rm -rf slurm
 
