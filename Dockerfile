@@ -47,6 +47,7 @@ COPY slurm_config/slurm.conf /etc/slurm/slurm.conf
 COPY slurm_config/slurmdbd.conf /etc/slurm/slurmdbd.conf
 COPY slurm_config/supervisord.conf /etc/
 
+# The entrypoint script starts the DB and defines necessary DB constructs
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
