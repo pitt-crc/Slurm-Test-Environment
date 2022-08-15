@@ -25,8 +25,10 @@ RUN yum -y install epel-release \
     && yum clean all \
     && rm -rf /var/cache/yum
 
-# Slurm requires a dedicated user/group to run
-RUN groupadd -r slurm && useradd -r -g slurm slurm
+# Install mariadb
+RUN /usr/bin/mysql_install_db \
+  && chown -R mysql:mysql /var/lib/mysql \
+  && chown -R mysql:mysql /var/log/mariadb/
 
 # Install Slurm
 RUN set -x \
@@ -37,15 +39,13 @@ RUN set -x \
     && popd \
     && rm -rf slurm
 
+# Slurm requires a dedicated user/group to run
+RUN groupadd -r slurm && useradd -r -g slurm slurm
+
 # Add config file required for using Slurm
 COPY slurm_config/slurm.conf /etc/slurm/slurm.conf
 COPY slurm_config/slurmdbd.conf /etc/slurm/slurmdbd.conf
 COPY slurm_config/supervisord.conf /etc/
-
-# Set up database for slurm
-RUN /usr/bin/mysql_install_db \
-  && chown -R mysql:mysql /var/lib/mysql \
-  && chown -R mysql:mysql /var/log/mariadb/
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
