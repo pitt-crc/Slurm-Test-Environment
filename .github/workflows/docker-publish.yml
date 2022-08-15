@@ -3,7 +3,7 @@ name: Deploy Docker Images
 on:
   workflow_dispatch:
   push:
-    branches: [ "latest" ]
+    branches: [ "main" ]
 
 env:
   REGISTRY: ghcr.io
@@ -53,7 +53,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/test-env-${{ matrix.rhel-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/test-env-${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
 
       # Build the image but do not publish it
       - name: Build image
