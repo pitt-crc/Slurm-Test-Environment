@@ -66,5 +66,5 @@ To see a list of valid Python tags, check the yum package repository
 ## Deploying an Image
 
 Updating the `latest` branch of this repository will automatically build and 
-deploy new images a variety of RHEL and Slurm and versions. 
+deploy new images a variety of Rocky, Python, and Slurm and versions. 
 These versions are defined in the GitHub actions workflow file.
