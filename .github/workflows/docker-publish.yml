@@ -71,7 +71,7 @@ jobs:
       # Make sure sacctmgr executes
       - name: Test slurm install
         run: |
-          docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr -v
+          docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
 
       # Build and push the image the container registry
       # This will use a cached copy of the previous build
