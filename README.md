@@ -2,7 +2,9 @@
 
 [![Deploy Docker Images](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/docker-publish.yml)
 
-Dockerized testing environments for software development against Slurm.
+Dockerized environments for testing software against a variety of 
+[Rocky](https://rockylinux.org/), [Slurm](https://slurm.schedmd.com/overview.html), 
+and [Python](https://www.python.org/) versions. 
 
 ## Using Images in GitHub Actions
 
