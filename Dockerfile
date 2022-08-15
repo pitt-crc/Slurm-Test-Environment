@@ -32,8 +32,7 @@ RUN groupadd -r slurm && useradd -r -g slurm slurm
 RUN set -x \
     && git clone https://github.com/SchedMD/slurm.git --branch $SLURM_TAG --depth 1  \
     && pushd slurm \
-    && ./configure --enable-debug --enable-front-end --prefix=/usr \
-       --sysconfdir=/etc/slurm --with-mysql_config=/usr/bin --libdir=/usr/lib64 \
+    && ./configure --enable-front-end --prefix=/usr --sysconfdir=/etc/slurm --with-mysql_config=/usr/bin \
     && make install \
     && popd \
     && rm -rf slurm
