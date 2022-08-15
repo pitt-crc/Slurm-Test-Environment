@@ -1,9 +1,17 @@
 #!/bin/bash
 
-echo "Launching sql server"
+echo "Launching sql server..."
 /usr/bin/mysqld_safe --datadir='/var/lib/mysql' &
 
-echo "Creating slurm account database"
+# Wait for mysql to start up
+for i in {30..0}; do
+  if echo "SELECT 1" | mysql &>/dev/null; then
+    break
+  fi
+  sleep 1
+done
+
+echo "Creating Slurm account database"
 mysql -NBe "CREATE DATABASE slurm_acct_db"
 mysql -NBe "CREATE USER 'slurm'@'localhost'"
 mysql -NBe "SET PASSWORD for 'slurm'@'localhost' = password('password')"
