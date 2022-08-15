@@ -55,8 +55,34 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/test-env-${{ matrix.rhel-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
 
-      # Build and push Docker image with Buildx
-      # https://github.com/docker/build-push-action
+      # Build the image but do not publish it
+      - name: Build and export to Docker
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            SLURM_TAG=${{ matrix.slurm-tag }}
+            ROCKY_TAG=${{ matrix.rocky-tag }}
+            PYTHON_TAG=${{ matrix.python-tag }}
+
+      # Make sure sacctmgr executes
+      - name: Test
+        run: |
+          docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr -v
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+      # Build and push the image the container registry
+      # This will use a cached copy of the previous build
       - name: Build and push image
         id: build-and-push
         uses: docker/build-push-action@v3
