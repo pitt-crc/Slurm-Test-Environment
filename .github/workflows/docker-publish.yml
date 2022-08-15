@@ -56,7 +56,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/test-env-${{ matrix.rhel-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
 
       # Build the image but do not publish it
-      - name: Build and export to Docker
+      - name: Build image
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -69,21 +69,13 @@ jobs:
             PYTHON_TAG=${{ matrix.python-tag }}
 
       # Make sure sacctmgr executes
-      - name: Test
+      - name: Test slurm install
         run: |
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr -v
 
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-
       # Build and push the image the container registry
       # This will use a cached copy of the previous build
-      - name: Build and push image
+      - name: Publish built image
         id: build-and-push
         uses: docker/build-push-action@v3
         with:
