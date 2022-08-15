@@ -51,4 +51,3 @@ COPY slurm_config/supervisord.conf /etc/
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["/bin/bash"]
