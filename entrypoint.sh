@@ -12,6 +12,4 @@ mysql -NBe "GRANT ALL PRIVILEGES on slurm_acct_db.* to 'slurm'@'localhost'"
 mysql -NBe "FLUSH PRIVILEGES"
 echo "Finished creating database"
 
-sacctmgr -v
-
 exec "$@"
