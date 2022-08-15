@@ -20,4 +20,13 @@ mysql -NBe "GRANT ALL PRIVILEGES on slurm_acct_db.* to 'slurm'@'localhost'"
 mysql -NBe "FLUSH PRIVILEGES"
 echo "Finished creating database"
 
+echo "Create munge key..."
+/usr/sbin/create-munge-key
+
+echo "Starting munge..."
+/usr/sbin/runuser -u munge -- /usr/sbin/munged
+
+echo "Starting slurmdbd..."
+/usr/sbin/slurmdbd
+
 exec "$@"

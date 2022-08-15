@@ -22,6 +22,8 @@ RUN yum -y install epel-release \
         munge \
         psmisc \
         mariadb-server \
+        mariadb-devel \
+    && dnf --enablerepo=powertools install munge-devel -y \
     && yum clean all \
     && rm -rf /var/cache/yum
 
