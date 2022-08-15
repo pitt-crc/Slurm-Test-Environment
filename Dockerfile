@@ -46,15 +46,9 @@ COPY slurm_config/supervisord.conf /etc/
 # Set up database for slurm
 RUN /usr/bin/mysql_install_db \
   && chown -R mysql:mysql /var/lib/mysql \
-  && chown -R mysql:mysql /var/log/mariadb/ \
-  && /usr/bin/mysqld_safe --datadir='/var/lib/mysql' \
-  && mysql -NBe "CREATE DATABASE slurm_acct_db" \
-  && mysql -NBe "CREATE USER 'slurm'@'localhost'" \
-  && mysql -NBe "SET PASSWORD for 'slurm'@'localhost' = password('password')" \
-  && mysql -NBe "GRANT USAGE ON *.* to 'slurm'@'localhost'" \
-  && mysql -NBe "GRANT ALL PRIVILEGES on slurm_acct_db.* to 'slurm'@'localhost'" \
-  && mysql -NBe "FLUSH PRIVILEGES" \
-  && killall mysqld \
+  && chown -R mysql:mysql /var/log/mariadb/
 
-# This is a check to make sure everything installed correctly
-RUN sacctmgr -v
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/bin/bash"]
