@@ -73,11 +73,6 @@ jobs:
         run: |
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr -v
 
-  publish:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-
       # Build and push the image the container registry
       # This will use a cached copy of the previous build
       - name: Publish built image
