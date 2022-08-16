@@ -9,14 +9,35 @@ env:
   REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 jobs:
+  setup-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup matrix combinations
+        id: setup-matrix-combinations
+        run: |
+          MATRIX='
+              {"rocky-tag": "8", "slurm-tag": "slurm-20-02-5-1", "python-tag": "python36"},
+              {"rocky-tag": "8", "slurm-tag": "slurm-20-11-9-1", "python-tag": "python38"},
+              {"rocky-tag": "8", "slurm-tag": "slurm-22-05-2-1", "python-tag": "python39"},
+              {"rocky-tag": "8", "slurm-tag": "slurm-20-02-5-1", "python-tag": "python36"},
+              {"rocky-tag": "8", "slurm-tag": "slurm-20-11-9-1", "python-tag": "python38"},
+              {"rocky-tag": "8", "slurm-tag": "slurm-22-05-2-1", "python-tag": "python39"},
+              {"rocky-tag": "8", "slurm-tag": "slurm-20-02-5-1", "python-tag": "python36"},
+              {"rocky-tag": "8", "slurm-tag": "slurm-20-11-9-1", "python-tag": "python38"},
+              {"rocky-tag": "8", "slurm-tag": "slurm-22-05-2-1", "python-tag": "python39"},
+          '
+
+          echo ::set-output name=matrix-combinations::{\"include\":[$MATRIX]}
+
+    outputs:
+      matrix-combinations: ${{ steps.setup-matrix-combinations.outputs.matrix-combinations }}
+
   build:
     runs-on: ubuntu-latest
+    name: Build Docker Images
     strategy:
       fail-fast: false
-      matrix:
-        python-tag: [ "python36", "python38", "python39" ]
-        rocky-tag: [ "8" ]
-        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
+      matrix: ${{ fromJson(needs.setup-matrix.outputs.matrix-combinations) }}
 
     steps:
       - name: Checkout repository
@@ -63,16 +84,14 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
+    name: Publish Docker Images
     permissions:
       contents: read
       packages: write
       id-token: write # This is used to complete the identity challenge
 
     strategy:
-      matrix:
-        python-tag: [ "python36", "python38", "python39" ]
-        rocky-tag: [ "8" ]
-        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
+      matrix: ${{ fromJson(needs.setup-matrix.outputs.matrix-combinations) }}
 
     steps:
       # Build and push the image the container registry
