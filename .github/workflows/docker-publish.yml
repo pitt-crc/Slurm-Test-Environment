@@ -11,6 +11,7 @@ env:
 jobs:
   setup-matrix:
     runs-on: ubuntu-latest
+    name: Define Build Options
     steps:
       - name: Setup matrix combinations
         id: setup-matrix-combinations
