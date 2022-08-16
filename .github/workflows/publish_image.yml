@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    uses: pitt-crc/Slurm-Test-Environment/.github/workflows/build_image.yml@latest
+    uses: ./.github/workflows/build_image.yml@latest
 
   publish:
     runs-on: ubuntu-latest
