@@ -63,8 +63,15 @@ To see a list of valid Rocky tags, see the [Rocky DockerHub images](https://hub.
 
 To see a list of valid Python tags, check the yum package repository
 
-## Deploying an Image
+## Creating a New Image
 
 Updating the `latest` branch of this repository will automatically build and 
-deploy new images a variety of Rocky, Python, and Slurm and versions. 
-These versions are defined in the GitHub actions workflow file.
+deploy new images a variety of Rocky, Python, and Slurm and versions. New builds can also 
+be triggered manually from the actions menu.
+
+To add a new build with different package versions, make the following changes:
+
+1. Check the version you want to build is available from the upstream sources listed above.
+2. If you are building a new slurm version, a new set of config files to the `slurm_config` repo. 
+   The name of the subdirectory should match the slurm version.
+3. Update the `matrix` section of the GitHub actions workflow to include the new version.

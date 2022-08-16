@@ -28,4 +28,7 @@ echo "Starting munge..."
 echo "Starting slurmdbd..."
 /usr/sbin/slurmdbd
 
+echo "Starting slurmctld..."
+/usr/sbin/slurmctld
+
 exec "$@"
