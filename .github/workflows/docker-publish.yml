@@ -5,6 +5,10 @@ on:
   push:
     branches: [ "latest" ]
 
+  # Run builds on the first of every month to keep images up to date
+  schedule:
+    - cron: "0 0 1 * *"
+
 env:
   REGISTRY: ghcr.io
 
