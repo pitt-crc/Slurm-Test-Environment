@@ -44,13 +44,8 @@ RUN set -x \
 RUN groupadd -r slurm && useradd -r -g slurm slurm
 
 # Add config file required for using Slurm
-COPY slurm_config/$SLURM_TAG/slurm.conf /etc/slurm/slurm.conf
-COPY slurm_config/$SLURM_TAG/slurmdbd.conf /etc/slurm/slurmdbd.conf
-
-# Make sure config files have correct permissions/ownership
-# Some versions of slurm will not work if this is not set properly
-RUN chown -R slurm:slurm /etc/slurm/
-RUN chmod -R 600 /etc/slurm/
+COPY --chown=slurm slurm_config/$SLURM_TAG/slurm.conf /etc/slurm/slurm.conf
+COPY --chown=slurm --chmod=600 slurm_config/$SLURM_TAG/slurmdbd.conf /etc/slurm/slurmdbd.conf
 
 # The entrypoint script starts the DB and defines necessary DB constructs
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
