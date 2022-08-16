@@ -49,7 +49,7 @@ COPY slurm_config/$SLURM_TAG/slurmdbd.conf /etc/slurm/slurmdbd.conf
 COPY slurm_config/$SLURM_TAG/supervisord.conf /etc/
 
 # Make sure config files have correct permissions/ownership
-# SOme versions of slurm will not work if this is not set properly
+# Some versions of slurm will not work if this is not set properly
 RUN chown -R slurm:slurm /etc/slurm/
 RUN chmod -R 600 /etc/slurm/
 
