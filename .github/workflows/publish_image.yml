@@ -5,12 +5,9 @@ on:
   push:
     branches: [ "latest" ]
 
-env:
-  REGISTRY: ghcr.io/${{ github.repository_owner }}
-
 jobs:
   build:
-      uses: pitt-crc/Slurm-Test-Environment/.github/workflows/build_image.yml@latest
+    uses: pitt-crc/Slurm-Test-Environment/.github/workflows/build_image.yml@latest
 
   publish:
     runs-on: ubuntu-latest
