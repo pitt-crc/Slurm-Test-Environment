@@ -27,7 +27,7 @@ jobs:
       matrix-combinations: ${{ steps.setup-matrix-combinations.outputs.matrix-combinations }}
 
   build:
-    needs:
+    needs: setup-matrix
     runs-on: ubuntu-latest
     name: Build Docker Images
     strategy:
@@ -77,7 +77,7 @@ jobs:
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
 
   publish:
-    needs: build
+    needs: [ setup-matrix, build]
     runs-on: ubuntu-latest
     name: Publish Docker Images
     permissions:
