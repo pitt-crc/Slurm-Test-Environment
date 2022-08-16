@@ -15,17 +15,11 @@ jobs:
       - name: Setup matrix combinations
         id: setup-matrix-combinations
         run: |
-          MATRIX='
-              {"rocky-tag": "8", "slurm-tag": "slurm-20-02-5-1", "python-tag": "python36"},
-              {"rocky-tag": "8", "slurm-tag": "slurm-20-11-9-1", "python-tag": "python38"},
-              {"rocky-tag": "8", "slurm-tag": "slurm-22-05-2-1", "python-tag": "python39"},
-              {"rocky-tag": "8", "slurm-tag": "slurm-20-02-5-1", "python-tag": "python36"},
-              {"rocky-tag": "8", "slurm-tag": "slurm-20-11-9-1", "python-tag": "python38"},
-              {"rocky-tag": "8", "slurm-tag": "slurm-22-05-2-1", "python-tag": "python39"},
-              {"rocky-tag": "8", "slurm-tag": "slurm-20-02-5-1", "python-tag": "python36"},
-              {"rocky-tag": "8", "slurm-tag": "slurm-20-11-9-1", "python-tag": "python38"},
-              {"rocky-tag": "8", "slurm-tag": "slurm-22-05-2-1", "python-tag": "python39"},
-          '
+          MATRIX='{
+              "rocky-tag": ["8"], 
+              "slurm-tag": [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ], 
+              "python-tag": [ "python36", "python38", "python39" ]
+          }'
 
           echo ::set-output name=matrix-combinations::{\"include\":[$MATRIX]}
 
@@ -83,7 +77,7 @@ jobs:
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
 
   publish:
-    needs: build
+    needs: [ setup-matrix, build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
     permissions:
