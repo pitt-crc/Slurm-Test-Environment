@@ -46,7 +46,6 @@ RUN groupadd -r slurm && useradd -r -g slurm slurm
 # Add config file required for using Slurm
 COPY slurm_config/$SLURM_TAG/slurm.conf /etc/slurm/slurm.conf
 COPY slurm_config/$SLURM_TAG/slurmdbd.conf /etc/slurm/slurmdbd.conf
-COPY slurm_config/$SLURM_TAG/supervisord.conf /etc/
 
 # Make sure config files have correct permissions/ownership
 # Some versions of slurm will not work if this is not set properly
