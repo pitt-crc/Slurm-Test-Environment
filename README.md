@@ -15,7 +15,7 @@ jobs:
   example_job:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/pitt-crc/test-env-ubi8-slurm-20-11-9-1-python38
+      image: ghcr.io/pitt-crc/test-env-rocky8-slurm-20-11-9-1-python38
 ```
 
 If you want to run a job several times using different containers 
@@ -30,10 +30,10 @@ jobs:
       fail-fast: false
       matrix:
         container:
-          - test-env-ubi8-slurm-20-11-9-1-python38
-          - test-env-ubi8-slurm-20-11-9-1-python39
-          - test-env-ubi8-slurm-20-02-5-1-python38
-          - test-env-ubi8-slurm-20-02-5-1-python39
+          - test-env-rocky8-slurm-20-11-9-1-python38
+          - test-env-rocky8-slurm-20-11-9-1-python39
+          - test-env-rocky8-slurm-20-02-5-1-python38
+          - test-env-rocky8-slurm-20-02-5-1-python39
 
     container:
       image: ghcr.io/pitt-crc/${{ matrix.container }}
