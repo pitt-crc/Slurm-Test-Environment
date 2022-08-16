@@ -10,6 +10,7 @@ jobs:
     uses: ./.github/workflows/build_image.yml
 
   publish:
+    needs: [ build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
     permissions:
