@@ -8,8 +8,7 @@ LABEL edu.pitt.crc.rocky-tag=$ROCKY_TAG
 LABEL edu.pitt.crc.python-tag=$PYTHON_TAG
 
 # Install any required system tools
-RUN yum -y install epel-release \
-    && yum -y install \
+RUN yum -y --enablerepo=powertools install \
         $PYTHON_TAG \
         wget \
         bzip2 \
@@ -22,8 +21,8 @@ RUN yum -y install epel-release \
         munge \
         psmisc \
         mariadb-server \
-        mariadb-devel \
-    && dnf --enablerepo=powertools install munge-devel -y \
+        mariadb-devel  \
+        munge-devel \
     && yum clean all \
     && rm -rf /var/cache/yum
 
