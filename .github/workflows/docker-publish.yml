@@ -33,6 +33,7 @@ jobs:
       matrix-combinations: ${{ steps.setup-matrix-combinations.outputs.matrix-combinations }}
 
   build:
+    needs: setup-matrix
     runs-on: ubuntu-latest
     name: Build Docker Images
     strategy:
