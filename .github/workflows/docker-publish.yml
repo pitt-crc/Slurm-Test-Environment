@@ -1,4 +1,4 @@
-name: Deploy Docker Images
+name: Build Docker Images
 
 on:
   pull_request:
@@ -6,6 +6,7 @@ on:
     branches: [ "latest" ]
 
 env:
+  # Destination registry for publishing images
   REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 jobs:
@@ -31,6 +32,7 @@ jobs:
     needs: [ setup-matrix ]
     runs-on: ubuntu-latest
     name: Build Docker Images
+
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.setup-matrix.outputs.build-matrix) }}
