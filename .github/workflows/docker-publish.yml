@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches: [ "latest", "djperrefort/patch_actions" ]  # The djperrefort/patch_actions branch is temporary for debugging
+    branches: [ "latest" ]
 
 env:
   # Destination registry for publishing images
