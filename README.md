@@ -57,7 +57,7 @@ docker build . \
     --build-arg PYTHON_TAG=python39
 ```
 
-To see a list of valid slurm tags, see the [slurm GitHub release tags](https://github.com/SchedMD/slurm/tags).
+To see a list of valid slurm tags, see the [Slurm GitHub release tags](https://github.com/SchedMD/slurm/tags).
 
 To see a list of valid Rocky tags, see the [Rocky DockerHub images](https://hub.docker.com/_/rockylinux).
 
