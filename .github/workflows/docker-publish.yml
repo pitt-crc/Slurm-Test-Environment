@@ -86,7 +86,7 @@ jobs:
       tags: ${{ steps.meta.outputs.tags }}
 
   publish:
-    # if: github.ref == 'refs/heads/latest' && github.event_name != 'pull_request'
+    # if: github.ref == 'refs/heads/latest' && github.event_name == 'push'
     needs: [ setup-matrix, build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
@@ -99,16 +99,6 @@ jobs:
       matrix: ${{ fromJson(needs.setup-matrix.outputs.build-matrix) }}
 
     steps:
-      - name: test_settings
-        run: |
-          echo "Checking settings"
-          echo ${{ matrix.slurm-tag }}
-          echo ${{ matrix.rocky-tag }}
-          echo ${{ matrix.python-tag }}    
-          echo ${{ needs.build.outputs.tags }}
-          echo  ${{ needs.build.outputs.labels }}
-          echo "done"
-
       # Build and push the image the container registry
       # This will use a cached copy of the previous build
       - name: Publish built image
