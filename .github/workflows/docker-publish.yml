@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches: [ "latest" ]
+    branches: [ "latest", "djperrefort/patch_actions" ]  # The djperrefort/patch_actions branch is temporary for debugging
 
 env:
   # Destination registry for publishing images
@@ -79,10 +79,15 @@ jobs:
       - name: Test slurm install
         run: |
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
+              echo ::set-output name=build-matrix::$MATRIX}
+
+    outputs:
+      labels: ${{ steps.meta.outputs.labels }}
+      tags: ${{ steps.meta.outputs.tags }}
 
   publish:
     if: github.ref == 'refs/heads/latest' && github.event_name != 'pull_request'
-    needs: [ build ]
+    needs: [   setup-matrix, build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
     permissions:
@@ -102,8 +107,8 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ needs.build.outputs.tags }}
+          labels: ${{ needs.build.outputs.labels }}
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
             ROCKY_TAG=${{ matrix.rocky-tag }}
