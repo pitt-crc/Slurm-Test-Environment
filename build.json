@@ -1,0 +1,15 @@
+{
+  "rocky-tag": [
+    "8"
+  ],
+  "slurm-tag": [
+    "slurm-20-02-5-1",
+    "slurm-20-11-9-1",
+    "slurm-22-05-2-1"
+  ],
+  "python-tag": [
+    "python36",
+    "python38",
+    "python39"
+  ]
+}

@@ -17,14 +17,7 @@ jobs:
     steps:
       - name: Setup build matrix
         id: setup-build-matrix
-        run: |
-          MATRIX='{
-            "rocky-tag": [ "8" ], 
-            "slurm-tag": [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ], 
-            "python-tag":[ "python36", "python38", "python39" ]
-          }'
-          
-          echo ::set-output name=build-matrix::$MATRIX}
+        run: echo ::set-output name=build-matrix::$(cat build.json)}
 
     outputs:
       build-matrix: ${{ steps.setup-build-matrix.outputs.build-matrix }}
