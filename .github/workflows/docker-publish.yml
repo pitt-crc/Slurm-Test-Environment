@@ -79,6 +79,11 @@ jobs:
       - name: Test slurm install
         run: |
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
+              echo ::set-output name=build-matrix::$MATRIX}
+
+    outputs:
+      labels: ${{ steps.meta.outputs.labels }}
+      tags: ${{ steps.meta.outputs.tags }}
 
   publish:
     if: github.ref == 'refs/heads/latest' && github.event_name != 'pull_request'
@@ -102,8 +107,8 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ needs.build.outputs.tags }}
+          labels: ${{ needs.build.outputs.labels }}
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
             ROCKY_TAG=${{ matrix.rocky-tag }}
