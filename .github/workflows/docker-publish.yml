@@ -99,6 +99,9 @@ jobs:
       matrix: ${{ fromJson(needs.setup-matrix.outputs.build-matrix) }}
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Build and push the image the container registry
       # This will use a cached copy of the previous build
       - name: Publish built image
