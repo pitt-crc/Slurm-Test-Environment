@@ -114,12 +114,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{ steps.image-name.outputs.name }}
-          path: image.tar
+          path: .
 
       - name: Debug
         run: |
-          ls
-          ls image.tar
+          ls -al
 
       - name: Load and publish image
         run: |
