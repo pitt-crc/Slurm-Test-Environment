@@ -45,6 +45,7 @@ jobs:
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2
 
+      # Define the image name for use by other steps
       - name: Define image name
         id: image-name
         run: |
@@ -90,7 +91,7 @@ jobs:
       name: ${{ steps.image-name.outputs.name }}
 
   publish:
-    # if: github.ref == 'refs/heads/latest' && github.event_name == 'push'
+    # if: github.ref == 'refs/heads/latest' && github.event_name == 'push'  # Only publish from the latest branch
     needs: [ setup-matrix, build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
@@ -109,17 +110,7 @@ jobs:
       - name: Fetch image from cache
         uses: actions/download-artifact@v2
 
-      - name: Load image
-        run: docker load --input ${{ needs.build.outputs.name }}/image.tar
-
-      - name: Publish image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ needs.build.outputs.tags }}
-          labels: ${{ needs.build.outputs.labels }}
-          build-args: |
-            SLURM_TAG=${{ matrix.slurm-tag }}
-            ROCKY_TAG=${{ matrix.rocky-tag }}
-            PYTHON_TAG=${{ matrix.python-tag }}
+      - name: Load and publish image
+        run: | 
+          docker load --input ${{ needs.build.outputs.name }}/image.tar
+          docker push ${{ needs.build.outputs.name }}
