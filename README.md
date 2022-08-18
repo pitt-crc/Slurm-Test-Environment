@@ -52,9 +52,9 @@ The following example builds an image using Rocky 8 and slurm version 20.02.5.1
 
 ```bash
 docker build . \
-    --build-arg ROCKY_VERSION=8.6 \
-    --build-arg SLURM_VERSION=20.02.5 \
-    --build-arg PYTHON_VERSION=39
+    --build-arg ROCKY_TAG=8.6 \
+    --build-arg SLURM_TAG=slurm-20-02-5-1 \
+    --build-arg PYTHON_TAG=python39
 ```
 
 To see a list of valid slurm tags, see the [Slurm GitHub release tags](https://github.com/SchedMD/slurm/tags).

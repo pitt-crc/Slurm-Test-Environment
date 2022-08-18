@@ -1,15 +1,15 @@
-ARG ROCKY_VERSION
-FROM rockylinux:$ROCKY_VERSION
+ARG ROCKY_TAG
+FROM rockylinux:$ROCKY_TAG
 
-ARG SLURM_VERSION
-ARG PYTHON_VERSION
-LABEL edu.pitt.crc.slurm-version=$SLURM_VERSION
-LABEL edu.pitt.crc.rocky-version=$ROCKY_VERSION
-LABEL edu.pitt.crc.python-version=$PYTHON_VERSION
+ARG SLURM_TAG
+ARG PYTHON_TAG
+LABEL edu.pitt.crc.slurm-tag=$SLURM_TAG
+LABEL edu.pitt.crc.rocky-tag=$ROCKY_TAG
+LABEL edu.pitt.crc.python-tag=$PYTHON_TAG
 
 # Install any required system tools
 RUN yum -y --enablerepo=powertools install \
-    python$PYTHON_VERSION \
+    $PYTHON_TAG \
     wget \
     bzip2 \
     perl \
@@ -35,16 +35,16 @@ RUN /usr/bin/mysql_install_db \
   && chown -R mysql:mysql /var/log/mariadb/
 
 # Install Slurm
-RUN wget https://download.schedmd.com/slurm/slurm-$SLURM_VERSION.tar.bz2 \
-  && rpmbuild -ta slurm*.tar.bz2 \
-  && rpm --install
+# Install Slurm
+RUN wget https://github.com/SchedMD/slurm/archive/refs/tags/$SLURM_TAG.tar.gz -O $SLURM_TAG.tar.gz \
+  && rpmbuild -ta $SLURM_TAG.tar.gz --define='source $SLURM_TAG.tar.gz'
 
 # Slurm requires a dedicated user/group to run
 RUN groupadd -r slurm && useradd -r -g slurm slurm
 
 # Add config file required for using Slurm
-COPY --chown=slurm slurm_config/$SLURM_VERSION/slurm.conf /etc/slurm/slurm.conf
-COPY --chown=slurm --chmod=600 slurm_config/$SLURM_VERSION/slurmdbd.conf /etc/slurm/slurmdbd.conf
+COPY --chown=slurm slurm_config/$SLURM_TAG/slurm.conf /etc/slurm/slurm.conf
+COPY --chown=slurm --chmod=600 slurm_config/$SLURM_TAG/slurmdbd.conf /etc/slurm/slurmdbd.conf
 
 # The entrypoint script starts the DB and defines necessary DB constructs
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
