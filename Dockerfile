@@ -37,7 +37,7 @@ RUN /usr/bin/mysql_install_db \
 # Install Slurm
 # Install Slurm
 RUN wget https://github.com/SchedMD/slurm/archive/refs/tags/$SLURM_TAG.tar.gz -O $SLURM_TAG.tar.gz \
-  && rpmbuild -ta $SLURM_TAG.tar.gz --define='source $SLURM_TAG.tar.gz'
+  && rpmbuild -ta $SLURM_TAG.tar.gz
 
 # Slurm requires a dedicated user/group to run
 RUN groupadd -r slurm && useradd -r -g slurm slurm
