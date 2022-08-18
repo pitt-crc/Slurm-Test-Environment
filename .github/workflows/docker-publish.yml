@@ -64,7 +64,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ github.ref_name }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=docker,dest=image.tar
           build-args: |
@@ -122,4 +122,5 @@ jobs:
         with:
           context: .
           push: true
+          tags: ${{ github.ref_name }}
           cache-from: type=local,src=image.tar
