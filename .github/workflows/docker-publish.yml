@@ -117,6 +117,13 @@ jobs:
           name: ${{ steps.image-name.outputs.name }}
           path: .
 
+      - name: Push image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          cache-from: image.tar
+
       - name: Load and publish image
         run: |
           docker load --input image.tar
