@@ -80,7 +80,6 @@ jobs:
         run: |
           docker load image.tar
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
-              echo ::set-output name=build-matrix::$MATRIX}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
