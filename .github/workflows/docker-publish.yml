@@ -6,10 +6,6 @@ on:
   push:
     branches: [ "latest", "patch_ci" ]
 
-env:
-  # Destination registry for publishing images
-  REGISTRY: ghcr.io/${{ github.repository_owner }}
-
 jobs:
   setup-matrix:
     runs-on: ubuntu-latest
@@ -57,7 +53,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ steps.image-name.outputs.name }}
+          images: ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}
 
       # Build the image but do not publish it
       - name: Build image
@@ -123,4 +119,4 @@ jobs:
       - name: Publish fetched image
         run: |
           docker load --input image.tar
-          docker push ${{ env.REGISTRY }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}
+          docker push ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}
