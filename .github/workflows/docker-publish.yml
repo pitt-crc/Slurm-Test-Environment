@@ -97,6 +97,7 @@ jobs:
       id-token: write # This is used to complete the identity challenge
 
     strategy:
+      fail-fast: false
       matrix: ${{ fromJson(needs.setup-matrix.outputs.build-matrix) }}
 
     steps:
