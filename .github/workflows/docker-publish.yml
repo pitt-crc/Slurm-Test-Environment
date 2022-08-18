@@ -84,6 +84,7 @@ jobs:
         with:
           name: ${{ steps.image-name.outputs.name }}
           path: image.tar
+          if-no-files-found: error
 
     outputs:
       labels: ${{ steps.meta.outputs.labels }}
@@ -109,8 +110,11 @@ jobs:
 
       - name: Fetch image from cache
         uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.image-name.outputs.name }}
+          path: image.tar
 
       - name: Load and publish image
         run: | 
           docker load --input ${{ needs.build.outputs.name }}/image.tar
-          docker push ${{ needs.build.outputs.name }}
+          docker push ${{ env.REGISTRY }}/${{ needs.build.outputs.name }}
