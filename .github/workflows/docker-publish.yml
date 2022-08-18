@@ -116,6 +116,11 @@ jobs:
           name: ${{ steps.image-name.outputs.name }}
           path: image.tar
 
+      - name: Debug
+        run: |
+          ls
+          ls image.tar
+
       - name: Load and publish image
         run: |
           docker load --input image.tar
