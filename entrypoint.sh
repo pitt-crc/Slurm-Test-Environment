@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo pipefail
 
 echo "Launching sql server..."
 /usr/bin/mysqld_safe --datadir='/var/lib/mysql' &
