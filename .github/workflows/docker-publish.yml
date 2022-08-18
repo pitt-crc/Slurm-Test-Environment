@@ -78,7 +78,7 @@ jobs:
       # Make sure sacctmgr executes
       - name: Test slurm install
         run: |
-          docker load image.tar
+          docker load --input image.tar
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
 
       - name: Upload artifact
