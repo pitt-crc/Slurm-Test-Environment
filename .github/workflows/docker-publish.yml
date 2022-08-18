@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches: [ "latest", "patch_ci" ]
+    branches: [ "latest" ]
 
 jobs:
   setup-matrix:
@@ -83,7 +83,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    # if: github.ref == 'refs/heads/latest' && github.event_name == 'push'  # Only publish from the latest branch
+    if: github.ref == 'refs/heads/latest' && github.event_name == 'push'  # Only publish from the latest branch
     needs: [ setup-matrix, build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
