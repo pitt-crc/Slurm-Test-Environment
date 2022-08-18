@@ -86,11 +86,6 @@ jobs:
           path: image.tar
           if-no-files-found: error
 
-    outputs:
-      labels: ${{ steps.meta.outputs.labels }}
-      tags: ${{ steps.meta.outputs.tags }}
-      name: ${{ steps.image-name.outputs.name }}
-
   publish:
     # if: github.ref == 'refs/heads/latest' && github.event_name == 'push'  # Only publish from the latest branch
     needs: [ setup-matrix, build ]
@@ -108,13 +103,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Define the image name for use by other steps
+      - name: Define image name
+        id: image-name
+        run: |
+          NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
+          echo ::set-output name=name::$NAME
+
       - name: Fetch image from cache
         uses: actions/download-artifact@v2
         with:
-          name: ${{ needs.build.outputs.name }}
+          name: ${{ steps.image-name.outputs.name }}
           path: image.tar
 
       - name: Load and publish image
-        run: | 
+        run: |
           docker load --input image.tar
-          docker push ${{ env.REGISTRY }}/${{ needs.build.outputs.name }}
+          docker push ${{ env.REGISTRY }}/${{ steps.image-name.outputs.name }}
