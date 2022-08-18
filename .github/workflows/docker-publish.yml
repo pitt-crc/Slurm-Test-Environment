@@ -122,9 +122,4 @@ jobs:
         with:
           context: .
           push: true
-          cache-from: image.tar
-
-      - name: Load and publish image
-        run: |
-          docker load --input image.tar
-          docker push ${{ env.REGISTRY }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}
+          cache-from: type=local,src=image.tar
