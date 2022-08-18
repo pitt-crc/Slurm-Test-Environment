@@ -52,7 +52,7 @@ jobs:
           NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
           echo ::set-output name=name::$NAME
 
-      # Extract metadata (tags, labels) for Docker
+      # Extract metadata (tags and labels) for Docker
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v4
@@ -91,10 +91,6 @@ jobs:
     needs: [ setup-matrix, build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
-    permissions:
-      contents: read
-      packages: write
-      id-token: write # This is used to complete the identity challenge
 
     strategy:
       fail-fast: false
@@ -124,7 +120,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Load fetched image
+      - name: Publish fetched image
         run: |
           docker load --input image.tar
           docker push ${{ env.REGISTRY }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}
