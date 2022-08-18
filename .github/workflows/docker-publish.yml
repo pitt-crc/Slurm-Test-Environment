@@ -116,11 +116,7 @@ jobs:
           name: ${{ steps.image-name.outputs.name }}
           path: .
 
-      - name: Debug
-        run: |
-          ls -al
-
       - name: Load and publish image
         run: |
           docker load --input image.tar
-          docker push ${{ env.REGISTRY }}/${{ steps.image-name.outputs.name }}
+          docker push ${{ env.REGISTRY }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}
