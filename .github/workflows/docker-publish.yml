@@ -64,13 +64,16 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          tags: ${{ github.ref_name }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=docker,dest=image.tar
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
             ROCKY_TAG=${{ matrix.rocky-tag }}
             PYTHON_TAG=${{ matrix.python-tag }}
+
+      - name: Test tags
+        run: echo '${{ steps.meta.outputs.tags }}'
 
       # Make sure sacctmgr executes
       - name: Test slurm install
