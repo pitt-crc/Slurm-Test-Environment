@@ -78,6 +78,7 @@ jobs:
       # Make sure sacctmgr executes
       - name: Test slurm install
         run: |
+          docker load image.tar
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
               echo ::set-output name=build-matrix::$MATRIX}
 
