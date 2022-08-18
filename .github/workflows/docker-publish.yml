@@ -117,10 +117,12 @@ jobs:
           name: ${{ steps.image-name.outputs.name }}
           path: .
 
+      - name: Load fetched image
+        run: docker load --input image.tar
+
       - name: Push image
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
           tags: ${{ env.REGISTRY }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}
-          cache-from: type=local,src=image.tar
