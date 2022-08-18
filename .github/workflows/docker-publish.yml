@@ -103,16 +103,16 @@ jobs:
       matrix: ${{ fromJson(needs.setup-matrix.outputs.build-matrix) }}
 
     steps:
-      - name: Download service artifacts
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Fetch image from cache
         uses: actions/download-artifact@v2
 
-      - name: Load images
+      - name: Load image
         run: docker load --input ${{ needs.build.outputs.name }}/image.tar
 
-      # Build and push the image the container registry
-      # This will use a cached copy of the previous build
-      - name: Publish built image
-        id: build-and-push
+      - name: Publish image
         uses: docker/build-push-action@v3
         with:
           context: .
