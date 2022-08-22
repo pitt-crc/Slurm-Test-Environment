@@ -35,8 +35,7 @@ RUN /usr/bin/mysql_install_db \
   && chown -R mysql:mysql /var/log/mariadb/
 
 # Install Slurm
-RUN wget https://github.com/SchedMD/slurm/archive/refs/tags/$SLURM_TAG.tar.gz -O slurm.tar.gz \
-  && rpmbuild -ta slurm.tar.gz
+RUN cd slurm_config/$SLURM_TAG && rpm --install *.rpm
 
 # Slurm requires a dedicated user/group to run
 RUN groupadd -r slurm && useradd -r -g slurm slurm
