@@ -8,24 +8,32 @@ LABEL edu.pitt.crc.rocky-tag=$ROCKY_TAG
 LABEL edu.pitt.crc.python-tag=$PYTHON_TAG
 
 # Install any required system tools
-RUN yum -y --enablerepo=powertools install \
-    $PYTHON_TAG \
-    wget \
-    bzip2 \
-    perl \
-    gcc \
-    gcc-c++\
-    vim-enhanced \
-    git \
-    make \
-    munge \
-    munge-devel \
-    psmisc \
-    mariadb-server \
-    mariadb-devel  \
-    rpm-build \
-    pam-devel \
-    readline-devel \
+RUN yum install -y epel-release  \
+    && yum -y --enablerepo=powertools install \
+        $PYTHON_TAG \
+        wget \
+        bzip2 \
+        perl \
+        gcc \
+        gcc-c++\
+        vim-enhanced \
+        git \
+        make \
+        munge \
+        munge-devel \
+        psmisc \
+        mariadb-server \
+        mariadb-devel  \
+        rpm-build \
+        pam-devel \
+        readline-devel \
+        numactl-libs \
+        hdf5-devel \
+        freeipmi \
+        libibmad \
+        rrdtool-devel \
+        perl-Switch \
+        hwloc-libs \
   && yum clean all \
   && rm -rf /var/cache/yum
 
