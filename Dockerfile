@@ -11,22 +11,10 @@ LABEL edu.pitt.crc.python-tag=$PYTHON_TAG
 RUN yum install -y epel-release  \
     && yum -y --enablerepo=powertools install \
         $PYTHON_TAG \
-        wget \
-        bzip2 \
-        perl \
-        gcc \
-        gcc-c++\
-        vim-enhanced \
-        git \
-        make \
         munge \
         munge-devel \
-        psmisc \
         mariadb-server \
         mariadb-devel  \
-        rpm-build \
-        pam-devel \
-        readline-devel \
         numactl-libs \
         hdf5-devel \
         freeipmi \
