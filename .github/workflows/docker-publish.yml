@@ -82,6 +82,18 @@ jobs:
           path: image.tar
           if-no-files-found: error
 
+  # This is a dummy job used to facilitate branch protections
+  # and trigger auto-merging when all jobs in the build matrix
+  # exit succesfully.
+  build-successful:
+    needs: [ setup-matrix, build ]
+    runs-on: ubuntu-latest
+    name: Builds were succesful
+    
+    steps:
+      - name: Mark as completed
+        run: echo "The builds were successful"
+  
   publish:
     if: github.ref == 'refs/heads/latest' && github.event_name == 'push'  # Only publish from the latest branch
     needs: [ setup-matrix, build ]
