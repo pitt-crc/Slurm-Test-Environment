@@ -25,6 +25,9 @@ RUN yum install -y epel-release  \
   && yum clean all \
   && rm -rf /var/cache/yum
 
+# Make python tools accessable without the trailing 3
+RUN ln /usr/bin/python3 /usr/bin/python && ln /usr/bin/pip3 /usr/bin/pip
+
 # Install mariadb
 RUN /usr/bin/mysql_install_db \
   && chown -R mysql:mysql /var/lib/mysql \
