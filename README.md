@@ -19,7 +19,7 @@ jobs:
 ```
 
 If you want to run a job several times using different containers 
-(e.g., to test software against multiple slurm versions)
+(e.g., to test software against multiple Slurm versions)
 use the `strategy` directive:
 
 ```yaml
@@ -48,7 +48,7 @@ The Dockerfile is designed to be reusable for different Rocky, Python, and Slurm
 All of these versions need to be specified when building the image.
 Failure to specify the necessary arguments will cause a failed build.
 
-The following example builds an image using Rocky 8 and slurm version 20.02.5.1
+The following example builds an image using Rocky 8 and Slurm version 20.02.5.1
 
 ```bash
 docker build . \
@@ -57,7 +57,7 @@ docker build . \
     --build-arg PYTHON_TAG=python39
 ```
 
-To see a list of valid slurm tags, see the [Slurm GitHub release tags](https://github.com/SchedMD/slurm/tags).
+To see a list of valid Slurm tags, see the [Slurm GitHub release tags](https://github.com/SchedMD/slurm/tags).
 
 To see a list of valid Rocky tags, see the [Rocky DockerHub images](https://hub.docker.com/_/rockylinux).
 
@@ -66,12 +66,12 @@ To see a list of valid Python tags, check the yum package repository
 ## Creating a New Image
 
 Updating the `latest` branch of this repository will automatically build and 
-deploy new images a variety of Rocky, Python, and Slurm and versions. New builds can also 
-be triggered manually from the actions menu.
+deploy new images for a variety of Rocky, Python, and Slurm and versions.
 
 To add a new build with different package versions, make the following changes:
 
-1. Check the version you want to build is available from the upstream sources listed above.
-2. If you are building a new slurm version, a new set of config files to the `slurm_config` repo. 
-   The name of the subdirectory should match the slurm version.
-3. Update the `matrix` section of the GitHub actions workflow to include the new version.
+1. Check the Rocky, Slurm, and Python versions you want to build against are available
+   from the upstream sources listed above.
+2. Add the necessary Slurm config files to the `slurm_config` directory. 
+   The name of the subdirectory should match the corresponding `SLURM_TAG` build argument.
+3. Update the build matrix section of the GitHub actions workflow to include the new version.

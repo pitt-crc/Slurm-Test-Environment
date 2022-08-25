@@ -1,14 +1,10 @@
-name: Build Docker Images
+name: Publish Docker Images
 
 on:
   workflow_dispatch:
   pull_request:
   push:
     branches: [ "latest" ]
-
-env:
-  # Destination registry for publishing images
-  REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 jobs:
   setup-matrix:
@@ -42,34 +38,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Install the cosign tool to sign and verify container images
-      # https://github.com/sigstore/cosign-installer
-      - name: Install cosign
-        uses: sigstore/cosign-installer@main
-        with:
-          cosign-release: 'v1.9.0'
-
-      # Workaround: https://github.com/docker/build-push-action/issues/461
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
+      # Define the image name for use by other steps
+      - name: Define image name
+        id: image-name
+        run: |
+          NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
+          echo ::set-output name=name::$NAME
+
+      # Extract metadata (tags and labels) for Docker
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
+          images: ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}
 
       # Build the image but do not publish it
-      # https://github.com/docker/build-push-action
       - name: Build image
         uses: docker/build-push-action@v3
         with:
           context: .
-          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=docker,dest=image.tar
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
             ROCKY_TAG=${{ matrix.rocky-tag }}
@@ -78,38 +71,52 @@ jobs:
       # Make sure sacctmgr executes
       - name: Test slurm install
         run: |
+          docker load --input image.tar
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
-              echo ::set-output name=build-matrix::$MATRIX}
 
-    outputs:
-      labels: ${{ steps.meta.outputs.labels }}
-      tags: ${{ steps.meta.outputs.tags }}
+      # Cache the built image for use in other jobs
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.image-name.outputs.name }}
+          path: image.tar
+          if-no-files-found: error
 
   publish:
-    if: github.ref == 'refs/heads/latest' && github.event_name != 'pull_request'
-    needs: [   setup-matrix, build ]
+    if: github.ref == 'refs/heads/latest' && github.event_name == 'push'  # Only publish from the latest branch
+    needs: [ setup-matrix, build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
-    permissions:
-      contents: read
-      packages: write
-      id-token: write # This is used to complete the identity challenge
 
     strategy:
+      fail-fast: false
       matrix: ${{ fromJson(needs.setup-matrix.outputs.build-matrix) }}
 
     steps:
-      # Build and push the image the container registry
-      # This will use a cached copy of the previous build
-      - name: Publish built image
-        id: build-and-push
-        uses: docker/build-push-action@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Define the image name for use by other steps
+      - name: Define image name
+        id: image-name
+        run: |
+          NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
+          echo ::set-output name=name::$NAME
+
+      - name: Fetch image from cache
+        uses: actions/download-artifact@v2
         with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ needs.build.outputs.tags }}
-          labels: ${{ needs.build.outputs.labels }}
-          build-args: |
-            SLURM_TAG=${{ matrix.slurm-tag }}
-            ROCKY_TAG=${{ matrix.rocky-tag }}
-            PYTHON_TAG=${{ matrix.python-tag }}
+          name: ${{ steps.image-name.outputs.name }}
+          path: .
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish fetched image
+        run: |
+          docker load --input image.tar
+          docker push ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}

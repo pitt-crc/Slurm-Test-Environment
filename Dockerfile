@@ -8,23 +8,22 @@ LABEL edu.pitt.crc.rocky-tag=$ROCKY_TAG
 LABEL edu.pitt.crc.python-tag=$PYTHON_TAG
 
 # Install any required system tools
-RUN yum -y --enablerepo=powertools install \
+RUN yum install -y epel-release  \
+    && yum -y --enablerepo=powertools install \
         $PYTHON_TAG \
-        wget \
-        bzip2 \
-        perl \
-        gcc \
-        gcc-c++\
-        vim-enhanced \
-        git \
-        make \
         munge \
-        psmisc \
+        munge-devel \
         mariadb-server \
         mariadb-devel  \
-        munge-devel \
-    && yum clean all \
-    && rm -rf /var/cache/yum
+        numactl-libs \
+        hdf5-devel \
+        freeipmi \
+        libibmad \
+        rrdtool-devel \
+        perl-Switch \
+        hwloc-libs \
+  && yum clean all \
+  && rm -rf /var/cache/yum
 
 # Install mariadb
 RUN /usr/bin/mysql_install_db \
@@ -32,13 +31,11 @@ RUN /usr/bin/mysql_install_db \
   && chown -R mysql:mysql /var/log/mariadb/
 
 # Install Slurm
-RUN set -x \
-    && git clone https://github.com/SchedMD/slurm.git --branch $SLURM_TAG --depth 1  \
-    && pushd slurm \
-    && ./configure --enable-front-end --prefix=/usr --sysconfdir=/etc/slurm --with-mysql_config=/usr/bin \
-    && make install \
-    && popd \
-    && rm -rf slurm
+COPY slurm_config/$SLURM_TAG/rpms.tar.gz rpms.tar.gz
+RUN tar -xf rpms.tar.gz rpms  \
+    && rpm --install rpms/*.rpm  \
+    && rm -rf rpms  \
+    && rm rpms.tar.gz
 
 # Slurm requires a dedicated user/group to run
 RUN groupadd -r slurm && useradd -r -g slurm slurm
