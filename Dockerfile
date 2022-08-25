@@ -11,6 +11,7 @@ LABEL edu.pitt.crc.python-tag=$PYTHON_TAG
 RUN yum install -y epel-release  \
     && yum -y --enablerepo=powertools install \
         $PYTHON_TAG \
+        # Required for slurm \
         munge \
         munge-devel \
         mariadb-server \
@@ -22,6 +23,8 @@ RUN yum install -y epel-release  \
         rrdtool-devel \
         perl-Switch \
         hwloc-libs \
+        # Added for integration with IDEs \
+        which \
   && yum clean all \
   && rm -rf /var/cache/yum
 
