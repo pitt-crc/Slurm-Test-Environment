@@ -61,7 +61,27 @@ To see a list of valid Slurm tags, see the [Slurm GitHub release tags](https://g
 
 To see a list of valid Rocky tags, see the [Rocky DockerHub images](https://hub.docker.com/_/rockylinux).
 
-To see a list of valid Python tags, check the yum package repository
+To see a list of valid Python tags, check the yum package repository.
+
+## Testing Fixtures
+
+The test environment comes partially configured with running services and mock data. 
+
+### Running services
+
+The following services are automatically launched when spinning up a new container:
+- `munge`
+- `slurmdbd`
+- `slurmctld`
+
+### Slurm Configuration
+
+Slurm is configured with a single mock cluster called ``??``. The following Slurm accounts on the cluster:
+
+| Account Name | Slurm Description | Slurm Organization |
+|--------------|-------------------|--------------------|
+| account1     | account1_desc     | account1_org       |
+| account2     | account2_desc     | account2_org       |
 
 ## Creating a New Image
 

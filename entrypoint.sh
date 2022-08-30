@@ -32,4 +32,8 @@ echo "Starting slurmdbd..."
 echo "Starting slurmctld..."
 /usr/sbin/slurmctld
 
+echo "Creating mock user accounts..."
+sacctmgr -i add account "account1" description="account1_desc" organization="account1_org"
+sacctmgr -i add account "account2" description="account2_desc" organization="account2_org"
+
 exec "$@"
