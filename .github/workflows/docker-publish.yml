@@ -7,6 +7,7 @@ on:
 
   # These triggers will build, test, and publish the image(s)
   release:
+    types: [ published ]
   push:
     branches: [ "latest" ]
 
