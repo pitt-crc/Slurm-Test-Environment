@@ -59,8 +59,8 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}
           tags: |
-            type=ref,event=tag
-            type=ref,event=branch
+            type=raw,event=release
+            type=raw,event=push
 
       - name: Check metadata
         run: echo "${{ steps.meta.outputs.tags }}"
