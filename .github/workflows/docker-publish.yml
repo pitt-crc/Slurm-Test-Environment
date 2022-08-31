@@ -97,11 +97,13 @@ jobs:
     steps:
       - name: Mark as completed
         run: echo "The builds were successful"
-  
+
+  # Publish when updating the latest branch
+  # or when making a new release
   publish:
     if: |
-      (github.ref == 'refs/heads/latest' && github.event_name == 'push') || # Publish when updating the latest branch
-      (github.event_name == 'release') # Publish when updating making a new release
+      (github.ref == 'refs/heads/latest' && github.event_name == 'push') || 
+      (github.event_name == 'release')
     needs: [ define-build-options, build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
