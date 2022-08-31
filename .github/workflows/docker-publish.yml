@@ -1,38 +1,40 @@
 name: Publish Docker Images
 
 on:
+  # These triggers will build and test the image(s)
   workflow_dispatch:
   pull_request:
+
+  # These triggers will build, test, and publish the image(s)
+  release:
   push:
     branches: [ "latest" ]
 
 jobs:
-  setup-matrix:
+  define-build-options:
     runs-on: ubuntu-latest
     name: Define Build Options
     steps:
-      - name: Setup build matrix
-        id: setup-build-matrix
+      - name: Define build matrix
+        id: build-matrix
         run: |
-          MATRIX='{
+          echo ::set-output name=build-matrix::'{
             "rocky-tag": [ "8" ], 
             "slurm-tag": [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ], 
             "python-tag":[ "python36", "python38", "python39" ]
           }'
-          
-          echo ::set-output name=build-matrix::$MATRIX}
 
     outputs:
-      build-matrix: ${{ steps.setup-build-matrix.outputs.build-matrix }}
+      build-matrix: ${{ steps.build-matrix.outputs.build-matrix }}
 
   build:
-    needs: [ setup-matrix ]
+    needs: [ define-build-options ]
     runs-on: ubuntu-latest
-    name: Build Docker Images
+    name: Build and Test Images
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.setup-matrix.outputs.build-matrix) }}
+      matrix: ${{ fromJson(needs.define-build-options.outputs.build-matrix) }}
 
     steps:
       - name: Checkout repository
@@ -84,11 +86,11 @@ jobs:
 
   # This is a dummy job used to facilitate branch protections
   # and trigger auto-merging when all jobs in the build matrix
-  # exit succesfully.
+  # exit successfully.
   build-successful:
-    needs: [ setup-matrix, build ]
+    needs: [ define-build-options, build ]
     runs-on: ubuntu-latest
-    name: Builds were succesful
+    name: Builds Were Successful
     
     steps:
       - name: Mark as completed
@@ -96,13 +98,13 @@ jobs:
   
   publish:
     if: github.ref == 'refs/heads/latest' && github.event_name == 'push'  # Only publish from the latest branch
-    needs: [ setup-matrix, build ]
+    needs: [ define-build-options, build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.setup-matrix.outputs.build-matrix) }}
+      matrix: ${{ fromJson(needs.define-build-options.outputs.build-matrix) }}
 
     steps:
       - name: Checkout repository
