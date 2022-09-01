@@ -14,6 +14,6 @@ jobs:
     steps:
       - uses: actions/delete-package-versions@v3
         with: 
-          package-name: 'test-package'
-          min-versions-to-keep: 10
+          package-version-ids: latest
+          min-versions-to-keep: 5
           delete-only-pre-release-versions: "true"
