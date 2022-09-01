@@ -5,6 +5,8 @@ on:
 
 jobs:
   define-options:
+    runs-on: ubuntu-latest
+
     steps:
       - name: Define build matrix
         id: build-matrix
