@@ -4,12 +4,13 @@ on:
   workflow_call:
 
 jobs:
-  define-options:
+  define-build-options:
     runs-on: ubuntu-latest
+    name: Define Build Options
 
     steps:
-      - name: Define build matrix
-        id: build-matrix
+      - name: Define matrix options
+        id: define-matrix
         run: |
           MATRIX='{
             "rocky-tag": [ "8" ], 
@@ -17,4 +18,6 @@ jobs:
             "python-tag":[ "python36", "python38", "python39" ]
           }'
           
-          echo ::set-output name=options::$MATRIX}
+          echo ::set-output name=build-matrix::$MATRIX}
+    outputs:
+      build-matrix: ${{ steps.define-matrix.outputs.matrix }}
