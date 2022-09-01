@@ -24,3 +24,13 @@ jobs:
           version-pattern: "^[^vV].*"
           keep: 3
           dry-run: true
+          names: |
+            - test-env-rocky8-slurm-20-11-9-1-python36
+            - test-env-rocky8-slurm-20-02-5-1-python39
+            - test-env-rocky8-slurm-20-02-5-1-python36
+            - test-env-rocky8-slurm-22-05-2-1-python36
+            - test-env-rocky8-slurm-20-11-9-1-python38
+            - test-env-rocky8-slurm-20-02-5-1-python38
+            - test-env-rocky8-slurm-22-05-2-1-python39
+            - test-env-rocky8-slurm-22-05-2-1-python38
+            - test-env-rocky8-slurm-20-11-9-1-python39
