@@ -13,6 +13,8 @@ jobs:
     name: Delete Old Images
 
     steps:
+      # Clean up all versions that do not start with a 'v'
+      # This should be equivalent to all versions except releases
       - name: Delete old packages
         uses: SmartsquareGmbH/delete-old-packages@v0.5.0
         with:

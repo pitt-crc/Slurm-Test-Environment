@@ -146,4 +146,4 @@ jobs:
     if: github.event_name != 'release'
     needs: [ define-build-options, publish ]
     name: Delete Old Images
-    uses: .github/workflows/docker-cleanup.yml
+    uses: .github/workflows/docker-cleanup.yml@${{ github.ref }}
