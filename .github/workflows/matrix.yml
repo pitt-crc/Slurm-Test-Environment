@@ -1,21 +1,24 @@
 name: Build Docker Image
 description: Build a docker image
 
+on:
+  workflow_call:
+
 outputs:
   matrix:
     description: "Build options defined as a reusable strategy metrix"
     value: ${{ steps.build-matrix.outputs.options }}
 
-runs:
-  using: "composite"
-  steps:
-    - name: Define build matrix
-      id: build-matrix
-      run: |
-        MATRIX='{
-          "rocky-tag": [ "8" ], 
-          "slurm-tag": [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ], 
-          "python-tag":[ "python36", "python38", "python39" ]
-        }'
-        
-        echo ::set-output name=options::$MATRIX}
+jobs:
+  define-options:
+    steps:
+      - name: Define build matrix
+        id: build-matrix
+        run: |
+          MATRIX='{
+            "rocky-tag": [ "8" ], 
+            "slurm-tag": [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ], 
+            "python-tag":[ "python36", "python38", "python39" ]
+          }'
+          
+          echo ::set-output name=options::$MATRIX}
