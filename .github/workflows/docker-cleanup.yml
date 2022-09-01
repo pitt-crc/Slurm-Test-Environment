@@ -12,25 +12,8 @@ jobs:
     name: Delete Old Images
 
     steps:
-      # Clean up all versions that do not start with a 'v'
-      # This should be equivalent to all versions except releases
-      - name: Delete old packages
-        uses: SmartsquareGmbH/delete-old-packages@v0.5.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          organization:  pitt-crc
-          repo: ${{ github.repository }}
-          type: container
-          version-pattern: "^[^vV].*"
-          keep: 3
-          dry-run: true
-          names: |
-            test-env-rocky8-slurm-20-11-9-1-python36
-            test-env-rocky8-slurm-20-02-5-1-python39
-            test-env-rocky8-slurm-20-02-5-1-python36
-            test-env-rocky8-slurm-22-05-2-1-python36
-            test-env-rocky8-slurm-20-11-9-1-python38
-            test-env-rocky8-slurm-20-02-5-1-python38
-            test-env-rocky8-slurm-22-05-2-1-python39
-            test-env-rocky8-slurm-22-05-2-1-python38
-            test-env-rocky8-slurm-20-11-9-1-python39
+      - uses: actions/delete-package-versions@v3
+        with: 
+          package-name: 'test-package'
+          min-versions-to-keep: 10
+          delete-only-pre-release-versions: "true"
