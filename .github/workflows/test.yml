@@ -6,7 +6,7 @@ on:
 jobs:
   define-build-options:
     runs-on: ubuntu-latest
-    name: Define Build Options
+    name: Build Docker Image
 
     strategy:
       matrix:
@@ -20,6 +20,9 @@ jobs:
         run: |
           NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
           echo ::set-output name=name::$NAME
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Build docker image
         uses: ./.github/workflows/build.yml
