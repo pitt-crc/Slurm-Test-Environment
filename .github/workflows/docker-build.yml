@@ -1,18 +1,28 @@
-name: Define Build Options
+name: Build Images
 
 on:
+  # These triggers will build and test the image(s)
+  workflow_dispatch:
+  pull_request:
+
+  # These triggers will build, test, and publish the image(s)
+  release:
+    types: [ published ]
   push:
 
 jobs:
   define-build-options:
+    name: Define Build Options
+    uses: ./.github/workflows/composite/matrix.yml
+
+  build-images:
+    needs: [ define-build-options ]
     runs-on: ubuntu-latest
     name: Build Docker Image
 
     strategy:
-      matrix:
-        rocky-tag: [ "8" ]
-        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
-        python-tag: [ "python36", "python38", "python39" ]
+      fail-fast: false
+      matrix: ${{ fromJson(needs.define-build-options.outputs.matrix) }}
 
     steps:
       - name: Generate Image Name

@@ -1,10 +1,14 @@
 name: Build Docker Image
-description: Build a docker image
+description: Build and publish a docker image
 
 inputs:
   image-name:
     description: 'Name of the build image'
     required: true
+
+  publish:
+    description: 'Optionally publish the built iamge'
+    default: false
 
 runs:
   using: "composite"
