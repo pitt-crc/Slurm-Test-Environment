@@ -1,13 +1,7 @@
 name: Build Docker Image
-description: Build a docker image
 
 on:
   workflow_call:
-
-outputs:
-  matrix:
-    description: "Build options defined as a reusable strategy metrix"
-    value: ${{ steps.build-matrix.outputs.options }}
 
 jobs:
   define-options:
