@@ -141,3 +141,9 @@ jobs:
         run: |
           docker load --input image.tar
           docker push ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}
+
+  delete-old:
+    if: github.event_name != 'release'
+    needs: [ define-build-options, publish ]
+    name: Delete Old Images
+    uses: ./.github/workflows/docker-cleanup.yml
