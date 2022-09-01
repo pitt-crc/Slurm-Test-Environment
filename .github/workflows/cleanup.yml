@@ -29,6 +29,7 @@ jobs:
 
       - uses: actions/delete-package-versions@v3
         with:
+          package-name: ${{ steps.image-name.outputs.name }}
           ignore-versions: ^v.*
           min-versions-to-keep: 5
           delete-only-pre-release-versions: "true"

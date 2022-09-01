@@ -18,7 +18,7 @@ jobs:
             "python-tag":[ "python36", "python38", "python39" ]
           }'
           
-          echo ::set-output name=matrix::$MATRIX}
+          echo ::set-output name=matrix::$MATRIX
 
     outputs:
       matrix: ${{ steps.define-matrix.outputs.matrix }}
