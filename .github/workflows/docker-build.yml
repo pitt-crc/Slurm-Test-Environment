@@ -13,7 +13,7 @@ on:
 jobs:
   define-build-options:
     name: Define Build Options
-    uses: ./.github/workflows/composite/matrix.yml
+    uses: ./.github/workflows/matrix.yml
 
   build-images:
     needs: [ define-build-options ]
@@ -31,23 +31,3 @@ jobs:
           NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
           echo ::set-output name=name::$NAME
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Build docker image
-        uses: ./.github/workflows/build.yml
-        with:
-          image-name: ${{ steps.image-name.outputs.name }}
-
-      - name: Test slurm install
-        run: |
-          docker load --input image.tar
-          docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
-
-      - if: github.event_name != 'release'
-        name: Delete Old Images
-        uses: actions/delete-package-versions@v3
-        with:
-          ignore-versions: ^v.*
-          min-versions-to-keep: 5
-          delete-only-pre-release-versions: "true"
