@@ -1,0 +1,19 @@
+name: Test Workflow
+
+on:
+  push
+
+jobs:
+  setup:
+    uses: ./.github/workflows/build-options.yml
+
+  test-matrix:
+    needs: [   setup ]
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.setup.outputs.image-names) }}
+
+    steps:
+      - run: echo ${{ matrix.image-names }}$
