@@ -1,21 +1,17 @@
-name: Build Images
+name: Delete Old Docker Images
 
 on:
-  # These triggers will build and test the image(s)
   workflow_dispatch:
-  pull_request:
-
-  # These triggers will build, test, and publish the image(s)
-  release:
-    types: [ published ]
-  push:
+  workflow_call:
+  schedule:
+    - cron: '0 0 * * *'  # every day at midnight
 
 jobs:
   define-build-options:
     name: Define Build Options
     uses: ./.github/workflows/matrix.yml
 
-  build-images:
+  delete-old:
     needs: [ define-build-options ]
     runs-on: ubuntu-latest
     name: Build Docker Image
@@ -31,3 +27,8 @@ jobs:
           NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
           echo ::set-output name=name::$NAME
 
+      - uses: actions/delete-package-versions@v3
+        with:
+          ignore-versions: ^v.*
+          min-versions-to-keep: 5
+          delete-only-pre-release-versions: "true"

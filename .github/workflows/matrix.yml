@@ -19,5 +19,6 @@ jobs:
           }'
           
           echo ::set-output name=matrix::$MATRIX}
+
     outputs:
       matrix: ${{ steps.define-matrix.outputs.matrix }}
