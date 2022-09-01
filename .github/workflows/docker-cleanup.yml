@@ -17,8 +17,9 @@ jobs:
       - name: Delete old packages
         uses: SmartsquareGmbH/delete-old-packages@v0.5.0
         with:
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
-          organization: my-organization
+          token: ${{ github.token }}
+          organization:  pitt-crc
+          repo: ${{ secrets.repository }}
           type: container
           version-pattern: "^[^vV].*"
           keep: 3
