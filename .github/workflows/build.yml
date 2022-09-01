@@ -1,0 +1,43 @@
+name: Build Docker Image
+description: Build a docker image
+
+inputs:
+  image-name:
+    description: 'Name of the build image'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Define the image name for use by other steps
+      - name: Define image name
+        id: image-name
+        run: |
+          NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
+          echo ::set-output name=name::$NAME
+
+      # Extract metadata (tags and labels) for Docker
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/${{ inputs.name }}
+
+      # Build the image but do not publish it
+      - name: Build image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          outputs: type=docker,dest=image.tar
+          build-args: |
+            SLURM_TAG=${{ matrix.slurm-tag }}
+            ROCKY_TAG=${{ matrix.rocky-tag }}
+            PYTHON_TAG=${{ matrix.python-tag }}

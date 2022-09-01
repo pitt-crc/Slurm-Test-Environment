@@ -1,19 +1,40 @@
-name: Test Workflow
+name: Define Build Options
 
 on:
-  push
+  push:
 
 jobs:
-  setup:
-    uses: ./.github/workflows/build-options.yml
-
-  test-matrix:
-    needs: [   setup ]
+  define-build-options:
     runs-on: ubuntu-latest
+    name: Define Build Options
 
     strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.setup.outputs.image-names) }}
+      matrix:
+        rocky-tag: [ "8" ]
+        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
+        python-tag: [ "python36", "python38", "python39" ]
 
     steps:
-      - run: echo ${{ matrix.image-names }}$
+      - name: Generate Image Name
+        id: image-name
+        run: |
+          NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
+          echo ::set-output name=name::$NAME
+
+      - name: Build docker image
+        uses: ./.github/workflows/build.yml
+        with:
+          image-name: ${{ steps.image-name.outputs.name }}
+
+      - name: Test slurm install
+        run: |
+          docker load --input image.tar
+          docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
+
+      - if: github.event_name != 'release'
+        name: Delete Old Images
+        uses: actions/delete-package-versions@v3
+        with:
+          ignore-versions: ^v.*
+          min-versions-to-keep: 5
+          delete-only-pre-release-versions: "true"
