@@ -3,8 +3,8 @@ name: Define Build Options
 on:
   workflow_call:
     outputs:
-      build-matrix:
-        value: ${{ jobs.define-build-options.outputs.build-matrix }}
+      matrix:
+        value: ${{ jobs.define-build-options.outputs.matrix }}
 
 jobs:
   define-build-options:
@@ -12,7 +12,7 @@ jobs:
     name: Define Build Options
     steps:
       - name: Define build matrix
-        id: build-matrix
+        id: matrix
         run: |
           MATRIX='{
             "rocky-tag": [ "8" ], 
@@ -20,7 +20,7 @@ jobs:
             "python-tag":[ "python36", "python38", "python39" ]
           }'
           
-          echo ::set-output name=build-matrix::$MATRIX}
+          echo ::set-output name=matrix::$MATRIX}
 
     outputs:
-      build-matrix: ${{ steps.build-matrix.outputs.build-matrix }}
+      matrix: ${{ steps.matrix.outputs.matrix }}

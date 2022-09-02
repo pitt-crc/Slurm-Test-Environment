@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.define-build-options.outputs.build-matrix) }}
+      matrix: ${{ fromJson(needs.define-build-options.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
@@ -94,7 +94,7 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.define-build-options.outputs.build-matrix) }}
+      matrix: ${{ fromJson(needs.define-build-options.outputs.matrix) }}
 
     steps:
       - name: Checkout repository
