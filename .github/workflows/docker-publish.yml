@@ -1,18 +1,13 @@
 name: Publish Docker Images
 
 on:
-  # These triggers will build and test the image(s)
-  workflow_dispatch:
   pull_request:
-
-  # These triggers will build, test, and publish the image(s)
   release:
+    types: [ published ]
   push:
+    branches: [ "latest" ]
 
 jobs:
-  define-build-options:
-    uses: ./.github/workflows/matrix.yml
-
   build:
     needs: [ define-build-options ]
     runs-on: ubuntu-latest
@@ -20,7 +15,8 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.define-build-options.outputs.matrix) }}
+      matrix:
+        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
 
     steps:
       - name: Checkout repository
@@ -53,8 +49,6 @@ jobs:
           outputs: type=docker,dest=image.tar
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
-            ROCKY_TAG=${{ matrix.rocky-tag }}
-            PYTHON_TAG=${{ matrix.python-tag }}
 
       # Make sure sacctmgr executes
       - name: Test slurm install
@@ -70,31 +64,28 @@ jobs:
           path: image.tar
           if-no-files-found: error
 
-  # This is a dummy job used to facilitate branch protections
-  # and trigger auto-merging when all jobs in the build matrix
-  # exit successfully.
+  # Dummy job used to facilitate branch protections
   build-successful:
-    needs: [ define-build-options, build ]
+    needs: [ build ]
     runs-on: ubuntu-latest
     name: Builds Were Successful
-    
+
     steps:
       - name: Mark as completed
         run: echo "The builds were successful"
 
-  # Publish when updating the latest branch
-  # or when making a new release
+  # Publish when updating the latest branch or when making a new release
   publish:
     if: |
       (github.ref == 'refs/heads/latest' && github.event_name == 'push') || 
       (github.event_name == 'release')
-    needs: [ define-build-options, build ]
+    needs: [ build ]
     runs-on: ubuntu-latest
     name: Publish Docker Images
 
     strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.define-build-options.outputs.matrix) }}
+      matrix:
+        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
 
     steps:
       - name: Checkout repository
@@ -124,3 +115,26 @@ jobs:
         run: |
           docker load --input image.tar
           docker push ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}
+
+  clean-old-packages:
+    needs: [ publish ]
+    runs-on: ubuntu-latest
+    name: Delete Old Versions
+
+    strategy:
+      matrix:
+        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
+
+    steps:
+      # Define the image name for use by other steps
+      - name: Define image name
+        id: image-name
+        run: |
+          NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
+          echo ::set-output name=name::$NAME
+
+      - uses: actions/delete-package-versions@v3
+        with:
+          package-name: ${{ steps.image-name.outputs.name }}
+          num-old-versions-to-delete: 3
+          ignore-versions: '^(v).*'

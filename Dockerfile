@@ -1,16 +1,13 @@
-ARG ROCKY_TAG
-FROM rockylinux:$ROCKY_TAG
+FROM rockylinux:8
 
 ARG SLURM_TAG
 ARG PYTHON_TAG
 LABEL edu.pitt.crc.slurm-tag=$SLURM_TAG
-LABEL edu.pitt.crc.rocky-tag=$ROCKY_TAG
-LABEL edu.pitt.crc.python-tag=$PYTHON_TAG
 
 # Install any required system tools
 RUN yum install -y epel-release  \
     && yum -y --enablerepo=powertools install \
-        $PYTHON_TAG \
+        python39 \
         # Required for slurm \
         munge \
         munge-devel \
