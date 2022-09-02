@@ -12,7 +12,6 @@ on:
 
 jobs:
   define-build-options:
-    name: Define Build Options
     uses: ./.github/workflows/matrix.yml
 
   build-images:
