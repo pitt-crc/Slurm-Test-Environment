@@ -117,24 +117,4 @@ jobs:
           docker push ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}
 
   clean-old-packages:
-    needs: [ publish ]
-    runs-on: ubuntu-latest
-    name: Delete Old Versions
-
-    strategy:
-      matrix:
-        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
-
-    steps:
-      # Define the image name for use by other steps
-      - name: Define image name
-        id: image-name
-        run: |
-          NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
-          echo ::set-output name=name::$NAME
-
-      - uses: actions/delete-package-versions@v3
-        with:
-          package-name: ${{ steps.image-name.outputs.name }}
-          num-old-versions-to-delete: 3
-          ignore-versions: '^(v).*'
+    uses: ./.github/workflows/delete-old-versions.yml
