@@ -10,7 +10,6 @@ on:
 jobs:
   define-build-options:
     runs-on: ubuntu-latest
-    name: Define Build Options
 
     outputs:
       matrix: ${{ steps.define-matrix.outputs.matrix }}
