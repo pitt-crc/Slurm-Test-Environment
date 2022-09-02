@@ -8,7 +8,6 @@ on:
   # These triggers will build, test, and publish the image(s)
   release:
   push:
-    branches: [ "latest" ]
 
 jobs:
   define-build-options:
