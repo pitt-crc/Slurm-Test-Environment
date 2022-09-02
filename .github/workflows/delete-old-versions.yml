@@ -8,7 +8,6 @@ on:
 
 jobs:
   clean-old-packages:
-    needs: [ publish ]
     runs-on: ubuntu-latest
     name: Delete Old Versions
 
