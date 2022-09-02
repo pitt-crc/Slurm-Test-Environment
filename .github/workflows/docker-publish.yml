@@ -11,22 +11,7 @@ on:
 
 jobs:
   define-build-options:
-    runs-on: ubuntu-latest
-    name: Define Build Options
-    steps:
-      - name: Define build matrix
-        id: build-matrix
-        run: |
-          MATRIX='{
-            "rocky-tag": [ "8" ], 
-            "slurm-tag": [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ], 
-            "python-tag":[ "python36", "python38", "python39" ]
-          }'
-          
-          echo ::set-output name=build-matrix::$MATRIX}
-
-    outputs:
-      build-matrix: ${{ steps.build-matrix.outputs.build-matrix }}
+    uses: ./.github/workflows/matrix.yml
 
   build:
     needs: [ define-build-options ]
