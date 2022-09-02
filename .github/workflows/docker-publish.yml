@@ -9,7 +9,6 @@ on:
 
 jobs:
   build:
-    needs: [ define-build-options ]
     runs-on: ubuntu-latest
     name: Build and Test Images
 
