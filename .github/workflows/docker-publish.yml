@@ -21,7 +21,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Docker build
+      - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2
 
       # Define the image name for use by other steps
@@ -70,6 +70,9 @@ jobs:
             ROCKY_TAG=${{ matrix.rocky-tag }}
             PYTHON_TAG=${{ matrix.python-tag }}
 
-  clean-old-packages:
-    needs: [ "build" ]
-    uses: ./.github/workflows/delete-old-versions.yml
+      - name: Delete old images
+        uses: actions/delete-package-versions@v3
+        with:
+          package: ${{ steps.image-name.outputs.name }}
+          num-old-versions-to-delete: 3
+          ignore-versions: '^(v).*'
