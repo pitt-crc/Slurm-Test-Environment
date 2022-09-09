@@ -1,7 +1,6 @@
 FROM rockylinux:8
 
 ARG SLURM_TAG
-ARG PYTHON_TAG
 LABEL edu.pitt.crc.slurm-tag=$SLURM_TAG
 
 # Install any required system tools

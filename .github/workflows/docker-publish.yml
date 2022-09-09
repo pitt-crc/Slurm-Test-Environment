@@ -21,7 +21,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Docker buildx
+      - name: Setup Docker build
         uses: docker/setup-buildx-action@v2
 
       # Define the image name for use by other steps
@@ -43,9 +43,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
+          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=docker,dest=image.tar
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
 
@@ -55,66 +55,21 @@ jobs:
           docker load --input image.tar
           docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
 
-      # Cache the built image for use in other jobs
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
+      - name: Publish built image
+        uses: docker/build-push-action@v3
+        if: |
+          (github.ref == 'refs/heads/latest' && github.event_name == 'push') || 
+          (github.event_name == 'release')
         with:
-          name: ${{ steps.image-name.outputs.name }}
-          path: image.tar
-          if-no-files-found: error
-
-  # Dummy job used to facilitate branch protections
-  build-successful:
-    needs: [ build ]
-    runs-on: ubuntu-latest
-    name: Builds Were Successful
-
-    steps:
-      - name: Mark as completed
-        run: echo "The builds were successful"
-
-  # Publish when updating the latest branch or when making a new release
-  publish:
-    if: |
-      (github.ref == 'refs/heads/latest' && github.event_name == 'push') || 
-      (github.event_name == 'release')
-    needs: [ build ]
-    runs-on: ubuntu-latest
-    name: Publish Docker Images
-
-    strategy:
-      matrix:
-        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # Define the image name for use by other steps
-      - name: Define image name
-        id: image-name
-        run: |
-          NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
-          echo ::set-output name=name::$NAME
-
-      - name: Fetch image from cache
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ steps.image-name.outputs.name }}
-          path: .
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish fetched image
-        run: |
-          docker load --input image.tar
-          docker push ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}:${{ github.ref_name }}
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            SLURM_TAG=${{ matrix.slurm-tag }}
+            ROCKY_TAG=${{ matrix.rocky-tag }}
+            PYTHON_TAG=${{ matrix.python-tag }}
 
   clean-old-packages:
-    needs: [ "publish" ]
+    needs: [ "build" ]
     uses: ./.github/workflows/delete-old-versions.yml

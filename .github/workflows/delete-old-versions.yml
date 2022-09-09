@@ -25,6 +25,6 @@ jobs:
 
       - uses: actions/delete-package-versions@v3
         with:
-          package-name: ${{ steps.image-name.outputs.name }}
+          package: ${{ steps.image-name.outputs.name }}
           num-old-versions-to-delete: 3
           ignore-versions: '^(v).*'
