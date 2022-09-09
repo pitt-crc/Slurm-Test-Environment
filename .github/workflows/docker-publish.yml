@@ -79,3 +79,15 @@ jobs:
           package-name: ${{ steps.image-name.outputs.name }}
           min-versions-to-keep: 5
           ignore-versions: '^(v).*'
+
+  # This is a dummy job used to facilitate branch protections
+  # and trigger auto-merging when all jobs in the build matrix
+  # exit successfully.
+  build-successful:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    name: Builds Were Successful
+
+    steps:
+      - name: Mark as completed
+        run: echo "The builds were successful"
