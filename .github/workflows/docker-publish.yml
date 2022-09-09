@@ -6,6 +6,8 @@ on:
     types: [ published ]
   push:
     branches: [ "latest" ]
+  schedule:
+    - cron: '0 0 * * 0'  # every week on sunday
 
 jobs:
   build:
@@ -28,7 +30,7 @@ jobs:
       - name: Define image name
         id: image-name
         run: |
-          NAME=test-env-rocky${{ matrix.rocky-tag }}-${{ matrix.slurm-tag }}-${{ matrix.python-tag }}
+          NAME=test-env-${{ matrix.slurm-tag }}
           echo ::set-output name=name::$NAME
 
       # Extract metadata (tags and labels) for Docker
@@ -67,8 +69,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
-            ROCKY_TAG=${{ matrix.rocky-tag }}
-            PYTHON_TAG=${{ matrix.python-tag }}
 
       - name: Delete old images
         uses: actions/delete-package-versions@v3
