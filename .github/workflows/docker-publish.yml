@@ -53,9 +53,7 @@ jobs:
 
       # Make sure sacctmgr executes
       - name: Test slurm install
-        run: |
-          docker load --input image.tar
-          docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
+        run: docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
 
       - name: Publish built image
         uses: docker/build-push-action@v3
