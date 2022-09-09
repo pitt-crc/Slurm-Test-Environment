@@ -69,6 +69,6 @@ jobs:
       - name: Delete old images
         uses: actions/delete-package-versions@v3
         with:
-          package-id: ${{ steps.image-name.outputs.name }}
-          num-old-versions-to-delete: 3
+          package-name: ${{ steps.image-name.outputs.name }}
+          min-versions-to-keep: 5
           ignore-versions: '^(v).*'
