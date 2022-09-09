@@ -9,9 +9,6 @@ on:
   schedule:
     - cron: '0 0 * * 0'  # every week on sunday
 
-env:
-  publish-image: (github.ref == 'refs/heads/latest' && github.event_name == 'push') ||  (github.event_name == 'release')
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -60,7 +57,7 @@ jobs:
 
       - name: Publish built image
         uses: docker/build-push-action@v3
-        if: ${{ env.publish-image }}
+        if: (github.ref == 'refs/heads/latest' && github.event_name == 'push') || (github.event_name == 'release')
         with:
           context: .
           push: true
