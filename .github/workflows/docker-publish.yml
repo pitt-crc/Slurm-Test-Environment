@@ -74,11 +74,8 @@ jobs:
             SLURM_TAG=${{ matrix.slurm-tag }}
 
       - name: Delete old images
-        uses: SmartsquareGmbH/delete-old-packages@v0.5.0
+        uses: actions/delete-package-versions@v3
         with:
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
-          organization: pitt-crc
-          type: container
-          keep: 3
-          dry-run: true
-          names: ${{ steps.image-name.outputs.name }}
+          package-name: ${{ steps.image-name.outputs.name }}
+          min-versions-to-keep: 5
+          ignore-versions: '^(v).*'
