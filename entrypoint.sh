@@ -31,7 +31,8 @@ echo "Starting slurmdbd..."
 echo "Starting slurmctld..."
 mkdir /var/slurmstate
 chown slurm /var/slurmstate
-/usr/sbin/slurmctld -D
+/usr/sbin/slurmctld -c
+sleep 3 # Wait for slurmctld to start up
 
 echo "Creating mock user accounts..."
 sacctmgr -i add account "account1" description="account1_desc" organization="account1_org"
