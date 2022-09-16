@@ -29,7 +29,9 @@ echo "Starting slurmdbd..."
 /usr/sbin/slurmdbd
 
 echo "Starting slurmctld..."
-/usr/sbin/slurmctld
+mkdir /var/slurmstate
+chown slurm /var/slurmstate
+/usr/sbin/slurmctld -D
 
 echo "Creating mock user accounts..."
 sacctmgr -i add account "account1" description="account1_desc" organization="account1_org"
