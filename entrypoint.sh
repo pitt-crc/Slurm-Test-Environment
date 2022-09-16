@@ -3,14 +3,7 @@ set -eo pipefail
 
 echo "Launching sql server..."
 /usr/bin/mysqld_safe --datadir='/var/lib/mysql' &
-
-# Wait for mysql to start up
-for i in {30..0}; do
-  if echo "SELECT 1" | mysql &>/dev/null; then
-    break
-  fi
-  sleep 1
-done
+sleep 3 # Wait for mysql to start up
 
 echo "Creating Slurm account database..."
 mysql -NBe "CREATE DATABASE slurm_acct_db"
@@ -27,6 +20,7 @@ echo "Starting munge..."
 
 echo "Starting slurmdbd..."
 /usr/sbin/slurmdbd
+sleep 3 # Wait for slurmdbd to start up
 
 echo "Starting slurmctld..."
 mkdir /var/slurmstate
