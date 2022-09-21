@@ -7,7 +7,7 @@ Dockerized environments for testing software against a variety of [Slurm](https:
 
 ## Using Images in GitHub Actions
 
-To run a GitHub actions job from within a container, specify the `container` option:
+To run a GitHub actions job from within a container, specify the `container` option and include a setup step:
 
 ```yaml
 jobs:
@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/pitt-crc/test-env-slurm-20-11-9-1
+
+    steps:
+      - name: Setup environment
+        run: /usr/local/bin/entrypoint.sh
 ```
 
 If you want to run a job several times using different containers 
@@ -36,6 +40,10 @@ jobs:
 
     container:
       image: ghcr.io/pitt-crc/${{ matrix.container }}
+
+    steps:
+      - name: Setup environment
+        run: /usr/local/bin/entrypoint.sh
 ```
 
 See the [packages](https://github.com/orgs/pitt-crc/packages?repo_name=Slurm-Test-Environment) section
@@ -44,7 +52,8 @@ of this repository for a full list of available container names.
 ## Building an Image Locally
 
 The Dockerfile is designed to be reusable for Slurm versions.
-The following example builds an image using Slurm version 20.02.5.1
+The slurm version needs to be specified when building an image.
+The following example builds an image using Slurm version 20.02.5.1:
 
 ```bash
 docker build --build-arg SLURM_TAG=slurm-20-02-5-1
