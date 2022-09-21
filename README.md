@@ -33,9 +33,8 @@ jobs:
       fail-fast: false
       matrix:
         container:
+          - test-env-slurm-22-05-2-1
           - test-env-slurm-20-11-9-1
-          - test-env-slurm-20-11-9-1
-          - test-env-slurm-20-02-5-1
           - test-env-slurm-20-02-5-1
 
     container:
