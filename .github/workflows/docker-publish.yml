@@ -54,9 +54,9 @@ jobs:
       # Check slurm utilities execute
       - name: Test slurm install
         run: |
-          docker run --rm ${{ steps.image-name.outputs.name }} sacctmgr -V
-          docker run --rm ${{ steps.image-name.outputs.name }} slurmctld -V
-          docker run --rm ${{ steps.image-name.outputs.name }} slurmdbd -V
+          docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr -V
+          docker run --rm ${{ steps.meta.outputs.tags }} slurmctld -V
+          docker run --rm ${{ steps.meta.outputs.tags }} slurmdbd -V
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
