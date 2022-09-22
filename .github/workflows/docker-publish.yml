@@ -54,7 +54,7 @@ jobs:
 
       # Make sure sacctmgr executes
       - name: Test slurm install
-        run: docker run --rm ${{ steps.meta.outputs.tags }} sacctmgr --version
+        run: docker run --rm ${{ steps.image-name.outputs.name }} sacctmgr --version
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
