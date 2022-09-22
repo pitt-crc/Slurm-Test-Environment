@@ -38,9 +38,6 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}
 
-      - name: Check tags
-        run: echo "${{ steps.meta.outputs.tags }}"
-
       # Build the image but do not publish it
       - name: Build image
         uses: docker/build-push-action@v3
