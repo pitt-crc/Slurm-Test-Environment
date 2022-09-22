@@ -63,8 +63,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish built image
+        if: github.event_name == 'release'
         uses: docker/build-push-action@v3
-        if: (github.ref == 'refs/heads/latest' && github.event_name == 'push') || (github.event_name == 'release')
         with:
           context: .
           push: true
@@ -74,6 +74,7 @@ jobs:
             SLURM_TAG=${{ matrix.slurm-tag }}
 
       - name: Delete old images
+        if: github.event_name == 'release'
         uses: actions/delete-package-versions@v3
         with:
           package-name: ${{ steps.image-name.outputs.name }}
