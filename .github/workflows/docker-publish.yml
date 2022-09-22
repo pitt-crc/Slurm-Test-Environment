@@ -73,14 +73,6 @@ jobs:
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
 
-      - name: Delete old images
-        if: github.event_name == 'release'
-        uses: actions/delete-package-versions@v3
-        with:
-          package-name: ${{ steps.image-name.outputs.name }}
-          min-versions-to-keep: 5
-          ignore-versions: '^(v).*'
-
   # This is a dummy job used to facilitate branch protections
   build-successful:
     needs: [ build ]
