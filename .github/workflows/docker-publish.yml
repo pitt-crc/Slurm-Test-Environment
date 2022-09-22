@@ -6,8 +6,6 @@ on:
     types: [ published ]
   push:
     branches: [ "latest" ]
-  schedule:
-    - cron: '0 0 * * 0'  # every week on sunday
 
 jobs:
   build:
@@ -39,6 +37,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ghcr.io/${{ github.repository_owner }}/${{ steps.image-name.outputs.name }}
+
+      - name: Check tags
+        run: echo ${{ steps.meta.outputs.tags }}
 
       # Build the image but do not publish it
       - name: Build image
@@ -81,8 +82,6 @@ jobs:
           ignore-versions: '^(v).*'
 
   # This is a dummy job used to facilitate branch protections
-  # and trigger auto-merging when all jobs in the build matrix
-  # exit successfully.
   build-successful:
     needs: [ build ]
     runs-on: ubuntu-latest
