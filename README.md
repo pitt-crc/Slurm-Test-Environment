@@ -50,9 +50,8 @@ See the [packages](https://github.com/orgs/pitt-crc/packages?repo_name=Slurm-Tes
 ### Image Tags
 
 Specific image versions can be used by specifying the desired docker tag.
-Using the sha256 hash as a tag may work but is not recommended as the specified version may be
-deleted by automated housekeeping. Instead, use the `latest` tag for the most recent build, or a tag
-corresponding to a package release (e.g., `v0.1.0`).
+Using the sha256 hash as a tag is not recommended. 
+Instead, use the `latest` tag for the most recent build, or a tag corresponding to a package release (e.g., `v0.1.0`).
 
 ## Building an Image Locally
 
