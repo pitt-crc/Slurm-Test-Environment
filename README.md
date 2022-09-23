@@ -21,7 +21,7 @@ jobs:
         run: /usr/local/bin/entrypoint.sh
 ```
 
-If you want to run a job several times using different containers 
+If you want to run a job several times using different containers
 (e.g., to test software against multiple Slurm versions)
 use the `strategy` directive:
 
@@ -45,8 +45,13 @@ jobs:
         run: /usr/local/bin/entrypoint.sh
 ```
 
-See the [packages](https://github.com/orgs/pitt-crc/packages?repo_name=Slurm-Test-Environment) section
-of this repository for a full list of available container names.
+See the [packages](https://github.com/orgs/pitt-crc/packages?repo_name=Slurm-Test-Environment) section of this repository for a full list of available container names.
+
+### Image Tags
+
+Specific image versions can be used by specifying the desired docker tag.
+Using the sha256 hash as a tag is not recommended. 
+Instead, use the `latest` tag for the most recent build, or a tag corresponding to a package release (e.g., `v0.1.0`).
 
 ## Building an Image Locally
 
@@ -62,11 +67,12 @@ To see a list of valid Slurm tags, see the [Slurm GitHub release tags](https://g
 
 ## Testing Fixtures
 
-The test environment comes partially configured with running services and mock data. 
+The test environment comes partially configured with running services and mock data.
 
 ### Running services
 
 The following services are automatically launched when spinning up a new container:
+
 - `munge`
 - `slurmdbd`
 - `slurmctld`
@@ -82,11 +88,11 @@ Slurm is configured with a single mock cluster called ``development``. The follo
 
 ## Creating a New Image
 
-Updating the `latest` branch of this repository will automatically build and 
-deploy new image version.
+Updating the `latest` branch of this repository will automatically build and deploy new image version.
 To add a new build with different package versions, make the following changes:
 
-1. Check the Slurm version you want to build against are available from the [upstream source](https://slurm.schedmd.com/overview.html).
-2. Add the necessary Slurm rms and config files to the `slurm_config` directory. 
+1. Check the Slurm version you want to build against are available from
+   the [upstream source](https://slurm.schedmd.com/overview.html).
+2. Add the necessary Slurm rms and config files to the `slurm_config` directory.
    The name of the subdirectory should match the corresponding `SLURM_TAG` build argument.
 3. Update the build matrix section of the GitHub actions workflow to include the new version.
