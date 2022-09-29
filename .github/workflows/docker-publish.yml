@@ -49,11 +49,13 @@ jobs:
           build-args: |
             SLURM_TAG=${{ matrix.slurm-tag }}
 
-      # Make sure sacctmgr executes
+      # Check slurm utilities execute
       - name: Test slurm install
         run: |
           tag_arr=(${{ steps.meta.outputs.tags }})
-          docker run --rm ${tag_arr[0]} sacctmgr --version
+          docker run --rm ${tag_arr[0]} sacctmgr -V
+          docker run --rm ${tag_arr[0]} slurmctld -V
+          docker run --rm ${tag_arr[0]} slurmdbd -V
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
