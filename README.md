@@ -55,7 +55,7 @@ Instead, use the `latest` tag for the most recent build, or a tag corresponding 
 
 ## Building an Image Locally
 
-The Dockerfile is designed to be reusable for Slurm versions.
+The Dockerfile is designed to be reusable for different Slurm versions.
 The slurm version needs to be specified when building an image.
 The following example builds an image using Slurm version 20.02.5.1:
 
@@ -63,7 +63,7 @@ The following example builds an image using Slurm version 20.02.5.1:
 docker build --build-arg SLURM_TAG=slurm-20-02-5-1
 ```
 
-To see a list of valid Slurm tags, see the [Slurm GitHub release tags](https://github.com/SchedMD/slurm/tags).
+For a list of valid Slurm tags, see the [Slurm GitHub release tags](https://github.com/SchedMD/slurm/tags).
 
 ## Testing Fixtures
 
@@ -88,11 +88,15 @@ Slurm is configured with a single mock cluster called ``development`` along with
 
 ## Creating a New Image
 
-Updating the `latest` branch of this repository will automatically build and deploy new image version.
-To add a new build with different package versions, make the following changes:
+Creating a new release from this repository will automatically build and publish new image versions.
+To add a new Slurm version to the build process, make the following changes:
 
-1. Check the Slurm version you want to build against are available from
-   the [upstream source](https://slurm.schedmd.com/overview.html).
-2. Add the necessary Slurm rms and config files to the `slurm_config` directory.
+1. Check the Slurm version(s) you want to build against is available from
+   the [upstream source](https://github.com/SchedMD/slurm/tags).
+2. Add the necessary Slurm rpms and config files to the `slurm_config` directory.
    The name of the subdirectory should match the corresponding `SLURM_TAG` build argument.
 3. Update the build matrix section of the GitHub actions workflow to include the new version.
+
+### Building New Slrum RPMs
+
+Todo: Add instructions
