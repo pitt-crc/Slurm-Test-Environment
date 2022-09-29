@@ -79,7 +79,7 @@ The following services are automatically launched when spinning up a new contain
 
 ### Slurm Configuration
 
-Slurm is configured with a single mock cluster called ``development``. The following Slurm accounts on the cluster:
+Slurm is configured with a single mock cluster called ``development`` along with the following Slurm accounts:
 
 | Account Name | Slurm Description | Slurm Organization |
 |--------------|-------------------|--------------------|
