@@ -73,6 +73,7 @@ The test environment comes partially configured with running services and mock d
 
 The following services are automatically launched when spinning up a new container:
 
+- `mariadb`
 - `munge`
 - `slurmdbd`
 - `slurmctld`
