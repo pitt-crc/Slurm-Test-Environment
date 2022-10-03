@@ -63,7 +63,7 @@ The following example builds an image using Slurm version 20.02.5.1:
 docker build --build-arg SLURM_TAG=slurm-20-02-5-1
 ```
 
-For a list of valid Slurm tags, see the [Slurm GitHub release tags](https://github.com/SchedMD/slurm/tags).
+For a list of valid Slurm tags, see the [Slurm config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this repository.
 
 ## Testing Fixtures
 
@@ -73,6 +73,7 @@ The test environment comes partially configured with running services and mock d
 
 The following services are automatically launched when spinning up a new container:
 
+- `mariadb`
 - `munge`
 - `slurmdbd`
 - `slurmctld`
@@ -91,11 +92,9 @@ Slurm is configured with a single mock cluster called ``development`` along with
 Creating a new release from this repository will automatically build and publish new image versions.
 To add a new Slurm version to the build process, make the following changes:
 
-1. Check the Slurm version(s) you want to build against is available from
-   the [upstream source](https://github.com/SchedMD/slurm/tags).
-2. Add the necessary Slurm rpms and config files to the `slurm_config` directory.
+1. Add the necessary Slurm rpms and config files to the `slurm_config` directory.
    The name of the subdirectory should match the corresponding `SLURM_TAG` build argument.
-3. Update the build matrix section of the GitHub actions workflow to include the new version.
+2. Update the build matrix section of the GitHub actions workflow to include the new version.
 
 ### Building New Slrum RPMs
 
