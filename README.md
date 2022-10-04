@@ -3,9 +3,42 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/86b83c73f89642dfad48f3a9ec1f0b66)](https://app.codacy.com/gh/pitt-crc/Slurm-Test-Environment/dashboard)
 [![Deploy Docker Images](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/docker-publish.yml)
 
-Dockerized environments for testing software against a variety of [Slurm](https://slurm.schedmd.com/overview.html) versions. 
+Dockerized environments for testing software against a variety of [Slurm](https://slurm.schedmd.com/overview.html)
+versions.
+See the [packages](https://github.com/orgs/pitt-crc/packages?repo_name=Slurm-Test-Environment) section of this
+repository for a full list of available containers.
 
-## Using Images in GitHub Actions
+## Working with Images
+
+Refer to the sections below for examples on using the Slurm test environmnets in different situations.
+
+### Building an Image Locally
+
+The Dockerfile is designed to be reusable for different Slurm versions.
+The slurm version needs to be specified when building an image.
+The following example builds an image using Slurm version 20.02.5.1:
+
+```bash
+docker build --build-arg SLURM_TAG=slurm-20-02-5-1
+```
+
+For a list of valid Slurm tags, see
+the [Slurm config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this
+repository.
+
+### Pulling Existing Images
+
+Test environment images are stored on the GitHub container registry and can be referenced locally via the `docker`
+utility.
+For instructions on pulling images from GitHub, see
+the [official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+.
+
+Specific image versions can be used by specifying the desired docker tag.
+Using the sha256 hash as a tag is not recommended.
+Instead, use the `latest` tag for the most recent build, or a tag corresponding to a package release (e.g., `v0.1.0`).
+
+### Using Images in GitHub Actions
 
 To run a GitHub actions job from within a container, specify the `container` option and include a setup step:
 
@@ -45,26 +78,6 @@ jobs:
         run: /usr/local/bin/entrypoint.sh
 ```
 
-See the [packages](https://github.com/orgs/pitt-crc/packages?repo_name=Slurm-Test-Environment) section of this repository for a full list of available container names.
-
-### Image Tags
-
-Specific image versions can be used by specifying the desired docker tag.
-Using the sha256 hash as a tag is not recommended. 
-Instead, use the `latest` tag for the most recent build, or a tag corresponding to a package release (e.g., `v0.1.0`).
-
-## Building an Image Locally
-
-The Dockerfile is designed to be reusable for different Slurm versions.
-The slurm version needs to be specified when building an image.
-The following example builds an image using Slurm version 20.02.5.1:
-
-```bash
-docker build --build-arg SLURM_TAG=slurm-20-02-5-1
-```
-
-For a list of valid Slurm tags, see the [Slurm config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this repository.
-
 ## Testing Fixtures
 
 The test environment comes partially configured with running services and mock data.
@@ -87,7 +100,7 @@ Slurm is configured with a single mock cluster called ``development`` along with
 | account1     | account1_desc     | account1_org       |
 | account2     | account2_desc     | account2_org       |
 
-## Creating a New Image
+## Adding a New Image
 
 Creating a new release from this repository will automatically build and publish new image versions.
 To add a new Slurm version to the build process, make the following changes:
