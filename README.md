@@ -80,7 +80,24 @@ jobs:
 
 ## Testing Fixtures
 
-The test environment comes partially configured with running services and mock data.
+The test environment comes partially configured with various tools, running services, and mock data.
+
+### Python versions
+
+Multiple Python versions are provided in the test environment, each having dedicated installations 
+of the `pip` and `coverage` utilities. Installed Python versions include:
+
+- 3.6
+- 3.8
+- 3.9 (default)
+
+Utilities are installed at following paths:
+
+| Executable Name   | Installed Path             |
+|-------------------|----------------------------|
+| python[VERSION]   | /usr/bin/python[VERSION]   |
+| pip-[VERSION]     | /usr/bin/pip-[VERSION]     |
+| coverage[VERSION] | /usr/bin/coverage[VERSION] |
 
 ### Running services
 
