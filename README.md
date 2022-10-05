@@ -19,7 +19,7 @@ The slurm version needs to be specified when building an image.
 The following example builds an image using Slurm version 20.02.5.1:
 
 ```bash
-docker build --build-arg SLURM_TAG=slurm-20-02-5-1
+docker build --build-arg SLURM_TAG=slurm-20-02-5-1 .
 ```
 
 For a list of valid Slurm tags, see
