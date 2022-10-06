@@ -6,14 +6,14 @@ echo "Launching sql server..."
 sleep 3 # Wait for mysql to start up
 
 echo "Creating Slurm account database..."
-mysql -NBe "CREATE DATABASE slurm_acct_db"
-mysql -NBe "CREATE USER 'slurm'@'localhost'"
+mysql -NBe "CREATE DATABASE IF NOT EXISTS slurm_acct_db"
+mysql -NBe "CREATE USER IF NOT EXISTS 'slurm'@'localhost'"
 mysql -NBe "GRANT USAGE ON *.* to 'slurm'@'localhost'"
 mysql -NBe "GRANT ALL PRIVILEGES on slurm_acct_db.* to 'slurm'@'localhost'"
 mysql -NBe "FLUSH PRIVILEGES"
 
 echo "Create munge key..."
-/usr/sbin/create-munge-key
+/usr/sbin/create-munge-key -f
 
 echo "Starting munge..."
 /usr/sbin/runuser -u munge -- /usr/sbin/munged
@@ -23,7 +23,7 @@ echo "Starting slurmdbd..."
 sleep 3 # Wait for slurmdbd to start up
 
 echo "Starting slurmctld..."
-mkdir /var/slurmstate
+mkdir -p /var/slurmstate
 chown slurm /var/slurmstate
 /usr/sbin/slurmctld -c
 sleep 3 # Wait for slurmctld to start up
