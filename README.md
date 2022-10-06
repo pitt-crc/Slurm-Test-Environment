@@ -98,11 +98,11 @@ of the `pip` and `coverage` utilities. Installed Python versions include:
 
 Utilities are installed at following paths:
 
-| Executable Name    | Installed Path              |
-|--------------------|-----------------------------|
-| python<VERSION>    | /usr/bin/python<VERSION>    |
-| pip<VERSION>       | /usr/bin/pip<VERSION>       |
-| coverage-<VERSION> | /usr/bin/coverage-<VERSION> |
+| Executable Name      | Installed Path                |
+|----------------------|-------------------------------|
+| `python[VERSION]`    | `/usr/bin/python[VERSION]`    |
+| `pip[VERSION]`       | `/usr/bin/pip[VERSION]`       |
+| `coverage-[VERSION]` | `/usr/bin/coverage-[VERSION]` |
 
 ### Running services
 
