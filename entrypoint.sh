@@ -28,9 +28,13 @@ chown slurm /var/slurmstate
 /usr/sbin/slurmctld -c
 sleep 3 # Wait for slurmctld to start up
 
-echo "Creating mock user accounts..."
-sacctmgr -i add account "account1" description="account1_desc" organization="account1_org"
-sacctmgr -i add account "account2" description="account2_desc" organization="account2_org"
+if [ $(sacctmgr show -np account account1) ]; then
+  echo "Mock accounts already exist"
+else
+  echo "Creating mock user accounts..."
+  sacctmgr -i add account "account1" description="account1_desc" organization="account1_org"
+  sacctmgr -i add account "account2" description="account2_desc" organization="account2_org"
+fi
 
 echo "Environment is ready"
 exec "$@"

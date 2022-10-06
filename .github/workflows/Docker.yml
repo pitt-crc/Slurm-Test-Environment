@@ -1,4 +1,4 @@
-name: Publish Docker Images
+name: Docker Images
 
 on:
   pull_request:
@@ -44,7 +44,8 @@ jobs:
 
       - name: Test container is restartable
         run: |
-          docker container create --name rerun_test_container ${tag_arr[0]}
+          tag_array=(${{ steps.meta.outputs.tags }})
+          docker container create --name rerun_test_container ${tag_array[0]}
           docker container start -i rerun_test_container
           docker container start -i rerun_test_container
           docker container rm rerun_test_container
@@ -52,10 +53,10 @@ jobs:
       # Check slurm utilities all execute without error
       - name: Test slurm install
         run: |
-          tag_arr=(${{ steps.meta.outputs.tags }})
-          docker run --rm ${tag_arr[0]} sacctmgr -V
-          docker run --rm ${tag_arr[0]} slurmctld -V
-          docker run --rm ${tag_arr[0]} slurmdbd -V
+          tag_array=(${{ steps.meta.outputs.tags }})
+          docker run --rm ${tag_array[0]} sacctmgr -V
+          docker run --rm ${tag_array[0]} slurmctld -V
+          docker run --rm ${tag_array[0]} slurmdbd -V
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
