@@ -26,13 +26,18 @@ For a list of valid Slurm tags, see
 the [Slurm config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this
 repository.
 
+You will need to enable [Docker Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) to build the image. 
+To do so, set the following environmental variable:
+
+```bash
+DOCKER_BUILDKIT=1
+```
+
 ### Pulling Existing Images
 
-Test environment images are stored on the GitHub container registry and can be referenced locally via the `docker`
-utility.
-For instructions on pulling images from GitHub, see
-the [official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
-.
+Test environment images are stored on the GitHub container registry and can be referenced locally via the `docker` utility.
+For instructions on pulling images from GitHub, see the 
+[official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
 Specific image versions can be used by specifying the desired docker tag.
 Using the sha256 hash as a tag is not recommended.
@@ -89,15 +94,15 @@ of the `pip` and `coverage` utilities. Installed Python versions include:
 
 - 3.6
 - 3.8
-- 3.9 (default)
+- 3.9
 
 Utilities are installed at following paths:
 
-| Executable Name   | Installed Path             |
-|-------------------|----------------------------|
-| python[VERSION]   | /usr/bin/python[VERSION]   |
-| pip-[VERSION]     | /usr/bin/pip-[VERSION]     |
-| coverage[VERSION] | /usr/bin/coverage[VERSION] |
+| Executable Name    | Installed Path              |
+|--------------------|-----------------------------|
+| python[VERSION]    | /usr/bin/python[VERSION]    |
+| pip[VERSION]       | /usr/bin/pip[VERSION]       |
+| coverage-[VERSION] | /usr/bin/coverage-[VERSION] |
 
 ### Running services
 
