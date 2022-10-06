@@ -6,7 +6,8 @@ LABEL edu.pitt.crc.slurm-tag=$SLURM_TAG
 # Install any required system tools
 RUN yum install -y epel-release  \
   && yum -y --enablerepo=powertools install \
-      python39 \
+      # Support multiple Python versions for downstream testing scenarios
+      python36 python38 python39 \
       # Required for slurm \
       munge \
       munge-devel \
@@ -24,8 +25,10 @@ RUN yum install -y epel-release  \
   && yum clean all \
   && rm -rf /var/cache/yum
 
-# Make python tools accessable without the trailing 3
-RUN ln /usr/bin/python3 /usr/bin/python && ln /usr/bin/pip3 /usr/bin/pip
+# Install coverage utilities, latest version last
+RUN pip-3.6 install coverage && \
+    pip-3.8 install coverage && \
+    pip-3.9 install coverage
 
 # Install mariadb
 RUN /usr/bin/mysql_install_db \
