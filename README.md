@@ -100,9 +100,9 @@ Utilities are installed at following paths:
 
 | Executable Name    | Installed Path              |
 |--------------------|-----------------------------|
-| python[VERSION]    | /usr/bin/python[VERSION]    |
-| pip[VERSION]       | /usr/bin/pip[VERSION]       |
-| coverage-[VERSION] | /usr/bin/coverage-[VERSION] |
+| python<VERSION>    | /usr/bin/python<VERSION>    |
+| pip<VERSION>       | /usr/bin/pip<VERSION>       |
+| coverage-<VERSION> | /usr/bin/coverage-<VERSION> |
 
 ### Running services
 
