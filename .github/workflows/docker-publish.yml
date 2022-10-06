@@ -44,7 +44,8 @@ jobs:
 
       - name: Test container is restartable
         run: |
-          docker run --name rerun_test_container ${tag_arr[0]}
+          docker container create --name rerun_test_container ${tag_arr[0]}
+          docker container start -i rerun_test_container
           docker container start -i rerun_test_container
           docker container rm rerun_test_container
 
