@@ -20,8 +20,9 @@ RUN yum install -y epel-release  \
       rrdtool-devel \
       perl-Switch \
       hwloc-libs \
-      # Added for integration with IDEs \
+      # General tools provided explicitly for use by downstream services
       which \
+      make \
   && yum clean all \
   && rm -rf /var/cache/yum
 

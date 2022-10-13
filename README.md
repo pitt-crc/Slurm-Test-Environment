@@ -87,6 +87,13 @@ jobs:
 
 The test environment comes partially configured with various tools, running services, and mock data.
 
+### General Utilities
+
+The following commandline tools are explicitly provided in the testing environment.
+
+- ``which`` (Required for compatibility with some IDE docker integrations)
+- ``make``
+
 ### Python versions
 
 Multiple Python versions are provided in the test environment, each having dedicated installations 
