@@ -78,10 +78,18 @@ jobs:
 
   # This is a dummy job used to facilitate branch protections
   build-successful:
-    needs: [ build ]
-    runs-on: ubuntu-latest
+    if: ${{ always() }}
     name: Builds Were Successful
-
+    runs-on: ubuntu-latest
+    needs: [ build ]
     steps:
-      - name: Mark as completed
-        run: echo "The builds were successful"
+      - name: Mark as Successful
+        shell: bash
+        run: |
+          if [[ success == ${{ needs.build.result }} ]]
+          then
+            echo "Builds were successful"
+          else
+            echo "One or more matrix jobs failed."
+            false
+          fi
