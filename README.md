@@ -10,7 +10,7 @@ repository for a full list of available containers.
 
 ## Working with Images
 
-Refer to the sections below for examples on using the Slurm test environmnets in different situations.
+Refer to the sections below for examples on using the Slurm test environments in different situations.
 
 ### Building an Image Locally
 
@@ -26,7 +26,7 @@ For a list of valid Slurm tags, see
 the [Slurm config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this
 repository.
 
-You will need to enable [Docker Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) to build the image. 
+You will need to enable [Docker Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) to build the image.
 To do so, set the following environmental variable:
 
 ```bash
@@ -36,7 +36,7 @@ DOCKER_BUILDKIT=1
 ### Pulling Existing Images
 
 Test environment images are stored on the GitHub container registry and can be referenced locally via the `docker` utility.
-For instructions on pulling images from GitHub, see the 
+For instructions on pulling images from GitHub, see the
 [official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
 Specific image versions can be used by specifying the desired docker tag.
@@ -96,20 +96,27 @@ The following commandline tools are explicitly provided in the testing environme
 
 ### Python versions
 
-Multiple Python versions are provided in the test environment, each having dedicated installations 
+Multiple Python versions are provided in the test environment, each having dedicated installations
 of the `pip` and `coverage` utilities. Installed Python versions include:
 
-- 3.6
 - 3.8
 - 3.9
 
 Utilities are installed at following paths:
 
-| Executable Name      | Installed Path                |
-|----------------------|-------------------------------|
-| `python[VERSION]`    | `/usr/bin/python[VERSION]`    |
-| `pip[VERSION]`       | `/usr/bin/pip[VERSION]`       |
-| `coverage-[VERSION]` | `/usr/bin/coverage-[VERSION]` |
+| Executable Name             | Installed Path                       |
+|-----------------------------|--------------------------------------|
+| `python[PYTHON-VERSION]`    | `/usr/bin/python[PYTHON-VERSION]`    |
+| `pip[PYTHON-VERSION]`       | `/usr/bin/pip[PYTHON-VERSION]`       |
+| `coverage-[PYTHON-VERSION]` | `/usr/bin/coverage-[PYTHON-VERSION]` |
+
+For each Python install, the following utilities are guaranteed:
+
+| Package Name | Package Version |
+|--------------|-----------------|
+| `coverage`   | `6.4`           |
+| `setuptools` | `64`            |
+| `pip`        | `21.3`          |
 
 ### Running services
 
@@ -138,6 +145,6 @@ To add a new Slurm version to the build process, make the following changes:
    The name of the subdirectory should match the corresponding `SLURM_TAG` build argument.
 2. Update the build matrix section of the GitHub actions workflow to include the new version.
 
-### Building New Slrum RPMs
+### Building New Slurm RPMs
 
 Todo: Add instructions
