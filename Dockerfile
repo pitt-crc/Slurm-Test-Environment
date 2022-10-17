@@ -7,7 +7,7 @@ LABEL edu.pitt.crc.slurm-tag=$SLURM_TAG
 RUN yum install -y epel-release  \
   && yum -y --enablerepo=powertools install \
       # Support multiple Python versions for downstream testing scenarios
-      python36 python38 python39 \
+      python38 python39 \
       # Required for slurm \
       munge \
       munge-devel \
@@ -27,9 +27,8 @@ RUN yum install -y epel-release  \
   && rm -rf /var/cache/yum
 
 # Install coverage utilities, latest version last
-RUN pip-3.6 install -U coverage setuptools pip && \
-    pip-3.8 install -U coverage setuptools pip && \
-    pip-3.9 install -U coverage setuptools pip
+RUN pip-3.8 install -U coverage==6.4 setuptools==64 pip==21.3 && \
+    pip-3.9 install -U coverage==6.4 setuptools==64 pip==21.3
 
 # Install mariadb
 RUN /usr/bin/mysql_install_db \
