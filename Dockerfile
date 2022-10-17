@@ -3,8 +3,6 @@ FROM rockylinux:8
 ARG SLURM_TAG
 LABEL edu.pitt.crc.slurm-tag=$SLURM_TAG
 
-RUN asdf
-
 # Install any required system tools
 RUN yum install -y epel-release  \
   && yum -y --enablerepo=powertools install \
