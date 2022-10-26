@@ -110,7 +110,7 @@ Utilities are installed at following paths:
 | `pip[PYTHON-VERSION]`       | `/usr/bin/pip[PYTHON-VERSION]`       |
 | `coverage-[PYTHON-VERSION]` | `/usr/bin/coverage-[PYTHON-VERSION]` |
 
-For each Python install, the following utilities are guaranteed:
+For each Python install, the following utilities versions are guaranteed:
 
 | Package Name | Package Version |
 |--------------|-----------------|
