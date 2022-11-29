@@ -3,7 +3,7 @@ name: Docker Images
 on:
   pull_request:
   release:
-    types: [ published ]
+    types: [ "released" ]
   push:
     branches: [ "latest" ]
 
@@ -59,12 +59,14 @@ jobs:
           docker run --rm ${tag_array[0]} slurmdbd -V
 
       - name: Login to GitHub Container Registry
+        if: github.event_name == 'release'
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Only publish new images if the event is a release
       - name: Publish built image
         if: github.event_name == 'release'
         uses: docker/build-push-action@v3
