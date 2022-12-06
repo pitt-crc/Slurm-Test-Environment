@@ -23,13 +23,10 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v3
         with:
+          load: true
           tags: test-image
           labels: ${{ steps.meta.outputs.labels }}
           build-args: SLURM_TAG=${{ matrix.slurm-tag }}
-          outputs: type=docker,dest=${{ matrix.slurm-tag }}.tar
-
-      - name: Load image into Docker
-        run: docker load -i ${{ matrix.slurm-tag }}.tar
 
       - name: Test container is restartable
         run: |
@@ -43,14 +40,6 @@ jobs:
           docker run --rm test-image sacctmgr -V
           docker run --rm test-image slurmctld -V
           docker run --rm test-image slurmdbd -V
-
-      - name: Upload artifact
-        if: ${{ github.event_name }} == 'workflow_call'
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.slurm-tag }}
-          path: ${{ matrix.slurm-tag }}.tar
-          retention-days: 5
 
   # This is a dummy job used to facilitate branch protections
   build-successful:
