@@ -1,4 +1,4 @@
-name: Docker Images
+name: Test Docker Images
 
 on:
   workflow_call:
@@ -53,7 +53,7 @@ jobs:
           docker run --rm ${tag_array[0]} slurmdbd -V
 
       - name: Upload artifact
-        if: github.event_name == 'release'
+        if: github.event_name == 'workflow_call'
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.slurm-tag }}

@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build Documentation
+    name: Build Images
     uses: ./.github/workflows/DockerTest.yml
 
   publish:
