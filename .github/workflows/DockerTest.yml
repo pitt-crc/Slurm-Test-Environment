@@ -53,7 +53,7 @@ jobs:
           docker run --rm ${tag_array[0]} slurmdbd -V
 
       - name: Upload artifact
-        if: github.event_name == 'workflow_call'
+        if: ${{ github.event_name }} == 'workflow_call'
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.slurm-tag }}
@@ -63,7 +63,7 @@ jobs:
   # This is a dummy job used to facilitate branch protections
   build-successful:
     if: ${{ always() }}
-    name: Report Build Status
+    name: Report Status
     runs-on: ubuntu-latest
     needs: [ build ]
     steps:
