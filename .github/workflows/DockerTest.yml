@@ -1,9 +1,8 @@
 name: Docker Images
 
 on:
+  workflow_call:
   pull_request:
-  release:
-    types: [ "released" ]
   push:
     branches: [ "latest" ]
 
@@ -39,53 +38,40 @@ jobs:
           load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            SLURM_TAG=${{ matrix.slurm-tag }}
+          build-args: SLURM_TAG=${{ matrix.slurm-tag }}
+          outputs: type=docker,dest=${{ matrix.slurm-tag }}.tar
 
       - name: Test container is restartable
         run: |
-          tag_array=(${{ steps.meta.outputs.tags }})
+          tag_array=(${{ steps.meta.outputs.tags }}) # Use the first tag from the tags array
           docker container create --name rerun_test_container ${tag_array[0]}
           docker container start -i rerun_test_container
           docker container start -i rerun_test_container
           docker container rm rerun_test_container
 
-      # Check slurm utilities all execute without error
-      - name: Test slurm install
+      - name: Test Slurm utilities are installed
         run: |
           tag_array=(${{ steps.meta.outputs.tags }})
           docker run --rm ${tag_array[0]} sacctmgr -V
           docker run --rm ${tag_array[0]} slurmctld -V
           docker run --rm ${tag_array[0]} slurmdbd -V
 
-      - name: Login to GitHub Container Registry
+      - name: Upload artifact
         if: github.event_name == 'release'
-        uses: docker/login-action@v2
+        uses: actions/upload-artifact@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Only publish new images if the event is a release
-      - name: Publish built image
-        if: github.event_name == 'release'
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            SLURM_TAG=${{ matrix.slurm-tag }}
+          name: ${{ matrix.slurm-tag }}
+          path: ${{ matrix.slurm-tag }}.tar
+          retention-days: 5
 
   # This is a dummy job used to facilitate branch protections
   build-successful:
     if: ${{ always() }}
-    name: Builds Were Successful
+    name: Report Build Status
     runs-on: ubuntu-latest
     needs: [ build ]
     steps:
-      - name: Mark as Successful
+      - name: Report status
         shell: bash
         run: |
           if [[ success == ${{ needs.build.result }} ]]
