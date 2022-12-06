@@ -13,6 +13,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     name: Publish Docker Images
+    needs: [ build ]
 
     strategy:
       fail-fast: false
