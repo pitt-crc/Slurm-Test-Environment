@@ -1,6 +1,7 @@
 name: Publish Docker Images
 
 on:
+  push:
   release:
     types: [ "released" ]
 
@@ -28,21 +29,6 @@ jobs:
           name: ${{ matrix.slurm-tag }}
 
       - name: Load image
-        run: docker load --input ${{ matrix.slurm-tag }}.tar
-
-      - name: Login to GitHub Container Registry
-        if: github.event_name == 'release'
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish built image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: SLURM_TAG=${{ matrix.slurm-tag }}
+        run: |
+          docker load --input ${{ matrix.slurm-tag }}.tar
+          docker image ls -a
