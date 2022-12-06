@@ -141,9 +141,12 @@ Slurm is configured with a single mock cluster called ``development`` along with
 Creating a new release from this repository will automatically build and publish new image versions.
 To add a new Slurm version to the build process, make the following changes:
 
-1. Add the necessary Slurm rpms and config files to the `slurm_config` directory.
+1. Add the necessary Slurm RPMs and config files to the `slurm_config` directory.
    The name of the subdirectory should match the corresponding `SLURM_TAG` build argument.
-2. Update the build matrix section of the GitHub actions workflow to include the new version.
+2. Update the strategy matrix in the
+   [testing](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerTest.yml) 
+   and [publication](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerPublish.yml) 
+   workflows to include the new slurm tag.
 
 ### Building New Slurm RPMs
 
