@@ -147,4 +147,12 @@ To add a new Slurm version to the build process, make the following changes:
 
 ### Building New Slurm RPMs
 
-Todo: Add instructions
+Slurm RPMs can be built directly from the compressed Slurm distribution.
+The generated RPMs need to be recompressed as a directory called `rpms` before being added to the repository.
+The compressed archive should be named with the corresponding Slurm version.
+
+```bash
+rpmbuild -ta slurm*.tar.bz2
+cp -r rpmbuild/RPMS/x86_64 rpms/
+tar -czvf slurm-[MAJOR]-[MINOR]-[PATCH]-[BUILD].tar.gz rpms/
+```
