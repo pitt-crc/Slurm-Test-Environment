@@ -8,7 +8,7 @@ RUN yum install -y epel-release  \
   && yum install -y --enablerepo=powertools \
       # Support multiple Python versions for downstream testing scenarios
       python38 python39 \
-      # Required for slurm \
+      # Required for slurm
       munge \
       munge-devel \
       mariadb-server \
