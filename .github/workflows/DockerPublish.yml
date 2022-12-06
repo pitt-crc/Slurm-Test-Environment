@@ -7,12 +7,12 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build Images
     uses: ./.github/workflows/DockerTest.yml
 
   publish:
     runs-on: ubuntu-latest
-    name: Publish Docker Images
+    name: Publish Images
     needs: [ build ]
 
     strategy:
@@ -48,7 +48,6 @@ jobs:
       - name: Publish built image
         uses: docker/build-push-action@v3
         with:
-          context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
