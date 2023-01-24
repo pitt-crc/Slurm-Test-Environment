@@ -97,8 +97,8 @@ The installed Slurm instance is configured with the following Slurm partitions:
 
 | Cluster Name | Partition Name |
 |--------------|----------------|
-| development  | normal         |
-| development  | debug          |
+| development  | partition1     |
+| development  | partition2     |
 
 The cluster als includes the following Slurm accounts:
 
