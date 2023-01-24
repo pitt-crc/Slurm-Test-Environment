@@ -1,2 +1,5 @@
 # Uncompressed slurm RPMs
 slurm_config/**/*.rpm
+
+# IDE files
+.idea
