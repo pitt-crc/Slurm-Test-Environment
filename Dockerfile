@@ -23,6 +23,7 @@ RUN yum install -y epel-release  \
       # General tools provided explicitly for use by downstream services
       which \
       make \
+      grep \
   && yum clean all \
   && rm -rf /var/cache/yum
 
