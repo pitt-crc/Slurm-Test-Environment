@@ -2,22 +2,22 @@
 
 # Test the establishment of general utilities (python, make, etc.).
 
-@test "test which" {
+@test "which is installed" {
   run "which"
   [ "$status" -eq 0 ]
 }
 
-@test "test grep" {
+@test "grep is installed" {
   run "grep --version"
   [ "$status" -eq 0 ]
 }
 
-@test "test make" {
+@test "make is installed" {
   run "make --version"
   [ "$status" -eq 0 ]
 }
 
-@test "test python tools (system default)" {
+@test "python tools are installed (system default)" {
   run "python --version"
   [ "$output" -eq "Python 3.9"* ]
 
@@ -28,7 +28,7 @@
   [ "$output" -eq "Coverage.py, version 6.4"* ]
 }
 
-@test "test python tools (python 3.9)" {
+@test "python tools are installed (python 3.9)" {
   run "python3.9 --version"
   [ "$output" -eq "Python 3.9"* ]
 
@@ -39,7 +39,7 @@
   [ "$output" -eq "Coverage.py, version 6.4"* ]
 }
 
-@test "test python tools (python 3.8)" {
+@test "python tools are installed (python 3.8)" {
   run "python3.8 --version"
   [ "$output" -eq "Python 3.8"* ]
 
