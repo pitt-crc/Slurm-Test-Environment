@@ -7,7 +7,8 @@ LABEL edu.pitt.crc.slurm-tag=$SLURM_TAG
 RUN yum install -y epel-release  \
   && yum install -y --enablerepo=powertools \
       # Support multiple Python versions for downstream testing scenarios
-      python38 python39 \
+      python38 \
+      python39 \
       # Required for slurm
       munge \
       munge-devel \
@@ -23,6 +24,7 @@ RUN yum install -y epel-release  \
       # General tools provided explicitly for use by downstream services
       which \
       make \
+      bats \
   && yum clean all \
   && rm -rf /var/cache/yum
 
