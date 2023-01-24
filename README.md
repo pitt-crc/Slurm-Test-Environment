@@ -27,7 +27,8 @@ For a list of valid Slurm tags, see
 the [Slurm config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this
 repository.
 
-You will need to enable [Docker Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) to build the image.
+You will need to enable [Docker Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) to build
+the image.
 To do so, set the following environmental variable:
 
 ```bash
@@ -36,9 +37,11 @@ DOCKER_BUILDKIT=1
 
 ### Pulling Existing Images
 
-Test environment images are stored on the GitHub container registry and can be referenced locally via the `docker` utility.
+Test environment images are stored on the GitHub container registry and can be referenced locally via the `docker`
+utility.
 For instructions on pulling images from GitHub, see the
-[official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+[official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+.
 
 Specific image versions can be used by specifying the desired docker tag.
 Using the sha256 hash as a tag is not recommended.
@@ -88,12 +91,30 @@ jobs:
 
 The test environment comes partially configured with various tools, running services, and mock data.
 
-### General Utilities
+### Slurm Configuration
 
-The following commandline tools are explicitly provided in the testing environment.
+The installed Slurm instance is configured with the following Slurm partitions:
 
-- ``which`` (Required for compatibility with some IDE docker integrations)
-- ``make``
+| Cluster Name | Partition Name |
+|--------------|----------------|
+| development  | normal         |
+| development  | debug          |
+
+The cluster als includes the following Slurm accounts:
+
+| Account Name | Slurm Description | Slurm Organization |
+|--------------|-------------------|--------------------|
+| account1     | account1_desc     | account1_org       |
+| account2     | account2_desc     | account2_org       |
+
+### Running services
+
+The following services are automatically launched when spinning up a new container:
+
+- `mariadb`
+- `munge`
+- `slurmdbd`
+- `slurmctld`
 
 ### Python versions
 
@@ -119,23 +140,12 @@ For each Python install, the following utilities versions are guaranteed:
 | `setuptools` | `64`            |
 | `pip`        | `21.3`          |
 
-### Running services
+### General Utilities
 
-The following services are automatically launched when spinning up a new container:
+The following commandline tools are explicitly provided in the testing environment.
 
-- `mariadb`
-- `munge`
-- `slurmdbd`
-- `slurmctld`
-
-### Slurm Configuration
-
-Slurm is configured with a single mock cluster called ``development`` along with the following Slurm accounts:
-
-| Account Name | Slurm Description | Slurm Organization |
-|--------------|-------------------|--------------------|
-| account1     | account1_desc     | account1_org       |
-| account2     | account2_desc     | account2_org       |
+- ``which`` (Required for compatibility with some IDE docker integrations)
+- ``make``
 
 ## Adding a New Image
 
@@ -145,8 +155,8 @@ To add a new Slurm version to the build process, make the following changes:
 1. Add the necessary Slurm RPMs and config files to the `slurm_config` directory.
    The name of the subdirectory should match the corresponding `SLURM_TAG` build argument.
 2. Update the strategy matrix in the
-   [testing](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerTest.yml) 
-   and [publication](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerPublish.yml) 
+   [testing](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerTest.yml)
+   and [publication](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerPublish.yml)
    workflows to include the new slurm tag.
 
 ### Building New Slurm RPMs
