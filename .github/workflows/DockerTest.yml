@@ -17,6 +17,9 @@ jobs:
         slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
 
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
 
