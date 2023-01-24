@@ -29,7 +29,9 @@ jobs:
           build-args: SLURM_TAG=${{ matrix.slurm-tag }}
 
       - name: Run tests
-        run: bats tests
+        run: |
+          apt install bats -y
+          bats tests
 
   # This is a dummy job used to facilitate branch protections
   build-successful:
