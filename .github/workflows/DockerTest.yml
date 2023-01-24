@@ -30,7 +30,7 @@ jobs:
 
       - name: Run tests
         run: |
-          apt install bats -y
+          sudo apt install bats -y
           bats tests
 
   # This is a dummy job used to facilitate branch protections
