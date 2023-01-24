@@ -39,7 +39,7 @@ jobs:
           docker container rm rerun_test_container
 
       - name: Run bats tests
-        run: docker run -v $(pwd)/tests:/tests-i test-image bats tests
+        run: docker run  -i -v $(pwd)/tests:/tests test-image bats /tests
 
   # This is a dummy job used to facilitate branch protections
   build-successful:
