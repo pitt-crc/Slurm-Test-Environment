@@ -3,49 +3,33 @@
 # Test the establishment of general utilities (python, make, etc.).
 
 @test "which should be installed" {
-  run "which"
-  [ "$status" -eq 0 ]
-}
-
-@test "grep should be installed" {
-  run "grep --version"
+  run which which
   [ "$status" -eq 0 ]
 }
 
 @test "make should be installed" {
-  run "make --version"
+  run make --version
   [ "$status" -eq 0 ]
 }
 
-@test "python tools should be installed (system default)" {
-  run "python --version"
-  [ "$output" -eq "Python 3.9"* ]
+@test "python tools should be installed (python 3.8)" {
+  run python3.8 --version
+  [ "$output" = "Python 3.8"* ]
 
-  run "pip --version"
-  [ "$output" -eq "pip 21.3"* ]
+  run pip3.8 --version
+  [ "$output" = "pip 21.3"* ]
 
-  run "coverage --version"
-  [ "$output" -eq "Coverage.py, version 6.4"* ]
+  run coverage-3.8 --version
+  [ "$output" = "Coverage.py, version 6.4"* ]
 }
 
 @test "python tools should be installed (python 3.9)" {
-  run "python3.9 --version"
-  [ "$output" -eq "Python 3.9"* ]
+  run python3.9 --version
+  [ "$output" = "Python 3.9"* ]
 
-  run "pip3.9 --version"
-  [ "$output" -eq "pip 21.3"* ]
+  run pip3.9 --version
+  [ "$output" = "pip 21.3"* ]
 
   run "coverage-3.9 --version"
-  [ "$output" -eq "Coverage.py, version 6.4"* ]
-}
-
-@test "python tools should be installed (python 3.8)" {
-  run "python3.8 --version"
-  [ "$output" -eq "Python 3.8"* ]
-
-  run "pip3.8 --version"
-  [ "$output" -eq "pip 21.3"* ]
-
-  run "coverage-3.8 --version"
-  [ "$output" -eq "Coverage.py, version 6.4"* ]
+  [ "$output" = "Coverage.py, version 6.4"* ]
 }

@@ -25,7 +25,6 @@ RUN yum install -y epel-release  \
       which \
       make \
       bats \
-      grep \
   && yum clean all \
   && rm -rf /var/cache/yum
 
