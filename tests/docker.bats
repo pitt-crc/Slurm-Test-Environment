@@ -1,6 +1,7 @@
 #!/usr/bin/env bats
 
 # Test behavior of the dockerfile/container itself.
+# These tests are designed to be run outside the docker container
 
 @test "test container is restartable" {
   # Create and launch a new container

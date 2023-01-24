@@ -4,27 +4,27 @@
 # services are running in the background.
 
 @test "test scontrol is installed" {
-  run "docker run --rm test-image scontrol -V"
+  run "scontrol -V"
   [ "$status" -eq 0 ]
 }
 
 @test "test sacctmgr is installed" {
-  run "docker run --rm test-image sacctmgr -V"
+  run "sacctmgr -V"
   [ "$status" -eq 0 ]
 }
 
 @test "test slurmctld is installed" {
-  run "docker run --rm test-image slurmctld -V"
+  run "slurmctld -V"
   [ "$status" -eq 0 ]
 }
 
 @test "test slurmdbd is installed" {
-  run "docker run --rm test-image slurmdbd -V"
+  run "slurmdbd -V"
   [ "$status" -eq 0 ]
 }
 
 @test "test slurmctld is running" {
-  run "docker run --rm test-image scontrol ping"
+  run "scontrol ping"
   [ "$status" -eq 0 ]
   [ "$output" == "Slurmctld(primary) at "*" is UP" ]
 }
