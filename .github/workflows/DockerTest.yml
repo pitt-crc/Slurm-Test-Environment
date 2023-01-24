@@ -28,18 +28,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: SLURM_TAG=${{ matrix.slurm-tag }}
 
-      - name: Test container is restartable
-        run: |
-          docker container create --name rerun_test_container test-image
-          docker container start -i rerun_test_container
-          docker container start -i rerun_test_container
-          docker container rm rerun_test_container
-
-      - name: Test Slurm utilities are installed
-        run: |
-          docker run --rm test-image sacctmgr -V
-          docker run --rm test-image slurmctld -V
-          docker run --rm test-image slurmdbd -V
+      - name: Run tests
+        run: bats tests
 
   # This is a dummy job used to facilitate branch protections
   build-successful:
