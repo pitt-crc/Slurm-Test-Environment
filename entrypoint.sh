@@ -26,7 +26,8 @@ echo "Starting slurmctld..."
 mkdir -p /var/slurmstate
 chown slurm /var/slurmstate
 /usr/sbin/slurmctld -c
-sleep 3 # Wait for slurmctld to start up
+# Wait for slurmctld to start up
+until scontrol ping | grep UP; do sleep 3; done
 
 if [ $(sacctmgr show -np account account1) ]; then
   echo "Mock accounts already exist"
