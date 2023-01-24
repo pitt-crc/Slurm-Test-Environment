@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-# Test the establishment of slurm test fixtures (accounts, partitions, etc.)
+# Test the installation of slurm test fixtures (accounts, partitions, etc.)
 
 @test "development cluster should exists" {
   run sacctmgr show clusters format=Cluster --noheader --parsable2

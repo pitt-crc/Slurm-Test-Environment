@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-# Test the establishment of general utilities (python, make, etc.).
+# Test the installation of general utilities (python, make, etc.).
 
 @test "which should be installed" {
   run which which
