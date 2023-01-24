@@ -14,22 +14,23 @@
 
 @test "python tools should be installed (python 3.8)" {
   run python3.8 --version
-  [ "$output" = "Python 3.8"* ]
+  [[ "$output" = "Python 3.8"* ]]
 
   run pip3.8 --version
-  [ "$output" = "pip 21.3"* ]
+  [[ "$output" = "pip 21.3"* ]]
 
   run coverage-3.8 --version
-  [ "$output" = "Coverage.py, version 6.4"* ]
+  [[ "$output" = "Coverage.py, version 6.4"* ]]
 }
 
 @test "python tools should be installed (python 3.9)" {
   run python3.9 --version
-  [ "$output" = "Python 3.9"* ]
+  [[ "$output" = "Python 3.9"* ]]
 
   run pip3.9 --version
-  [ "$output" = "pip 21.3"* ]
+  [[ "$output" = "pip 21.3"* ]]
 
-  run "coverage-3.9 --version"
-  [ "$output" = "Coverage.py, version 6.4"* ]
+  run coverage-3.9 --version
+  echo "$output"
+  [[ "$output" = "Coverage.py, version 6.4"* ]]
 }

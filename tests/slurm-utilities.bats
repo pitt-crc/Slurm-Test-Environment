@@ -26,5 +26,5 @@
 @test "slurmctld should be running" {
   run scontrol ping
   [ "$status" -eq 0 ]
-  [ "$output" = "Slurmctld(primary) at "*" is UP" ]
+  [[ "$output" = "Slurmctld(primary) at "*" is UP" ]]
 }
