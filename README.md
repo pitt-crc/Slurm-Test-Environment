@@ -35,7 +35,7 @@ To do so, set the following environmental variable:
 DOCKER_BUILDKIT=1
 ```
 
-Once you have built an image, the system test suite can be run using the following command
+Once you have built an image, the test suite can be run from within the docker container:
 
 ```bash
 docker run -v $(pwd)/tests:/tests -i [IMAGE NAME] bats /tests
