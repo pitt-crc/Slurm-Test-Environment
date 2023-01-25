@@ -23,6 +23,7 @@ RUN yum install -y epel-release  \
       hwloc-libs \
       # General tools provided explicitly for use by downstream services
       which \
+      grep \
       make \
       bats \
   && yum clean all \
