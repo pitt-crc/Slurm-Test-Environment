@@ -37,11 +37,10 @@ DOCKER_BUILDKIT=1
 
 ### Pulling Existing Images
 
-Test environment images are stored on the GitHub container registry and can be referenced locally via the `docker`
+Pre-built images are stored on the GitHub container registry and can be referenced locally via the `docker`
 utility.
 For instructions on pulling images from GitHub, see the
-[official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
-.
+[official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
 Specific image versions can be used by specifying the desired docker tag.
 Using the sha256 hash as a tag is not recommended.
@@ -49,7 +48,9 @@ Instead, use the `latest` tag for the most recent build, or a tag corresponding 
 
 ### Using Images in GitHub Actions
 
-To run a GitHub actions job from within a container, specify the `container` option and include a setup step:
+To run a GitHub actions job from within a container, specify the `container` option.
+GitHub actions will not automatically launch the container entrypoint.
+Instead, you should include a dedicated setup step as follows:
 
 ```yaml
 jobs:
@@ -100,7 +101,7 @@ The installed Slurm instance is configured with the following Slurm partitions:
 | development  | partition1     |
 | development  | partition2     |
 
-The cluster als includes the following Slurm accounts:
+The installed Slurm instance also includes the following pre-built accounts:
 
 | Account Name | Slurm Description | Slurm Organization |
 |--------------|-------------------|--------------------|
