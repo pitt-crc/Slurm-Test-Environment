@@ -17,6 +17,9 @@ jobs:
         slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
 
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -35,11 +38,8 @@ jobs:
           docker container start -i rerun_test_container
           docker container rm rerun_test_container
 
-      - name: Test Slurm utilities are installed
-        run: |
-          docker run --rm test-image sacctmgr -V
-          docker run --rm test-image slurmctld -V
-          docker run --rm test-image slurmdbd -V
+      - name: Run bats tests
+        run: docker run  -i -v $(pwd)/tests:/tests test-image bats /tests
 
   # This is a dummy job used to facilitate branch protections
   build-successful:
