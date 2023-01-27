@@ -26,8 +26,19 @@ echo "Starting slurmctld..."
 mkdir -p /var/slurmstate
 chown slurm /var/slurmstate
 /usr/sbin/slurmctld -c
+
 # Wait for slurmctld to start up
-until scontrol ping | grep UP; do sleep 3; done
+timeout=0
+while [ $timeout -lt 20 ];
+do
+  echo "  Pinging slurmctld...";
+  if scontrol ping | grep -q 'UP'; then
+    echo "slurmctld is up";
+    break;
+  fi
+  sleep 5;
+  ((timeout=timeout+1));
+done
 
 if [ "$(sacctmgr show -np account account1)" ]; then
   echo "Mock accounts already exist"
