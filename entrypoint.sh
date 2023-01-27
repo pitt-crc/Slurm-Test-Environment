@@ -26,8 +26,7 @@ echo "Starting slurmctld..."
 mkdir -p /var/slurmstate
 chown slurm /var/slurmstate
 /usr/sbin/slurmctld -c
-# Wait for slurmctld to start up
-until scontrol ping | grep UP; do sleep 3; done
+
 # Wait for slurmctld to start up
 timeout=0
 until scontrol ping | grep UP;
