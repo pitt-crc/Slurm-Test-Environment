@@ -8,6 +8,7 @@ Dockerized environments for testing software against a variety of [Slurm](https:
 versions.
 See the [packages](https://github.com/orgs/pitt-crc/packages?repo_name=Slurm-Test-Environment) section of this
 repository for a full list of available containers.
+All images are built using the [Rocky 8](https://hub.docker.com/_/rockylinux) opperating system.
 
 ## Working with Images
 
