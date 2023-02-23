@@ -4,6 +4,7 @@ on:
   workflow_call:
   pull_request:
   push:
+    branches: [ "latest" ]
 
 jobs:
   build:
@@ -13,13 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - slurm-version: "20.02.5.1"
-            tags: "20.02.5.1"
-          - slurm-version: "20.11.9.1"
-            tags: "20.11.9.1"
-          - slurm-version: "22.05.2.1"
-            tags: "22.05.2.1,latest"
+        slurm-tag: [ "20.02.5.1", "20.11.9.1", "22.05.2.1" ]
 
     steps:
       - name: Checkout source
@@ -32,8 +27,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           load: true
-          tags: ${{ matrix.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: test-image
           build-args: SLURM_VERSION=${{ matrix.slurm-version }}
 
       - name: Test container is restartable
