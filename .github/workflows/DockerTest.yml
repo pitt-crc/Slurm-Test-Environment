@@ -19,7 +19,7 @@ jobs:
           - slurm-version: "20.11.9.1"
             tags: "20.11.9.1"
           - slurm-version: "22.05.2.1"
-            tags: "22.05.2.1", "latest"
+            tags: "22.05.2.1,latest"
 
     steps:
       - name: Checkout source
