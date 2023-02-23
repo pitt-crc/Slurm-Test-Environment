@@ -16,9 +16,6 @@ jobs:
       matrix:
         slurm-version: [ "20.02.5.1", "20.11.9.1", "22.05.2.1" ]
 
-    env:
-      image-tag: slurm-env:${{ matrix.slurm-version }}
-
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -30,18 +27,18 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           load: true
-          tags: ${{ env.image-tag }}
+          tags: test-image
           build-args: SLURM_VERSION=${{ matrix.slurm-version }}
 
       - name: Test container is restartable
         run: |
-          docker container create --name rerun_test_container ${{ env.image-tag }}
+          docker container create --name rerun_test_container test-image
           docker container start -i rerun_test_container
           docker container start -i rerun_test_container
           docker container rm rerun_test_container
 
       - name: Run bats tests
-        run: docker run  -i -v $(pwd)/tests:/tests ${{ env.image-tag }} bats /tests
+        run: docker run  -i -v $(pwd)/tests:/tests test-image bats /tests
 
   # This is a dummy job used to facilitate branch protections
   build-successful:
@@ -52,11 +49,4 @@ jobs:
     steps:
       - name: Report status
         shell: bash
-        run: |
-          if [[ success == ${{ needs.build.result }} ]]
-          then
-            echo "Builds were successful"
-          else
-            echo "One or more matrix jobs failed."
-            false
-          fi
+        run: if [[ success != ${{ needs.build.result }} ]]; then false; fi

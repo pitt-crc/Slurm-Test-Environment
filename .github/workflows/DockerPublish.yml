@@ -2,7 +2,11 @@ name: Publish Docker Images
 
 on:
   release:
+    pull_request:
     types: [ "released" ]
+
+env:
+  image-name: ghcr.io/${{ github.repository_owner }}/test-env
 
 jobs:
   build:
@@ -17,17 +21,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
+        include:
+          - slurm-version: 20.02.5.1
+            tags: ${{ env.image-name }}:20.02.5.1
+
+          - slurm-version: 20.11.9.1
+            tags: ${{ env.image-name }}:20.11.9.1
+
+          - slurm-version: 22.05.2.1
+            tags: ${{ env.image-name }}:22.05.2.1,${{ env.image-name }}:latest
 
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ghcr.io/${{ github.repository_owner }}/test-env-${{ matrix.slurm-tag }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
@@ -36,10 +42,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish built image
+      - name: Build and publish image
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: SLURM_TAG=${{ matrix.slurm-tag }}
+          tags: ${{ matrix.tags }}
+          build-args: SLURM_VERSION=${{ matrix.slurm-version }}
