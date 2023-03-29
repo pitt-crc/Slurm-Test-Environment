@@ -1,7 +1,7 @@
 FROM rockylinux:8
 
-ARG SLURM_TAG
-LABEL edu.pitt.crc.slurm-tag=$SLURM_TAG
+ARG SLURM_VERSION
+LABEL edu.pitt.crc.slurm-tag=$SLURM_VERSION
 
 # Install any required system tools
 RUN yum install -y epel-release  \
@@ -39,7 +39,7 @@ RUN /usr/bin/mysql_install_db \
   && chown -R mysql:mysql /var/log/mariadb/
 
 # Install Slurm
-COPY slurm_config/$SLURM_TAG/rpms.tar.gz rpms.tar.gz
+COPY slurm_config/$SLURM_VERSION/rpms.tar.gz rpms.tar.gz
 RUN tar -xf rpms.tar.gz rpms  \
     && rpm --install rpms/*.rpm  \
     && rm -rf rpms  \
@@ -49,8 +49,8 @@ RUN tar -xf rpms.tar.gz rpms  \
 RUN groupadd -r slurm && useradd -r -g slurm slurm
 
 # Add config file required for using Slurm
-COPY --chown=slurm slurm_config/$SLURM_TAG/slurm.conf /etc/slurm/slurm.conf
-COPY --chown=slurm --chmod=600 slurm_config/$SLURM_TAG/slurmdbd.conf /etc/slurm/slurmdbd.conf
+COPY --chown=slurm slurm_config/$SLURM_VERSION/slurm.conf /etc/slurm/slurm.conf
+COPY --chown=slurm --chmod=600 slurm_config/$SLURM_VERSION/slurmdbd.conf /etc/slurm/slurmdbd.conf
 
 # The entrypoint script starts the DB and defines necessary DB constructs
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

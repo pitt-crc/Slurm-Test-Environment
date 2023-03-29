@@ -14,12 +14,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        slurm-tag: [ "slurm-20-02-5-1", "slurm-20-11-9-1", "slurm-22-05-2-1" ]
+        slurm-version: [ "20.02.5.1", "20.11.9.1", "22.05.2.1" ]
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -28,8 +25,7 @@ jobs:
         with:
           load: true
           tags: test-image
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: SLURM_TAG=${{ matrix.slurm-tag }}
+          build-args: SLURM_VERSION=${{ matrix.slurm-version }}
 
       - name: Test container is restartable
         run: |
@@ -50,11 +46,4 @@ jobs:
     steps:
       - name: Report status
         shell: bash
-        run: |
-          if [[ success == ${{ needs.build.result }} ]]
-          then
-            echo "Builds were successful"
-          else
-            echo "One or more matrix jobs failed."
-            false
-          fi
+        run: if [[ success != ${{ needs.build.result }} ]]; then false; fi
