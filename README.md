@@ -1,10 +1,10 @@
-# Slurm Test Environments
+# SLURM Test Environments
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/86b83c73f89642dfad48f3a9ec1f0b66)](https://app.codacy.com/gh/pitt-crc/Slurm-Test-Environment/dashboard)
 [![](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerTest.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerTest.yml)
 [![](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerPublish.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerPublish.yml)
 
-Dockerized environments for testing software against a variety of [Slurm](https://slurm.schedmd.com/overview.html)
+Dockerized environments for testing software against a variety of [SLURM](https://slurm.schedmd.com/overview.html)
 versions.
 See the [packages](https://github.com/orgs/pitt-crc/packages?repo_name=Slurm-Test-Environment) section of this
 repository for a full list of available containers.
@@ -12,20 +12,20 @@ All images are built using the [Rocky 8](https://hub.docker.com/_/rockylinux) op
 
 ## Working with Images
 
-Refer to the sections below for examples on using the Slurm test environments in different situations.
+Refer to the sections below for examples on using the SLURM test environments in different situations.
 
 ### Building an Image Locally
 
-The Dockerfile is designed to be reusable for different Slurm versions.
-The slurm version needs to be specified when building an image.
-The following example builds an image using Slurm version 20.02.5.1:
+The Dockerfile is designed to be reusable for different SLURM versions.
+The SLURM version needs to be specified when building an image.
+The following example builds an image using SLURM version 20.02.5.1:
 
 ```bash
-docker build --build-arg SLURM_TAG=slurm-20-02-5-1 .
+docker build --build-arg SLURM_VERSION=20.02.5.1 .
 ```
 
-For a list of valid Slurm tags, see
-the [Slurm config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this
+For a list of valid SLURM version tags, see
+the [SLURM config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this
 repository.
 
 You will need to enable [Docker Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) to build
@@ -64,7 +64,7 @@ jobs:
   example_job:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/pitt-crc/test-env-slurm-20-11-9-1
+      image: ghcr.io/pitt-crc/test-env:20.11.9.1
 
     steps:
       - name: Setup environment
@@ -72,7 +72,7 @@ jobs:
 ```
 
 If you want to run a job several times using different containers
-(e.g., to test software against multiple Slurm versions)
+(e.g., to test software against multiple SLURM versions)
 use the `strategy` directive:
 
 ```yaml
@@ -82,13 +82,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        container:
-          - test-env-slurm-22-05-2-1
-          - test-env-slurm-20-11-9-1
-          - test-env-slurm-20-02-5-1
+        slurm_version:
+          - 22-05-2-1
+          - 20-11-9-1
+          - 20-02-5-1
 
     container:
-      image: ghcr.io/pitt-crc/${{ matrix.container }}
+      image: ghcr.io/pitt-crc/test-env:${{ matrix.slurm_version }}
 
     steps:
       - name: Setup environment
@@ -99,18 +99,18 @@ jobs:
 
 The test environment comes partially configured with various tools, running services, and mock data.
 
-### Slurm Configuration
+### SLURM Configuration
 
-The installed Slurm instance is configured with the following Slurm partitions:
+The installed SLURM instance is configured with the following SLURM partitions:
 
 | Cluster Name | Partition Name |
 |--------------|----------------|
 | development  | partition1     |
 | development  | partition2     |
 
-The installed Slurm instance also includes the following pre-built accounts:
+The installed SLURM instance also includes the following pre-built accounts:
 
-| Account Name | Slurm Description | Slurm Organization |
+| Account Name | SLURM Description | SLURM Organization |
 |--------------|-------------------|--------------------|
 | account1     | account1_desc     | account1_org       |
 | account2     | account2_desc     | account2_org       |
@@ -158,20 +158,20 @@ The following commandline tools are explicitly provided in the testing environme
 ## Adding a New Image
 
 Creating a new release from this repository will automatically build and publish new image versions.
-To add a new Slurm version to the build process, make the following changes:
+To add a new SLURM version to the build process, make the following changes:
 
-1. Add the necessary Slurm RPMs and config files to the `slurm_config` directory.
-   The name of the subdirectory should match the corresponding `SLURM_TAG` build argument.
+1. Add the necessary SLURM RPMs and config files to the `slurm_config` directory.
+   The name of the subdirectory should match the corresponding `SLURM_VERSION` build argument.
 2. Update the strategy matrix in the
    [testing](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerTest.yml)
    and [publication](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerPublish.yml)
-   workflows to include the new slurm tag.
+   workflows to include the new slurm version.
 
-### Building New Slurm RPMs
+### Building New SLURM RPMs
 
-Slurm RPMs can be built directly from the compressed Slurm distribution.
+SLURM RPMs can be built directly from the compressed SLURM distribution.
 The generated RPMs need to be recompressed as a directory called `rpms` before being added to the repository.
-The compressed archive should be named with the corresponding Slurm version.
+The compressed archive should be named with the corresponding SLURM version.
 
 ```bash
 rpmbuild -ta slurm*.tar.bz2
