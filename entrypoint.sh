@@ -29,7 +29,7 @@ chown slurm /var/slurmstate
 
 # Wait for slurmctld to start up
 timeout=0
-while [ $timeout -lt 20 ];
+while [ $timeout -lt 100 ];
 do
   echo "  Pinging slurmctld...";
   if scontrol ping | grep -q 'UP'; then
@@ -37,7 +37,7 @@ do
     break;
   fi
   sleep 5;
-  ((timeout=timeout+1));
+  ((timeout=timeout+5));
 done
 
 if [ "$(sacctmgr show -np account account1)" ]; then
