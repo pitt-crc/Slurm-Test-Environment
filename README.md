@@ -1,57 +1,53 @@
-# SLURM Test Environments
+# Slurm Test Environments
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/86b83c73f89642dfad48f3a9ec1f0b66)](https://app.codacy.com/gh/pitt-crc/Slurm-Test-Environment/dashboard)
 [![](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerTest.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerTest.yml)
 [![](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerPublish.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerPublish.yml)
 
-Dockerized environments for testing software against a variety of [SLURM](https://slurm.schedmd.com/overview.html)
-versions.
-See the [packages](https://github.com/orgs/pitt-crc/packages?repo_name=Slurm-Test-Environment) section of this
-repository for a full list of available containers.
-All images are built using the [Rocky 8](https://hub.docker.com/_/rockylinux) opperating system.
+Dockerized environments for testing software against a variety of [Slurm](https://slurm.schedmd.com/overview.html) versions. 
 
 ## Working with Images
 
-Refer to the sections below for examples on using the SLURM test environments in different situations.
+Refer to the sections below for examples on using the Slurm test environments in different situations.
+
+### Pulling Existing Images
+
+Pre-built images are stored on the GitHub container registry and can be referenced locally via the `docker` utility.
+For instructions on pulling images from GitHub, see the [official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+
+Specific Slurm versions can be requested using docker tags.
+For example, slurm version `aa.bb.c.d` can be pulled using:
+
+```bash
+  docker pull ghcr.io/pitt-crc/test-env:aa.bb.c.d
+```
+
+The `latest` tag points to the latest availible slurm version.
 
 ### Building an Image Locally
 
-The Dockerfile is designed to be reusable for different SLURM versions.
-The SLURM version needs to be specified when building an image.
-The following example builds an image using SLURM version 20.02.5.1:
-
-```bash
-docker build --build-arg SLURM_VERSION=20.02.5.1 .
-```
-
-For a list of valid SLURM version tags, see
-the [SLURM config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this
-repository.
-
-You will need to enable [Docker Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) to build
-the image.
+You will need to enable [Docker Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) to build the image.
 To do so, set the following environmental variable:
 
 ```bash
 DOCKER_BUILDKIT=1
 ```
 
+The Dockerfile is designed to be reusable for different Slurm versions.
+The Slurm version needs to be specified when building an image.
+The following example builds an image using Slurm version 20.02.5.1:
+
+```bash
+docker build --build-arg SLURM_VERSION=20.02.5.1 .
+```
+
+For a list of valid Slurm version tags, see the [SLURM config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this repository.
+
 Once you have built an image, the test suite can be run from within the docker container:
 
 ```bash
 docker run -v $(pwd)/tests:/tests -i [IMAGE NAME] bats /tests
 ```
-
-### Pulling Existing Images
-
-Pre-built images are stored on the GitHub container registry and can be referenced locally via the `docker`
-utility.
-For instructions on pulling images from GitHub, see the
-[official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
-
-Specific image versions can be used by specifying the desired docker tag.
-Using the sha256 hash as a tag is not recommended.
-Instead, use the `latest` tag for the most recent build, or a tag corresponding to a package release (e.g., `v0.1.0`).
 
 ### Using Images in GitHub Actions
 
@@ -71,9 +67,7 @@ jobs:
         run: /usr/local/bin/entrypoint.sh
 ```
 
-If you want to run a job several times using different containers
-(e.g., to test software against multiple SLURM versions)
-use the `strategy` directive:
+If you want to run a job several times using different containers (e.g., to test software against multiple Slurm versions) use the `strategy` directive:
 
 ```yaml
 jobs:
@@ -98,20 +92,21 @@ jobs:
 ## Testing Fixtures
 
 The test environment comes partially configured with various tools, running services, and mock data.
+All images are built using the [Rocky 8](https://hub.docker.com/_/rockylinux) opperating system.
 
-### SLURM Configuration
+### Slurm Configuration
 
-The installed SLURM instance is configured with the following SLURM partitions:
+The installed Slurm instance is configured with the following Slurm partitions:
 
 | Cluster Name | Partition Name |
-|--------------|----------------|
+| ------------ | -------------- |
 | development  | partition1     |
 | development  | partition2     |
 
-The installed SLURM instance also includes the following pre-built accounts:
+The installed Slurm instance also includes the following accounts:
 
-| Account Name | SLURM Description | SLURM Organization |
-|--------------|-------------------|--------------------|
+| Account Name | Slurm Description | Slurm Organization |
+| ------------ | ----------------- | ------------------ |
 | account1     | account1_desc     | account1_org       |
 | account2     | account2_desc     | account2_org       |
 
@@ -135,7 +130,7 @@ of the `pip` and `coverage` utilities. Installed Python versions include:
 Utilities are installed at following paths:
 
 | Executable Name             | Installed Path                       |
-|-----------------------------|--------------------------------------|
+| --------------------------- | ------------------------------------ |
 | `python[PYTHON-VERSION]`    | `/usr/bin/python[PYTHON-VERSION]`    |
 | `pip[PYTHON-VERSION]`       | `/usr/bin/pip[PYTHON-VERSION]`       |
 | `coverage-[PYTHON-VERSION]` | `/usr/bin/coverage-[PYTHON-VERSION]` |
@@ -143,7 +138,7 @@ Utilities are installed at following paths:
 For each Python install, the following utilities versions are guaranteed:
 
 | Package Name | Package Version |
-|--------------|-----------------|
+| ------------ | --------------- |
 | `coverage`   | `6.4`           |
 | `setuptools` | `64`            |
 | `pip`        | `21.3`          |
@@ -158,9 +153,9 @@ The following commandline tools are explicitly provided in the testing environme
 ## Adding a New Image
 
 Creating a new release from this repository will automatically build and publish new image versions.
-To add a new SLURM version to the build process, make the following changes:
+To add a new Slurm version to the build process, make the following changes:
 
-1. Add the necessary SLURM RPMs and config files to the `slurm_config` directory.
+1. Add the necessary Slurm RPMs and config files to the `slurm_config` directory.
    The name of the subdirectory should match the corresponding `SLURM_VERSION` build argument.
 2. Update the strategy matrix in the
    [testing](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerTest.yml)
@@ -169,9 +164,9 @@ To add a new SLURM version to the build process, make the following changes:
 
 ### Building New SLURM RPMs
 
-SLURM RPMs can be built directly from the compressed SLURM distribution.
+Slurm RPMs can be built directly from the compressed Slurm distribution.
 The generated RPMs need to be recompressed as a directory called `rpms` before being added to the repository.
-The compressed archive should be named with the corresponding SLURM version.
+The compressed archive should be named with the corresponding Slurm version.
 
 ```bash
 rpmbuild -ta slurm*.tar.bz2
