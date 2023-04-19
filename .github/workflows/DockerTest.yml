@@ -37,13 +37,14 @@ jobs:
       - name: Run bats tests
         run: docker run  -i -v $(pwd)/tests:/tests test-image bats /tests
 
-  # This is a dummy job used to facilitate branch protections
-  build-successful:
-    if: ${{ always() }}
-    name: Report Status
+
+ # Use this job for branch protection rules
+  report-test-status:
+    name: Report Test Status
     runs-on: ubuntu-latest
-    needs: [ build ]
+    needs: build
+    if: always()
     steps:
-      - name: Report status
-        shell: bash
-        run: if [[ success != ${{ needs.build.result }} ]]; then false; fi
+      - name: Check build status
+        if: ${{ contains(needs.*.result, 'failure') }} | ${{ contains(needs.*.result, 'skipped') }}
+        run: exit 1
