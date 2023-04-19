@@ -46,5 +46,5 @@ jobs:
     if: always()
     steps:
       - name: Check build status
-        if: ${{ contains(needs.*.result, 'failure') }} | ${{ contains(needs.*.result, 'skipped') }}
+        if: ${{ contains(needs.*.result, 'failure') }}
         run: exit 1
