@@ -22,6 +22,7 @@ For example, slurm version `aa.bb.c.d` can be pulled using:
   docker pull ghcr.io/pitt-crc/test-env:aa.bb.c.d
 ```
 
+A full list of availible versions is availible [here](https://github.com/pitt-crc/Slurm-Test-Environment/pkgs/container/test-env).
 The `latest` tag points to the latest availible slurm version.
 
 ### Building an Image Locally
@@ -161,6 +162,7 @@ To add a new Slurm version to the build process, make the following changes:
    [testing](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerTest.yml)
    and [publication](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerPublish.yml)
    workflows to include the new slurm version.
+   Always ensure the `latest` tag points to the correct image.
 
 ### Building New SLURM RPMs
 
