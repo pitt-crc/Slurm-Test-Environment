@@ -21,6 +21,10 @@ RUN yum install -y epel-release  \
       numactl-libs \
       perl-Switch \
       rrdtool-devel \
+      # Required for installing python version availible via yum
+      bzip2-devel \
+      libffi-devel \
+      openssl-devel \
       # General tools provided explicitly for use by downstream services
       bats \
       grep \
