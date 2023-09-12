@@ -4,7 +4,7 @@
 [![](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerTest.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerTest.yml)
 [![](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerPublish.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerPublish.yml)
 
-Dockerized environments for testing software against a variety of [Slurm](https://slurm.schedmd.com/overview.html) versions. 
+Dockerized environments for testing software against a variety of [Slurm](https://slurm.schedmd.com/overview.html) versions.
 
 ## Working with Images
 
@@ -12,34 +12,40 @@ Refer to the sections below for examples on using the Slurm test environments in
 
 ### Pulling Existing Images
 
-Pre-built images are stored on the GitHub container registry and can be referenced locally via the `docker` utility.
-For instructions on pulling images from GitHub, see the [official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+Published images are stored on the GitHub container registry and can be downloaded using `docker`.
+For instructions on authenticating against the GitHub registry, see the [official docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
 
-Specific Slurm versions can be requested using docker tags.
-For example, slurm version `aa.bb.c.d` can be pulled using:
+The `test_env` image can be pulled using standard `docker` commands:
 
 ```bash
-  docker pull ghcr.io/pitt-crc/test-env:aa.bb.c.d
+docker pull ghcr.io/pitt-crc/test-env
 ```
 
-A full list of availible versions is availible [here](https://github.com/pitt-crc/Slurm-Test-Environment/pkgs/container/test-env).
-The `latest` tag points to the latest availible slurm version.
+The default `latest` tag points to the most recent available slurm version.
+Specific Slurm versions can be requested by specifying the version as a tag.
+For example, slurm version `20.11.9.1` is pulled by running:
+
+```bash
+docker pull ghcr.io/pitt-crc/test-env:20.11.9.1
+```
+
+A full list of available versions can be found [here](https://github.com/pitt-crc/Slurm-Test-Environment/pkgs/container/test-env).
 
 ### Building an Image Locally
 
 You will need to enable [Docker Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) to build the image.
-To do so, set the following environmental variable:
+To do so, export the following environmental variable:
 
 ```bash
-DOCKER_BUILDKIT=1
+export DOCKER_BUILDKIT=1
 ```
 
 The Dockerfile is designed to be reusable for different Slurm versions.
 The Slurm version needs to be specified when building an image.
-The following example builds an image using Slurm version 20.02.5.1:
+The following example builds an image called `test_env:local` using Slurm version 20.02.5.1:
 
 ```bash
-docker build --build-arg SLURM_VERSION=20.02.5.1 .
+docker build --build-arg SLURM_VERSION=20.02.5.1 -t test_env:local .
 ```
 
 For a list of valid Slurm version tags, see the [SLURM config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this repository.
@@ -47,7 +53,7 @@ For a list of valid Slurm version tags, see the [SLURM config directory](https:/
 Once you have built an image, the test suite can be run from within the docker container:
 
 ```bash
-docker run -v $(pwd)/tests:/tests -i [IMAGE NAME] bats /tests
+docker run  -i -v $(pwd)/tests:/tests test_env:local bats /tests
 ```
 
 ### Using Images in GitHub Actions
@@ -93,21 +99,21 @@ jobs:
 ## Testing Fixtures
 
 The test environment comes partially configured with various tools, running services, and mock data.
-All images are built using the [Rocky 8](https://hub.docker.com/_/rockylinux) opperating system.
+All images are built using the [Rocky 8](https://hub.docker.com/_/rockylinux) operating system.
 
 ### Slurm Configuration
 
 The installed Slurm instance is configured with the following Slurm partitions:
 
 | Cluster Name | Partition Name |
-| ------------ | -------------- |
+|--------------|----------------|
 | development  | partition1     |
 | development  | partition2     |
 
 The installed Slurm instance also includes the following accounts:
 
 | Account Name | Slurm Description | Slurm Organization |
-| ------------ | ----------------- | ------------------ |
+|--------------|-------------------|--------------------|
 | account1     | account1_desc     | account1_org       |
 | account2     | account2_desc     | account2_org       |
 
