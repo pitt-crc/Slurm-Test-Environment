@@ -10,22 +10,22 @@ RUN yum install -y epel-release  \
       python38 \
       python39 \
       # Required for slurm
+      freeipmi \
+      hdf5-devel \
+      hwloc-libs \
+      libibmad \
+      mariadb-devel  \
+      mariadb-server \
       munge \
       munge-devel \
-      mariadb-server \
-      mariadb-devel  \
       numactl-libs \
-      hdf5-devel \
-      freeipmi \
-      libibmad \
-      rrdtool-devel \
       perl-Switch \
-      hwloc-libs \
+      rrdtool-devel \
       # General tools provided explicitly for use by downstream services
-      which \
+      bats \
       grep \
       make \
-      bats \
+      which \
   && yum clean all \
   && rm -rf /var/cache/yum
 
