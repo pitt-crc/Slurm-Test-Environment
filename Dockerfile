@@ -29,9 +29,9 @@ RUN yum install -y epel-release  \
   && yum clean all \
   && rm -rf /var/cache/yum
 
-# Install coverage utilities, latest version last
-RUN pip-3.8 install coverage==6.4 setuptools==64 pip==21.3 && pip-3.8 cache purge  && \
-    pip-3.9 install coverage==6.4 setuptools==64 pip==21.3 && pip-3.9 cache purge
+# Install more recent pip versions
+RUN pip-3.8 install pip==21.3 && pip-3.8 cache purge  && \
+    pip-3.9 install pip==21.3 && pip-3.9 cache purge
 
 # Install mariadb
 RUN /usr/bin/mysql_install_db \

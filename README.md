@@ -122,27 +122,13 @@ The following services are automatically launched when spinning up a new contain
 
 ### Python versions
 
-Multiple Python versions are provided in the test environment, each having dedicated installations
-of the `pip` and `coverage` utilities. Installed Python versions include:
+Multiple Python versions are provided in the test environment, each having dedicated a dedicated `pip` installation.
+Installed Python versions include:
 
 - 3.8
 - 3.9
 
-Utilities are installed at following paths:
-
-| Executable Name             | Installed Path                       |
-| --------------------------- | ------------------------------------ |
-| `python[PYTHON-VERSION]`    | `/usr/bin/python[PYTHON-VERSION]`    |
-| `pip[PYTHON-VERSION]`       | `/usr/bin/pip[PYTHON-VERSION]`       |
-| `coverage-[PYTHON-VERSION]` | `/usr/bin/coverage-[PYTHON-VERSION]` |
-
-For each Python install, the following utilities versions are guaranteed:
-
-| Package Name | Package Version |
-| ------------ | --------------- |
-| `coverage`   | `6.4`           |
-| `setuptools` | `64`            |
-| `pip`        | `21.3`          |
+All Python interpreters and utilities are installed in the standard location under `/usr/bin/`.
 
 ### General Utilities
 
