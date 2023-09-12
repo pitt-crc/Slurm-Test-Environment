@@ -128,7 +128,7 @@ Installed Python versions include:
 - 3.8
 - 3.9
 
-All Python interpreters are installed in the standard location under `/usr/bin/`.
+All Python interpreters and utilities are installed in the standard location under `/usr/bin/`.
 
 ### General Utilities
 
