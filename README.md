@@ -103,19 +103,19 @@ All images are built using the [Rocky 8](https://hub.docker.com/_/rockylinux) op
 
 ### Slurm Configuration
 
-The installed Slurm instance is configured with the following Slurm partitions:
+The installed Slurm instance is configured with the following clusters, partitions, and nodes:
 
-| Cluster Name | Partition Name |
-|--------------|----------------|
-| development  | partition1     |
-| development  | partition2     |
+| Cluster Name  | Partition Name | Nodes     |
+|---------------|----------------|-----------|
+| `development` | `partition1`   | `c[1-5]`  |
+| `development` | `partition2`   | `c[6-10]` |
 
-The installed Slurm instance also includes the following accounts:
+The following Slurm accounts are also included:
 
 | Account Name | Slurm Description | Slurm Organization |
 |--------------|-------------------|--------------------|
-| account1     | account1_desc     | account1_org       |
-| account2     | account2_desc     | account2_org       |
+| `account1`   | `account1_desc`   | `account1_org`     |
+| `account2`   | `account2_desc`   | `account2_org`     |
 
 ### Running services
 
@@ -128,20 +128,16 @@ The following services are automatically launched when spinning up a new contain
 
 ### Python versions
 
-Multiple Python versions are provided in the test environment, each having dedicated a dedicated `pip` installation.
-Installed Python versions include:
-
-- 3.8
-- 3.9
-
+Python versions 3.8 hrough 3.11 are included in the test environment, each having dedicated a dedicated `pip` installation.
 All Python interpreters and utilities are installed in the standard location under `/usr/bin/`.
 
 ### General Utilities
 
 The following commandline tools are explicitly provided in the testing environment.
 
-- ``which`` (Required for compatibility with some IDE docker integrations)
-- ``make``
+- `which` (Required for compatibility with some IDE docker integrations)
+- `bats`
+- `make`
 
 ## Adding a New Image
 
