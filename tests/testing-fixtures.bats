@@ -14,6 +14,11 @@
   [[ "$output" = *"PartitionName=partition2"* ]]
 }
 
+@test "nodes should be discoverable via sinfo" {
+    run sinfo -M development -N -o %N -h
+    [[ "$output" = "c1"*"c10" ]]
+}
+
 @test "dummy accounts should exist" {
     # Output from this command is blank if account does not exist
     run sacctmgr -n show assoc account=account1
