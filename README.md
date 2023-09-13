@@ -105,17 +105,17 @@ All images are built using the [Rocky 8](https://hub.docker.com/_/rockylinux) op
 
 The installed Slurm instance is configured with the following clusters, partitions, and nodes:
 
-| Cluster Name | Partition Name | Nodes   |
-|--------------|----------------|---------|
-| development  | partition1     | c[1-5]  |
-| development  | partition2     | c[6-10] |
+| Cluster Name  | Partition Name | Nodes     |
+|---------------|----------------|-----------|
+| `development` | `partition1`   | `c[1-5]`  |
+| `development` | `partition2`   | `c[6-10]` |
 
 The following Slurm accounts are also included:
 
 | Account Name | Slurm Description | Slurm Organization |
 |--------------|-------------------|--------------------|
-| account1     | account1_desc     | account1_org       |
-| account2     | account2_desc     | account2_org       |
+| `account1`   | `account1_desc`   | `account1_org`     |
+| `account2`   | `account2_desc`   | `account2_org`     |
 
 ### Running services
 
