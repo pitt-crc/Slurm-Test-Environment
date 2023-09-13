@@ -34,3 +34,19 @@
   echo "$output"
   [[ "$output" = "Coverage.py, version 6.4"* ]]
 }
+
+@test "python tools should be installed (python 3.10)" {
+  run python3.10 --version
+  [[ "$output" = "Python 3.9"* ]]
+
+  run pip3.10 --version
+  [[ "$output" = "pip 21.3"* ]]
+}
+
+@test "python tools should be installed (python 3.11)" {
+  run python3.11 --version
+  [[ "$output" = "Python 3.9"* ]]
+
+  run pip3.11 --version
+  [[ "$output" = "pip 21.3"* ]]
+}
