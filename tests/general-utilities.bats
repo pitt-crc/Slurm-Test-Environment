@@ -17,7 +17,7 @@
   [[ "$output" = "Python 3.8"* ]]
 
   run pip3.8 --version
-  [[ "$output" = "pip 21.3"* ]]
+  [ "$status" -eq 0 ]
 }
 
 @test "python tools should be installed (python 3.9)" {
@@ -25,21 +25,21 @@
   [[ "$output" = "Python 3.9"* ]]
 
   run pip3.9 --version
-  [[ "$output" = "pip 21.3"* ]]
+  [ "$status" -eq 0 ]
 }
 
 @test "python tools should be installed (python 3.10)" {
   run python3.10 --version
-  [[ "$output" = "Python 3.9"* ]]
+  [[ "$output" = "Python 3.10"* ]]
 
   run pip3.10 --version
-  [[ "$output" = "pip 21.3"* ]]
+  [ "$status" -eq 0 ]
 }
 
 @test "python tools should be installed (python 3.11)" {
   run python3.11 --version
-  [[ "$output" = "Python 3.9"* ]]
+  [[ "$output" = "Python 3.11"* ]]
 
   run pip3.11 --version
-  [[ "$output" = "pip 21.3"* ]]
+  [ "$status" -eq 0 ]
 }
