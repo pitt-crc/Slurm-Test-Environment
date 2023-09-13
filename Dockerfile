@@ -9,34 +9,48 @@ RUN yum install -y epel-release  \
       # Support multiple Python versions for downstream testing scenarios
       python38 \
       python39 \
+      python3.11 \
       # Required for slurm
+      freeipmi \
+      hdf5-devel \
+      hwloc-libs \
+      libibmad \
+      mariadb-devel  \
+      mariadb-server \
       munge \
       munge-devel \
-      mariadb-server \
-      mariadb-devel  \
       numactl-libs \
-      hdf5-devel \
-      freeipmi \
-      libibmad \
-      rrdtool-devel \
       perl-Switch \
-      hwloc-libs \
-      # General tools provided explicitly for use by downstream services
-      which \
+      rrdtool-devel \
+      # Required for installing python versions not availible via yum
+      bzip2-devel \
+      libffi-devel \
+      openssl-devel \
+      # General tools provided for use by downstream services
+      bats \
       grep \
       make \
-      bats \
+      which \
+      wget \
   && yum clean all \
   && rm -rf /var/cache/yum
 
+RUN wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz \
+    && tar -xzf Python-3.10.0.tgz \
+    && cd Python-3.10.0 \
+    && ./configure --enable-optimizations \
+    && make altinstall
+
 # Install more recent pip versions
-RUN pip-3.8 install pip==21.3 && pip-3.8 cache purge  && \
-    pip-3.9 install pip==21.3 && pip-3.9 cache purge
+RUN pip3.8 install --upgrade pip && pip3.8 cache purge && \
+    pip3.9 install --upgrade pip && pip3.9 cache purge && \
+    pip3.10 install --upgrade pip && pip3.10 cache purge && \
+    pip3.11 install --upgrade pip && pip3.11 cache purge
 
 # Install mariadb
 RUN /usr/bin/mysql_install_db \
   && chown -R mysql:mysql /var/lib/mysql \
-  && chown -R mysql:mysql /var/log/mariadb/
+  && chown -R mysql:mysql /var/log/mariadb
 
 # Install Slurm
 COPY slurm_config/$SLURM_VERSION/rpms.tar.gz rpms.tar.gz
