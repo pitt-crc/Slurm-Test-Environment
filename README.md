@@ -84,9 +84,14 @@ jobs:
       fail-fast: false
       matrix:
         slurm_version:
-          - 22-05-2-1
-          - 20-11-9-1
-          - 20-02-5-1
+          - "20.02.5.1"
+          - "20.11.9.1"
+          - "22.05.2.1"
+        python_version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
 
     container:
       image: ghcr.io/pitt-crc/test-env:${{ matrix.slurm_version }}
