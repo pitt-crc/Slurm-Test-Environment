@@ -1,8 +1,6 @@
 # Slurm Test Environments
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/86b83c73f89642dfad48f3a9ec1f0b66)](https://app.codacy.com/gh/pitt-crc/Slurm-Test-Environment/dashboard)
-[![](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerTest.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerTest.yml)
-[![](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerPublish.yml/badge.svg)](https://github.com/pitt-crc/Slurm-Test-Environment/actions/workflows/DockerPublish.yml)
 
 Dockerized environments for testing software against a variety of [Slurm](https://slurm.schedmd.com/overview.html) versions.
 
