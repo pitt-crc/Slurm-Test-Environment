@@ -22,6 +22,11 @@ RUN yum install -y epel-release  \
       numactl-libs \
       perl-Switch \
       rrdtool-devel \
+      # Required by the Slurm REST API \
+      http-parser \
+      libjwt \
+      libyaml \
+      json-c \
       # Required for installing python versions not availible via yum
       bzip2-devel \
       libffi-devel \
