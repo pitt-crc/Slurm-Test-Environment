@@ -1,0 +1,33 @@
+FROM rockylinux:8 as slurmbuild
+
+ARG SLURM_VERSION
+LABEL edu.pitt.crc.slurm-tag=$SLURM_VERSION
+
+# Install any required system tools
+RUN yum install -y epel-release  \
+  && yum install -y --enablerepo=powertools \
+      # Required for slurm
+      rocm-device-libs \
+      hwloc-devel \
+      hdf5-devel \
+      man2html \
+      libibumad \
+      freeipmi-devel \
+      lua-devel \
+      munge-devel \
+      mariadb-devel \
+      numactl-devel \
+      pam-devel \
+      pmix-devel \
+      readline-devel \
+      http-parser-devel \
+      json-c-devel \
+      libyaml-devel \
+      libjwt-devel \
+      rrdtool-devel \
+      perl-ExtUtils-MakeMaker \
+      libbpf-devel \
+      dbus-devel \
+      git 
+  && yum clean all \
+  && rm -rf /var/cache/yum
