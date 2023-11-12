@@ -7,7 +7,7 @@ LABEL edu.pitt.crc.slurm-tag=$SLURM_VERSION
 RUN yum install -y epel-release  \
   && yum install -y --enablerepo=powertools \
       # Required for slurm
-      rocm-device-libs \
+      #rocm-device-libs \
       hwloc-devel \
       hdf5-devel \
       man2html \
@@ -28,6 +28,14 @@ RUN yum install -y epel-release  \
       perl-ExtUtils-MakeMaker \
       libbpf-devel \
       dbus-devel \
-      git 
+      git \
+      rpm-build \
+      wget \
+      python3 \
+      make \
   && yum clean all \
   && rm -rf /var/cache/yum
+
+RUN wget https://download.schedmd.com/slurm/slurm-$SLURM_VERSION.tar.bz2 \
+    && rpmbuild -ta slurm-$SLURM_VERSION.tar.bz2 --with slurmrestd \
+    && rm -rf slurm-$SLURM_VERSION.tar.bz2
