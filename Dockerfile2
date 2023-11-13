@@ -91,7 +91,12 @@ RUN /usr/bin/mysql_install_db \
   && chown -R mysql:mysql /var/log/mariadb
 
 # Install Slurm
-RUN yum localinstall --enablerepo=powertools -y /root/*.rpm \
+RUN yum localinstall --enablerepo=powertools -y \
+    /root/slurm-$SLURM_VERSION*.rpm \
+    /root/slurm-slurmctld-$SLURM_VERSION*.rpm \
+    /root/slurm-slurmd-$SLURM_VERSION*.rpm \
+    /root/slurm-slurmdbd-$SLURM_VERSION*.rpm \
+    /root/slurm-slurmrestd-$SLURM_VERSION*.rpm \
     && yum clean all \
     && rm -rf /var/cache/yum
 
