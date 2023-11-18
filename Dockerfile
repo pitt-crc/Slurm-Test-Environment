@@ -109,6 +109,15 @@ RUN yum localinstall --enablerepo=powertools -y \
     && rm -rf /var/cache/yum \
     && rm -rf /root/slurm*.rpm
 
+RUN yum remove -y \
+    bzip2-devel \
+    libffi-devel \
+    openssl-devel \
+    make \
+    which \
+    wget \
+    gcc
+
 # Slurm requires a dedicated user/group to run
 RUN groupadd -r slurm && useradd -r -g slurm slurm
 
