@@ -40,7 +40,13 @@ RUN wget https://download.schedmd.com/slurm/slurm-$SLURM_VERSION.tar.bz2 \
     && rm -rf slurm-$SLURM_VERSION.tar.bz2
 
 FROM rockylinux:8
-COPY --from=slurmbuild /root/rpmbuild/RPMS/x86_64/*.rpm /root
+COPY --from=slurmbuild \
+    /root/rpmbuild/RPMS/x86_64/slurm-$SLURM_VERSION*.rpm \
+    /root/rpmbuild/RPMS/x86_64/slurm-slurmctld-$SLURM_VERSION*.rpm \
+    /root/rpmbuild/RPMS/x86_64/slurm-slurmd-$SLURM_VERSION*.rpm \
+    /root/rpmbuild/RPMS/x86_64/slurm-slurmdbd-$SLURM_VERSION*.rpm \
+    /root/rpmbuild/RPMS/x86_64/slurm-slurmrestd-$SLURM_VERSION*.rpm \
+    /root/
 
 ARG SLURM_VERSION
 LABEL edu.pitt.crc.slurm-tag=$SLURM_VERSION
