@@ -116,7 +116,9 @@ RUN yum remove -y \
     make \
     which \
     wget \
-    gcc
+    gcc \
+    && yum clean all \
+    && rm -rf /var/cache/yum
 
 # Slurm requires a dedicated user/group to run
 RUN groupadd -r slurm && useradd -r -g slurm slurm
