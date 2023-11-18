@@ -83,7 +83,9 @@ RUN wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz \
     && tar -xzf Python-3.10.0.tgz \
     && cd Python-3.10.0 \
     && ./configure --enable-optimizations \
-    && make altinstall
+    && make altinstall \
+    && cd / && rm -rf Python-3.10.0.tgz \
+    && rm -rf Python-3.10.0
 
 # Install more recent pip versions
 RUN pip3.8 install --upgrade pip && pip3.8 cache purge && \
@@ -104,7 +106,8 @@ RUN yum localinstall --enablerepo=powertools -y \
     /root/slurm-slurmdbd-$SLURM_VERSION*.rpm \
     /root/slurm-slurmrestd-$SLURM_VERSION*.rpm \
     && yum clean all \
-    && rm -rf /var/cache/yum
+    && rm -rf /var/cache/yum \
+    && rm -rf /root/slurm*.rpm
 
 # Slurm requires a dedicated user/group to run
 RUN groupadd -r slurm && useradd -r -g slurm slurm
