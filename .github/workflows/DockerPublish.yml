@@ -34,6 +34,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Define Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -46,4 +50,5 @@ jobs:
         with:
           push: true
           tags: ${{ matrix.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           build-args: SLURM_VERSION=${{ matrix.slurm-version }}
