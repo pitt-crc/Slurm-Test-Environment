@@ -113,8 +113,6 @@ RUN yum remove -y \
     bzip2-devel \
     libffi-devel \
     openssl-devel \
-    make \
-    which \
     wget \
     gcc \
     && yum clean all \
