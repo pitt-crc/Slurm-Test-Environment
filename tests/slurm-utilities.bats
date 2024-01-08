@@ -60,6 +60,11 @@
   [ "$status" -eq 0 ]
 }
 
+@test "slurmrestd should be installed" {
+  run slurmrestd -V
+  [ "$status" -eq 0 ]
+}
+
 @test "slurmctld should be running" {
   run scontrol ping
   [ "$status" -eq 0 ]
