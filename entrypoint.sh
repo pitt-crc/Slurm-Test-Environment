@@ -46,7 +46,7 @@ do
 done
 
 echo "Starting slurmrestd..."
-/usr/sbin/slurmrestd unix:/var/lib/slurmrestd.socket 0.0.0.0:6820
+SLURM_JWT=daemon /usr/sbin/slurmrestd -u slurm 0.0.0.0:6820 &
 
 if [ "$(sacctmgr show -np account account1)" ]; then
   echo "Mock accounts already exist"
