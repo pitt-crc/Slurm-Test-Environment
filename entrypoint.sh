@@ -45,6 +45,9 @@ do
   ((timeout=timeout+5));
 done
 
+echo "Starting slurmrestd..."
+/usr/sbin/slurmrestd unix:/var/lib/slurmrestd.socket 0.0.0.0:6820
+
 if [ "$(sacctmgr show -np account account1)" ]; then
   echo "Mock accounts already exist"
 else
