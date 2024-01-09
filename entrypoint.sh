@@ -18,13 +18,18 @@ echo "Create munge key..."
 echo "Starting munge..."
 /usr/sbin/runuser -u munge -- /usr/sbin/munged
 
+echo "Creating JWT key..."
+mkdir -p /var/slurmstate
+chown slurm /var/slurmstate
+/bin/dd if=/dev/random of=/var/slurmstate/jwt_hs256.key bs=32 count=1
+chown slurm:slurm /var/slurmstate/jwt_hs256.key
+chmod 0600 /var/slurmstate/jwt_hs256.key
+
 echo "Starting slurmdbd..."
 /usr/sbin/slurmdbd
 sleep 3 # Wait for slurmdbd to start up
 
 echo "Starting slurmctld..."
-mkdir -p /var/slurmstate
-chown slurm /var/slurmstate
 /usr/sbin/slurmctld -c
 
 # Wait for slurmctld to start up
