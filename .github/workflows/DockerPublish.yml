@@ -18,17 +18,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - slurm-version: 20.02.5.1
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:20.02.5.1
+          - slurm-version: 20.11.9
+            tags: ghcr.io/${{ github.repository_owner }}/test-env:20.11.9
 
           - slurm-version: 20.11.9.1
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:20.11.9.1
+            tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.2
 
-          - slurm-version: 22.05.2.1
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.2.1
+          - slurm-version: 22.05.11
+            tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.11
 
-          - slurm-version: 23.02.5.1
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:23.02.5.1,ghcr.io/${{ github.repository_owner }}/test-env:latest
+          - slurm-version: 23.02.5
+            tags: ghcr.io/${{ github.repository_owner }}/test-env:23.02.5,ghcr.io/${{ github.repository_owner }}/test-env:latest
 
     steps:
       - name: Set up Docker Buildx
