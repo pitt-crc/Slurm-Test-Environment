@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  release:
+    types: [ "released" ]
+
+jobs:
+  matrix:
+    name: Matrix
+    uses: ./.github/workflows/Matrix.yml
+
+  build:
+    name: Build
+    needs: [ matrix ]
+    uses: ./.github/workflows/DockerBuild.yml
+    with:
+      matrix: ${{ needs.matrix.outputs.matrix }}
+
+  test:
+    name: Test
+    needs: [ matrix, build ]
+    uses: ./.github/workflows/DockerTest.yml
+    with:
+      matrix: ${{ needs.matrix.outputs.matrix }}
+
+  publish:
+    name: Publish
+    needs: [ matrix, build, test ]
+    uses: ./.github/workflows/DockerPublish.yml
+    with:
+      matrix: ${{ needs.matrix.outputs.matrix }}
