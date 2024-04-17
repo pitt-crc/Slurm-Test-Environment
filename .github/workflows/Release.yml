@@ -7,25 +7,25 @@ on:
 jobs:
   matrix:
     name: Matrix
-    uses: .github/workflows/matrix.yml
+    uses: ./.github/workflows/Matrix.yml
 
   build:
     name: Test
     needs: [ matrix ]
-    uses: .github/workflows/DockerBuild.yml
+    uses: ./.github/workflows/DockerBuild.yml
     with:
       matrix: ${{ needs.matrix.outputs.matrix }}
 
   test:
     name: Test
     needs: [ matrix, build ]
-    uses: .github/workflows/DockerTest.yml
+    uses: ./.github/workflows/DockerTest.yml
     with:
       matrix: ${{ needs.matrix.outputs.matrix }}
 
   publish:
     name: Test
     needs: [ matrix, build, test ]
-    uses: .github/workflows/DockerPublish.yml
+    uses: ./.github/workflows/DockerPublish.yml
     with:
       matrix: ${{ needs.matrix.outputs.matrix }}
