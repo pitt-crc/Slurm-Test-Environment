@@ -9,7 +9,7 @@ on:
 
 jobs:
   matrix:
-    name: Define Matrix
+    name: Load Build Matrix
     runs-on: ubuntu-latest
 
     outputs:

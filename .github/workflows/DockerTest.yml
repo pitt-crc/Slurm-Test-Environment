@@ -32,13 +32,16 @@ jobs:
 
       - name: Test container is restartable
         run: |
-          docker container create --name rerun_test_container test-image
+          image_name="ghcr.io/pitt-crc/test-env:${{ matrix.slurm-version }}"
+          docker container create --name rerun_test_container $image_name
           docker container start -i rerun_test_container
           docker container start -i rerun_test_container
           docker container rm rerun_test_container
 
       - name: Run bats tests
-        run: docker run  -i -v $(pwd)/tests:/tests test-image bats /tests
+        run: |
+          image_name="ghcr.io/pitt-crc/test-env:${{ matrix.slurm-version }}"
+          docker run  -i -v $(pwd)/tests:/tests $image_name bats /tests
 
  # Use this job for branch protection rules
   report-test-status:
