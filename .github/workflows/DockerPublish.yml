@@ -29,6 +29,13 @@ jobs:
       - name: Load image
         run: docker load --input /tmp/image.tar
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Define Docker metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -37,17 +44,10 @@ jobs:
           labels: |
             edu.pitt.crc.slurm-tag=${{ matrix.slurm-version }}
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+      - name: Build and publish image
+        uses: docker/build-push-action@v5
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      #- name: Build and publish image
-      #  uses: docker/build-push-action@v5
-      #  with:
-      #    push: true
-      #    tags: ${{ matrix.image-tags }}
-      #    labels: ${{ steps.meta.outputs.labels }}
-      #    build-args: SLURM_VERSION=${{ matrix.slurm-version }}
+          push: true
+          tags: ${{ matrix.image-tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: SLURM_VERSION=${{ matrix.slurm-version }}
