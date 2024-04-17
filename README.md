@@ -19,15 +19,10 @@ The `test_env` image can be pulled using standard `docker` commands:
 docker pull ghcr.io/pitt-crc/test-env
 ```
 
-The default `latest` tag points to the most recent available slurm version.
+The default `latest` tag points to image with the most recent Slurm version.
+This is not always the same as the version most recently published by Slurm.
 Specific Slurm versions can be requested by specifying the version as a tag.
-For example, slurm version `20.11.9.1` is pulled by running:
-
-```bash
-docker pull ghcr.io/pitt-crc/test-env:20.11.9.1
-```
-
-A full list of available versions can be found [here](https://github.com/pitt-crc/Slurm-Test-Environment/pkgs/container/test-env).
+See [here](https://github.com/pitt-crc/Slurm-Test-Environment/pkgs/container/test-env) for all availible tags.
 
 ### Building an Image Locally
 
