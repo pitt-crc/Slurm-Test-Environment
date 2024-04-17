@@ -5,34 +5,35 @@ on:
     types: [ "released" ]
 
 jobs:
-  build:
-    name: Test Images
+  test:
+    name: Test
     uses: ./.github/workflows/DockerTest.yml
 
   publish:
     runs-on: ubuntu-latest
     name: Publish Images
-    needs: [ build ]
+    needs: [ test ]
 
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - slurm-version: 20.11.9
-            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:20.11.9
-
-          - slurm-version: 22.05.2
-            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.2
-
-          - slurm-version: 22.05.11
-            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.11
-
-          - slurm-version: 23.02.5
-            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:23.02.5,ghcr.io/${{ github.repository_owner }}/test-env:latest
+      matrix: ${{ fromJson(needs.test.outputs.matrix) }}
 
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Fetch image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: slurm-${{ matrix.slurm-version }}
+          path: /tmp
+
+      - name: Load image
+        run: docker load --input /tmp/image.tar
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Define Docker metadata
         id: meta
@@ -41,13 +42,6 @@ jobs:
           images: ${{ matrix.image-tags }}
           labels: |
             edu.pitt.crc.slurm-tag=${{ matrix.slurm-version }}
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and publish image
         uses: docker/build-push-action@v5

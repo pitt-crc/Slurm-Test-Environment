@@ -1,48 +1,57 @@
-name: Test Docker Images
+name: Test
 
 on:
   workflow_call:
+    outputs:
+      matrix:
+        description: "The strategy matrix used to build images"
+        value: ${{ jobs.build.outputs.matrix }}
   pull_request:
   push:
     branches: [ "latest" ]
 
 jobs:
   build:
+    name: Build
+    uses: ./.github/workflows/DockerBuild.yml
+
+  test:
     runs-on: ubuntu-latest
     name: Test Images
+    needs: build
 
     strategy:
       fail-fast: false
-      matrix:
-        slurm-version: [ "20.11.9", "22.05.2", "22.05.11", "23.02.5" ]
+      matrix: ${{ fromJson(needs.build.outputs.matrix) }}
 
     steps:
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v5
+      - name: Fetch image artifact
+        uses: actions/download-artifact@v4
         with:
-          load: true
-          tags: test-image
-          build-args: SLURM_VERSION=${{ matrix.slurm-version }}
+          name: slurm-${{ matrix.slurm-version }}
+          path: /tmp
+
+      - name: Load image
+        run: docker load --input /tmp/image.tar
 
       - name: Test container is restartable
         run: |
-          docker container create --name rerun_test_container test-image
+          image_name="ghcr.io/pitt-crc/test-env:${{ matrix.slurm-version }}"
+          docker container create --name rerun_test_container $image_name
           docker container start -i rerun_test_container
           docker container start -i rerun_test_container
           docker container rm rerun_test_container
 
       - name: Run bats tests
-        run: docker run  -i -v $(pwd)/tests:/tests test-image bats /tests
-
+        run: |
+          image_name="ghcr.io/pitt-crc/test-env:${{ matrix.slurm-version }}"
+          docker run  -i -v $(pwd)/tests:/tests $image_name bats /tests
 
  # Use this job for branch protection rules
   report-test-status:
     name: Report Test Status
     runs-on: ubuntu-latest
-    needs: build
+    needs: test
     if: always()
     steps:
       - name: Check build status
