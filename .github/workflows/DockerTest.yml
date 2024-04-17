@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build
-    uses: ./.github/workflows/DockerTest.yml
+    uses: ./.github/workflows/DockerBuild.yml
 
   test:
     runs-on: ubuntu-latest
