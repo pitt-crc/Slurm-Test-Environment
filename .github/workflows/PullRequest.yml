@@ -8,7 +8,7 @@ on:
 jobs:
   matrix:
     name: Matrix
-    uses: ./.github/workflows/matrix.yml
+    uses: ./.github/workflows/Matrix.yml
 
   build:
     name: Test
