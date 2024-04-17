@@ -12,6 +12,7 @@ jobs:
 
   test:
     name: Test
+    needs: build
     uses: ./.github/workflows/DockerTest.yml
 
   publish:
