@@ -14,6 +14,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: Test Images
+    needs:
+      - build
 
     strategy:
       fail-fast: false
