@@ -8,12 +8,10 @@ on:
         required: true
         description: "The strategy matrix used to build images"
 
-
 jobs:
   build:
     name: Build Images
     runs-on: ubuntu-latest
-    needs: matrix
 
     strategy:
       fail-fast: false
