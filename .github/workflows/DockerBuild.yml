@@ -1,0 +1,37 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      matrix:
+        type: string
+        required: true
+        description: "The strategy matrix used to build images"
+
+jobs:
+  build:
+    name: Build Images
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(inputs.matrix) }}
+
+    steps:
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v5
+        with:
+          tags: ${{ matrix.image-tags }}
+          outputs: type=docker,dest=/tmp/image.tar
+          build-args: SLURM_VERSION=${{ matrix.slurm-version }}
+          cache-from: type=gha,scope=build-${{ github.ref_name }}-${{ matrix.slurm-version }}
+          cache-to: type=gha,mode=max,scope=build-${{ github.ref_name }}-${{ matrix.slurm-version }}
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: slurm-${{ matrix.slurm-version }}
+          path: /tmp/image.tar

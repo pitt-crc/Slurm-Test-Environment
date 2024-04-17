@@ -1,42 +1,31 @@
-name: Publish Docker Images
+name: Publish
 
 on:
-  release:
-    types: [ "released" ]
+  workflow_call:
+    inputs:
+      matrix:
+        type: string
+        required: true
+        description: "The strategy matrix used to build images"
 
 jobs:
-  build:
-    name: Test Images
-    uses: ./.github/workflows/DockerTest.yml
-
   publish:
     runs-on: ubuntu-latest
     name: Publish Images
-    needs: [ build ]
 
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - slurm-version: 20.02.5.1
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:20.02.5.1
-
-          - slurm-version: 20.11.9.1
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:20.11.9.1
-
-          - slurm-version: 22.05.2.1
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.2.1
-
-          - slurm-version: 23.02.5.1
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:23.02.5.1,ghcr.io/${{ github.repository_owner }}/test-env:latest
+      matrix: ${{ fromJson(inputs.matrix) }}
 
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Fetch image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: slurm-${{ matrix.slurm-version }}
+          path: /tmp
 
-      - name: Define Docker metadata
-        id: meta
-        uses: docker/metadata-action@v5
+      - name: Load image
+        run: docker load --input /tmp/image.tar
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -45,10 +34,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Define Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ matrix.image-tags }}
+          labels: |
+            edu.pitt.crc.slurm-tag=${{ matrix.slurm-version }}
+
       - name: Build and publish image
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ matrix.tags }}
+          tags: ${{ matrix.image-tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: SLURM_VERSION=${{ matrix.slurm-version }}

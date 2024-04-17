@@ -35,6 +35,7 @@ RUN yum install -y epel-release  \
   && yum clean all \
   && rm -rf /var/cache/yum
 
+# Build Slurm RPMs
 RUN wget https://download.schedmd.com/slurm/slurm-$SLURM_VERSION.tar.bz2 \
     && rpmbuild -ta slurm-$SLURM_VERSION.tar.bz2 --with slurmrestd \
     && rm -rf slurm-$SLURM_VERSION.tar.bz2
@@ -49,7 +50,6 @@ COPY --from=slurmbuild \
     /root/
 
 ARG SLURM_VERSION
-LABEL edu.pitt.crc.slurm-tag=$SLURM_VERSION
 
 # Install any required system tools
 RUN yum install -y epel-release  \
@@ -58,6 +58,8 @@ RUN yum install -y epel-release  \
       python38 \
       python39 \
       python3.11 \
+      python3.11-pip \
+      # Required by Slurm
       mariadb-server \
       munge \
       # Required by the Slurm REST API \
@@ -65,20 +67,21 @@ RUN yum install -y epel-release  \
       libjwt \
       libyaml \
       json-c \
-      # Required for installing python versions not availible via yum
+      # Required for installing python versions not available via yum
       bzip2-devel \
       libffi-devel \
       openssl-devel \
+      wget \
+      gcc \
       # General tools provided for use by downstream services
       bats \
       grep \
       make \
       which \
-      wget \
-      gcc \
   && yum clean all \
   && rm -rf /var/cache/yum
 
+# Install Python versions not availible via yum
 RUN wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz \
     && tar -xzf Python-3.10.0.tgz \
     && cd Python-3.10.0 \
@@ -86,6 +89,16 @@ RUN wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz \
     && make altinstall \
     && cd / && rm -rf Python-3.10.0.tgz \
     && rm -rf Python-3.10.0
+
+# Clean up tools required for building Python
+RUN yum remove -y \
+    bzip2-devel \
+    libffi-devel \
+    openssl-devel \
+    wget \
+    gcc \
+    && yum clean all \
+    && rm -rf /var/cache/yum
 
 # Install more recent pip versions
 RUN pip3.8 install --upgrade pip && pip3.8 cache purge && \
@@ -109,23 +122,14 @@ RUN yum localinstall --enablerepo=powertools -y \
     && rm -rf /var/cache/yum \
     && rm -rf /root/slurm*.rpm
 
-RUN yum remove -y \
-    bzip2-devel \
-    libffi-devel \
-    openssl-devel \
-    wget \
-    gcc \
-    && yum clean all \
-    && rm -rf /var/cache/yum
 
 # Slurm requires a dedicated user/group to run
 RUN groupadd -r slurm && useradd -r -g slurm slurm
 
-# Add config file required for using Slurm
+# Add Slurm config files
 COPY --chown=slurm slurm_config/$SLURM_VERSION/slurm.conf /etc/slurm/slurm.conf
 COPY --chown=slurm --chmod=600 slurm_config/$SLURM_VERSION/slurmdbd.conf /etc/slurm/slurmdbd.conf
 
 # The entrypoint script starts the DB and defines necessary DB constructs
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
