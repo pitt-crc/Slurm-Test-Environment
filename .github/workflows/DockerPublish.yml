@@ -21,7 +21,7 @@ jobs:
           - slurm-version: 20.11.9
             tags: ghcr.io/${{ github.repository_owner }}/test-env:20.11.9
 
-          - slurm-version: 20.11.9.1
+          - slurm-version: 22.05.2
             tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.2
 
           - slurm-version: 22.05.11
