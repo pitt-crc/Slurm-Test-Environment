@@ -27,6 +27,8 @@ jobs:
           tags: ${{ matrix.image-tags }}
           outputs: type=docker,dest=/tmp/image.tar
           build-args: SLURM_VERSION=${{ matrix.slurm-version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Upload image artifact
         uses: actions/upload-artifact@v4
