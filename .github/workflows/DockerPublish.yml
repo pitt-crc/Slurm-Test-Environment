@@ -1,6 +1,7 @@
 name: Publish Docker Images
 
 on:
+  pull_request:
   release:
     types: [ "released" ]
 
@@ -16,7 +17,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     name: Publish Images
-    needs: [ test ]
+    needs: [ build, test ]
 
     strategy:
       fail-fast: false
@@ -47,10 +48,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and publish image
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: ${{ matrix.image-tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: SLURM_VERSION=${{ matrix.slurm-version }}
+      #- name: Build and publish image
+      #  uses: docker/build-push-action@v5
+      #  with:
+      #    push: true
+      #    tags: ${{ matrix.image-tags }}
+      #    labels: ${{ steps.meta.outputs.labels }}
+      #    build-args: SLURM_VERSION=${{ matrix.slurm-version }}

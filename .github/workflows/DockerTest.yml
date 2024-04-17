@@ -1,4 +1,4 @@
-name: Test Images
+name: Test
 
 on:
   workflow_call:
@@ -45,7 +45,7 @@ jobs:
 
  # Use this job for branch protection rules
   report-test-status:
-    name: Report Test Status
+    name: Report Status
     runs-on: ubuntu-latest
     needs: test
     if: always()
