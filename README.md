@@ -22,7 +22,7 @@ docker pull ghcr.io/pitt-crc/test-env
 The default `latest` tag points to image with the most recent Slurm version.
 This is not always the same as the version most recently published by Slurm.
 Specific Slurm versions can be requested by specifying the version as a tag.
-See [here](https://github.com/pitt-crc/Slurm-Test-Environment/pkgs/container/test-env) for all availible tags.
+See [here](https://github.com/pitt-crc/Slurm-Test-Environment/pkgs/container/test-env) for all available tags.
 
 ### Building an Image Locally
 
@@ -35,10 +35,10 @@ export DOCKER_BUILDKIT=1
 
 The Dockerfile is designed to be reusable for different Slurm versions.
 The Slurm version needs to be specified when building an image.
-The following example builds an image called `test_env:local` using Slurm version 20.02.5.1:
+The following example builds an image called `test_env:local` using Slurm version 23.02.5:
 
 ```bash
-docker build --build-arg SLURM_VERSION=20.02.5.1 -t test_env:local .
+docker build --build-arg SLURM_VERSION=23.02.5 -t test_env:local .
 ```
 
 For a list of valid Slurm version tags, see the [SLURM config directory](https://github.com/pitt-crc/Slurm-Test-Environment/tree/latest/slurm_config) in this repository.
@@ -60,7 +60,7 @@ jobs:
   example_job:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/pitt-crc/test-env:20.11.9.1
+      image: ghcr.io/pitt-crc/test-env:23.02.5
 
     steps:
       - name: Setup environment
