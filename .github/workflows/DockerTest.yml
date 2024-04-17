@@ -1,4 +1,4 @@
-name: Test Docker Images
+name: Test Images
 
 on:
   workflow_call:
@@ -18,18 +18,17 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ needs.build.outputs.matrix }}
+      matrix: ${{ fromJson(needs.build.outputs.matrix) }}
 
     steps:
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v5
+      - name: Fetch image artifact
+        uses: actions/download-artifact@v4
         with:
-          load: true
-          tags: test-image
-          build-args: SLURM_VERSION=${{ matrix.slurm-version }}
+          name: slurm-${{ matrix.slurm-version }}
+          path: /tmp
+
+      - name: Load image
+        run: docker load --input /tmp/image.tar
 
       - name: Test container is restartable
         run: |
@@ -40,7 +39,6 @@ jobs:
 
       - name: Run bats tests
         run: docker run  -i -v $(pwd)/tests:/tests test-image bats /tests
-
 
  # Use this job for branch protection rules
   report-test-status:

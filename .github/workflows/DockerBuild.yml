@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build Images
     runs-on: ubuntu-latest
 
     outputs:
@@ -35,19 +35,19 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build image
-        uses: docker/build-push-action@v5
-        with:
-          tags: ${{ matrix.image-tags }}
-          outputs: type=docker,dest=/tmp/image.tar
-          build-args: SLURM_VERSION=${{ matrix.slurm-version }}
+      # - name: Build image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     tags: ${{ matrix.image-tags }}
+      #     outputs: type=docker,dest=/tmp/image.tar
+      #     build-args: SLURM_VERSION=${{ matrix.slurm-version }}
 
-      - name: Upload image artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: slurm-${{ matrix.slurm-version }}
-          path: /tmp/image.tar
+      # - name: Upload image artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: slurm-${{ matrix.slurm-version }}
+      #     path: /tmp/image.tar
 
       - name: Export Matrix
         id: export-matrix
-        run: echo ${{ matrix }} >> "$GITHUB_OUTPUT"
+        run: echo ${{ toJson(matrix) }} >> "$GITHUB_OUTPUT"
