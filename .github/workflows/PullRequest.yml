@@ -11,7 +11,7 @@ jobs:
     uses: ./.github/workflows/Matrix.yml
 
   build:
-    name: Test
+    name: Build
     needs: [ matrix ]
     uses: ./.github/workflows/DockerBuild.yml
     with:

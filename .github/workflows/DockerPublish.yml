@@ -1,4 +1,4 @@
-name: Publish Docker Images
+name: Publish
 
 on:
   workflow_call:

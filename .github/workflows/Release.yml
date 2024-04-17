@@ -10,7 +10,7 @@ jobs:
     uses: ./.github/workflows/Matrix.yml
 
   build:
-    name: Test
+    name: Build
     needs: [ matrix ]
     uses: ./.github/workflows/DockerBuild.yml
     with:
@@ -24,7 +24,7 @@ jobs:
       matrix: ${{ needs.matrix.outputs.matrix }}
 
   publish:
-    name: Test
+    name: Publish
     needs: [ matrix, build, test ]
     uses: ./.github/workflows/DockerPublish.yml
     with:
