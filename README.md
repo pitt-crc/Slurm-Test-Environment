@@ -124,6 +124,7 @@ The following services are automatically launched when spinning up a new contain
 - `munge`
 - `slurmdbd`
 - `slurmctld`
+- `slurmrestd`
 
 ### Python versions
 
