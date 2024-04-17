@@ -1,16 +1,15 @@
-name: 🤖 Build
+name: Build
 
 on:
   workflow_call:
-    ou
+    outputs:
+      matrix:
+        description: "The first output string"
+        value: ${{ jobs.build.outputs.matrix }}
 
 jobs:
   build:
     name: Build
-    uses: ./.github/workflows/DockerTest.yml
-
-  test:
-    name: Test
     runs-on: ubuntu-latest
 
     outputs:
@@ -18,7 +17,19 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ needs.build.outputs.matrix }}
+      matrix:
+        include:
+          - slurm-version: 20.11.9
+            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:20.11.9
+
+          - slurm-version: 22.05.2
+            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.2
+
+          - slurm-version: 22.05.11
+            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.11
+
+          - slurm-version: 23.02.5
+            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:23.02.5,ghcr.io/${{ github.repository_owner }}/test-env:latest
 
     steps:
       - name: Build image

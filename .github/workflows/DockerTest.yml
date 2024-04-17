@@ -8,13 +8,16 @@ on:
 
 jobs:
   build:
+    name: Build
+    uses: ./.github/workflows/DockerTest.yml
+
+  test:
     runs-on: ubuntu-latest
     name: Test Images
 
     strategy:
       fail-fast: false
-      matrix:
-        slurm-version: [ "20.11.9", "22.05.2", "22.05.11", "23.02.5" ]
+      matrix: ${{ needs.build.outputs.matrix }}
 
     steps:
       - name: Setup Docker Buildx
