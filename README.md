@@ -132,8 +132,7 @@ The following services are automatically launched when spinning up a new contain
 
 ### Python versions
 
-Python versions 3.8 hrough 3.11 are included in the test environment, each having dedicated a dedicated `pip` installation.
-All Python interpreters and utilities are installed in the standard location under `/usr/bin/`.
+Python versions 3.8 hrough 3.11 are included in the test environment, each having dedicated a dedicated `pip3.x` installation.
 
 ### General Utilities
 
@@ -142,28 +141,3 @@ The following commandline tools are explicitly provided in the testing environme
 - `which` (Required for compatibility with some IDE docker integrations)
 - `bats`
 - `make`
-
-## Adding a New Image
-
-Creating a new release from this repository will automatically build and publish new image versions.
-To add a new Slurm version to the build process, make the following changes:
-
-1. Add the necessary Slurm RPMs and config files to the `slurm_config` directory.
-   The name of the subdirectory should match the corresponding `SLURM_VERSION` build argument.
-2. Update the strategy matrix in the
-   [testing](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerTest.yml)
-   and [publication](https://github.com/pitt-crc/Slurm-Test-Environment/blob/latest/.github/workflows/DockerPublish.yml)
-   workflows to include the new slurm version.
-   Always ensure the `latest` tag points to the correct image.
-
-### Building New SLURM RPMs
-
-Slurm RPMs can be built directly from the compressed Slurm distribution.
-The generated RPMs need to be recompressed as a directory called `rpms` before being added to the repository.
-The compressed archive should be named with the corresponding Slurm version.
-
-```bash
-rpmbuild -ta slurm*.tar.bz2
-cp -r rpmbuild/RPMS/x86_64 rpms/
-tar -czvf slurm-[MAJOR]-[MINOR]-[PATCH]-[BUILD].tar.gz rpms/
-```
