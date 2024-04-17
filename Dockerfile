@@ -50,7 +50,6 @@ COPY --from=slurmbuild \
     /root/
 
 ARG SLURM_VERSION
-LABEL edu.pitt.crc.slurm-tag=$SLURM_VERSION
 
 # Install any required system tools
 RUN yum install -y epel-release  \

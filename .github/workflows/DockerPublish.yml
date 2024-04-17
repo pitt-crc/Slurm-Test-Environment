@@ -19,16 +19,16 @@ jobs:
       matrix:
         include:
           - slurm-version: 20.11.9
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:20.11.9
+            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:20.11.9
 
           - slurm-version: 22.05.2
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.2
+            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.2
 
           - slurm-version: 22.05.11
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.11
+            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:22.05.11
 
           - slurm-version: 23.02.5
-            tags: ghcr.io/${{ github.repository_owner }}/test-env:23.02.5,ghcr.io/${{ github.repository_owner }}/test-env:latest
+            image-tags: ghcr.io/${{ github.repository_owner }}/test-env:23.02.5,ghcr.io/${{ github.repository_owner }}/test-env:latest
 
     steps:
       - name: Set up Docker Buildx
@@ -37,6 +37,10 @@ jobs:
       - name: Define Docker metadata
         id: meta
         uses: docker/metadata-action@v5
+        with:
+          images: ${{ matrix.image-tags }}
+          labels: |
+            edu.pitt.crc.slurm-tag=${{ matrix.slurm-version }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -49,6 +53,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ${{ matrix.tags }}
+          tags: ${{ matrix.image-tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: SLURM_VERSION=${{ matrix.slurm-version }}
