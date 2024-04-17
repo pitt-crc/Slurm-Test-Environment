@@ -6,10 +6,6 @@ on:
     types: [ "released" ]
 
 jobs:
-  build:
-    name: Build
-    uses: ./.github/workflows/DockerTest.yml
-
   test:
     name: Test
     needs: build
@@ -18,11 +14,11 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     name: Publish Images
-    needs: [ build, test ]
+    needs: [ test ]
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.build.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.test.outputs.matrix) }}
 
     steps:
       - name: Fetch image artifact
