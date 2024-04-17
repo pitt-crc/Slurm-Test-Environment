@@ -1,0 +1,26 @@
+name: Matrix
+
+on:
+  workflow_call:
+    outputs:
+      matrix:
+        description: "The strategy matrix used to build images"
+        value: ${{ jobs.matrix.outputs.matrix }}
+
+jobs:
+  matrix:
+    name: Load Build Matrix
+    runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.load-matrix.outputs.matrix }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Load matrix
+        id: load-matrix
+        uses: zoexx/github-action-json-file-properties@release
+        with:
+          file_path: ".github/workflows/matrix.json"

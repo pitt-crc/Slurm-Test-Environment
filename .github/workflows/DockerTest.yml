@@ -2,19 +2,13 @@ name: Test
 
 on:
   workflow_call:
-    outputs:
+    inputs:
       matrix:
+        type: string
+        required: true
         description: "The strategy matrix used to build images"
-        value: ${{ jobs.build.outputs.matrix }}
-  pull_request:
-  push:
-    branches: [ "latest" ]
 
 jobs:
-  build:
-    name: Build
-    uses: ./.github/workflows/DockerBuild.yml
-
   test:
     runs-on: ubuntu-latest
     name: Test Images
@@ -22,7 +16,7 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.build.outputs.matrix) }}
+      matrix: ${{ fromJson(inputs.matrix) }}
 
     steps:
       - name: Fetch image artifact
@@ -42,7 +36,7 @@ jobs:
           docker container start -i rerun_test_container
           docker container rm rerun_test_container
 
-      - name: Run bats tests
+      - name: Run tests
         run: |
           image_name="ghcr.io/pitt-crc/test-env:${{ matrix.slurm-version }}"
           docker run  -i -v $(pwd)/tests:/tests $image_name bats /tests

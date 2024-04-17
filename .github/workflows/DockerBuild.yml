@@ -2,29 +2,14 @@ name: Build
 
 on:
   workflow_call:
-    outputs:
+    inputs:
       matrix:
+        type: string
+        required: true
         description: "The strategy matrix used to build images"
-        value: ${{ jobs.matrix.outputs.matrix }}
+
 
 jobs:
-  matrix:
-    name: Load Build Matrix
-    runs-on: ubuntu-latest
-
-    outputs:
-      matrix: ${{ steps.load-matrix.outputs.matrix }}
-
-    steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
-
-      - name: Load matrix
-        id: load-matrix
-        uses: zoexx/github-action-json-file-properties@release
-        with:
-          file_path: ".github/workflows/matrix.json"
-
   build:
     name: Build Images
     runs-on: ubuntu-latest
@@ -32,7 +17,7 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}
+      matrix: ${{ fromJson(inputs.matrix) }}
 
     steps:
       - name: Setup Docker Buildx

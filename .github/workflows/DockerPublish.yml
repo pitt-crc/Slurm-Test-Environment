@@ -1,14 +1,14 @@
 name: Publish Docker Images
 
 on:
-  release:
-    types: [ "released" ]
+  workflow_call:
+    inputs:
+      matrix:
+        type: string
+        required: true
+        description: "The strategy matrix used to build images"
 
 jobs:
-  test:
-    name: Test
-    uses: ./.github/workflows/DockerTest.yml
-
   publish:
     runs-on: ubuntu-latest
     name: Publish Images
@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.test.outputs.matrix) }}
+      matrix: ${{ fromJson(inputs.matrix) }}
 
     steps:
       - name: Fetch image artifact

@@ -1,0 +1,25 @@
+name: Pull Request
+
+on:
+  pull_request:
+  push:
+    branches: [ "latest" ]
+
+jobs:
+  matrix:
+    name: Matrix
+    uses: ./.github/workflows/matrix.yml
+
+  build:
+    name: Test
+    needs: [ matrix ]
+    uses: ./.github/workflows/DockerBuild.yml
+    with:
+      matrix: ${{ needs.matrix.outputs.matrix }}
+
+  test:
+    name: Test
+    needs: [ matrix, build ]
+    uses: ./.github/workflows/DockerTest.yml
+    with:
+      matrix: ${{ needs.matrix.outputs.matrix }}
