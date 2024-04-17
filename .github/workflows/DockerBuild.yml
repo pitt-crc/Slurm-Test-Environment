@@ -1,0 +1,38 @@
+name: 🤖 Build
+
+on:
+  workflow_call:
+    ou
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/DockerTest.yml
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.export-matrix.outputs.matrix }}
+
+    strategy:
+      fail-fast: false
+      matrix: ${{ needs.build.outputs.matrix }}
+
+    steps:
+      - name: Build image
+        uses: docker/build-push-action@v5
+        with:
+          tags: ${{ matrix.image-tags }}
+          outputs: type=docker,dest=/tmp/image.tar
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: slurm-${{ matrix.slurm-version }}
+          path: /tmp/image.tar
+
+      - name: Export Matrix
+        id: export-matrix
+        run: echo ${{ matrix }} >> "$GITHUB_OUTPUT"
