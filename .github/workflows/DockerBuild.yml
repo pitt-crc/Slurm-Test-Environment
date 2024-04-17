@@ -21,7 +21,7 @@ jobs:
 
       - name: Load matrix
         id: load-matrix
-        uses: ActionsTools/read-json-action@main
+        uses: zoexx/github-action-json-file-properties@release
         with:
           file_path: ".github/workflows/matrix.json"
 
