@@ -122,7 +122,6 @@ RUN yum localinstall --enablerepo=powertools -y \
     && rm -rf /var/cache/yum \
     && rm -rf /root/slurm*.rpm
 
-
 # Slurm requires a dedicated user/group to run
 RUN groupadd -r slurm && useradd -r -g slurm slurm
 

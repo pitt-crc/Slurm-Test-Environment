@@ -23,4 +23,4 @@ jobs:
         id: load-matrix
         uses: zoexx/github-action-json-file-properties@release
         with:
-          file_path: ".github/workflows/matrix.json"
+          file_path: "slurm_config/matrix.json"
