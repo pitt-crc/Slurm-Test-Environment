@@ -43,7 +43,7 @@ jobs:
             edu.pitt.crc.slurm-tag=${{ matrix.slurm-version }}
 
       - name: Build and publish image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: true
           tags: ${{ matrix.image-tags }}
