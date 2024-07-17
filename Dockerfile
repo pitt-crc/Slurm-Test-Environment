@@ -55,10 +55,11 @@ ARG SLURM_VERSION
 RUN yum install -y epel-release  \
   && yum install -y --enablerepo=powertools \
       # Support multiple Python versions for downstream testing scenarios
-      python38 \
       python39 \
       python3.11 \
       python3.11-pip \
+      python3.12 \
+      python3.12-pip \
       # Required by Slurm
       mariadb-server \
       munge \
@@ -99,12 +100,6 @@ RUN yum remove -y \
     gcc \
     && yum clean all \
     && rm -rf /var/cache/yum
-
-# Install more recent pip versions
-RUN pip3.8 install --upgrade pip && pip3.8 cache purge && \
-    pip3.9 install --upgrade pip && pip3.9 cache purge && \
-    pip3.10 install --upgrade pip && pip3.10 cache purge && \
-    pip3.11 install --upgrade pip && pip3.11 cache purge
 
 # Install mariadb
 RUN /usr/bin/mysql_install_db \

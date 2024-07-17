@@ -82,10 +82,10 @@ jobs:
           - "22.05.11"
           - "23.02.5"
         python_version:
-          - "3.8"
           - "3.9"
           - "3.10"
           - "3.11"
+          - "3.12"
 
     container:
       image: ghcr.io/pitt-crc/test-env:${{ matrix.slurm_version }}
@@ -128,7 +128,7 @@ The following services are automatically launched when spinning up a new contain
 
 ### Python versions
 
-Python versions 3.8 hrough 3.11 are included in the test environment, each having dedicated a dedicated `pip3.x` installation.
+Python versions 3.9 through 3.12 are included in the test environment, each having dedicated a dedicated `pip3.x` installation.
 
 ### General Utilities
 
