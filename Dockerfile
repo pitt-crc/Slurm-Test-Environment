@@ -101,12 +101,6 @@ RUN yum remove -y \
     && yum clean all \
     && rm -rf /var/cache/yum
 
-# Install more recent pip versions
-RUN pip3.8 install --upgrade pip && pip3.8 cache purge && \
-    pip3.9 install --upgrade pip && pip3.9 cache purge && \
-    pip3.10 install --upgrade pip && pip3.10 cache purge && \
-    pip3.11 install --upgrade pip && pip3.11 cache purge
-
 # Install mariadb
 RUN /usr/bin/mysql_install_db \
   && chown -R mysql:mysql /var/lib/mysql \
