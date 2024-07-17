@@ -11,13 +11,13 @@ jobs:
   build:
     name: Build
     needs: [ matrix ]
-    uses: ./.github/workflows/DockerBuild.yml
+    uses: ./.github/workflows/Build.yml
     with:
       matrix: ${{ needs.matrix.outputs.matrix }}
 
   test:
     name: Test
     needs: [ matrix, build ]
-    uses: ./.github/workflows/DockerTest.yml
+    uses: ./.github/workflows/Test.yml
     with:
       matrix: ${{ needs.matrix.outputs.matrix }}
