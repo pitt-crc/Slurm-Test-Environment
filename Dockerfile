@@ -55,10 +55,11 @@ ARG SLURM_VERSION
 RUN yum install -y epel-release  \
   && yum install -y --enablerepo=powertools \
       # Support multiple Python versions for downstream testing scenarios
-      python38 \
       python39 \
       python3.11 \
       python3.11-pip \
+      python3.12 \
+      python3.12-pip \
       # Required by Slurm
       mariadb-server \
       munge \
