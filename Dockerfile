@@ -1,12 +1,11 @@
-FROM rockylinux:8 as slurmbuild
+FROM rockylinux:9 as slurmbuild
 
 ARG SLURM_VERSION
 
 # Install any required system tools
-RUN yum install -y epel-release  \
-  && yum install -y --enablerepo=powertools \
-      # Required for slurm
-      #rocm-device-libs \
+RUN dnf install -y epel-release \
+  && dnf config-manager --set-enabled crb \
+  && dnf install -y \
       hwloc-devel \
       hdf5-devel \
       man2html \
@@ -32,15 +31,18 @@ RUN yum install -y epel-release  \
       wget \
       python3 \
       make \
-  && yum clean all \
-  && rm -rf /var/cache/yum
+  && dnf clean all \
+  && rm -rf /var/cache/dnf
 
 # Build Slurm RPMs
 RUN wget https://download.schedmd.com/slurm/slurm-$SLURM_VERSION.tar.bz2 \
     && rpmbuild -ta slurm-$SLURM_VERSION.tar.bz2 --with slurmrestd \
     && rm -rf slurm-$SLURM_VERSION.tar.bz2
 
-FROM rockylinux:8
+
+
+
+FROM rockylinux:9
 COPY --from=slurmbuild \
     /root/rpmbuild/RPMS/x86_64/slurm-$SLURM_VERSION*.rpm \
     /root/rpmbuild/RPMS/x86_64/slurm-slurmctld-$SLURM_VERSION*.rpm \
@@ -52,8 +54,9 @@ COPY --from=slurmbuild \
 ARG SLURM_VERSION
 
 # Install any required system tools
-RUN yum install -y epel-release  \
-  && yum install -y --enablerepo=powertools \
+RUN dnf install -y epel-release  \
+  && dnf config-manager --set-enabled crb \
+  && dnf install -y \
       # Support multiple Python versions for downstream testing scenarios
       python39 \
       python3.11 \
@@ -68,7 +71,7 @@ RUN yum install -y epel-release  \
       libjwt \
       libyaml \
       json-c \
-      # Required for installing python versions not available via yum
+      # Required for installing python versions not available via dnf
       bzip2-devel \
       libffi-devel \
       openssl-devel \
@@ -79,10 +82,11 @@ RUN yum install -y epel-release  \
       grep \
       make \
       which \
-  && yum clean all \
-  && rm -rf /var/cache/yum
+      zlib-devel \
+  && dnf clean all \
+  && rm -rf /var/cache/dnf
 
-# Install Python versions not availible via yum
+# Install Python versions not availible via dnf
 RUN wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz \
     && tar -xzf Python-3.10.0.tgz \
     && cd Python-3.10.0 \
@@ -92,14 +96,15 @@ RUN wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz \
     && rm -rf Python-3.10.0
 
 # Clean up tools required for building Python
-RUN yum remove -y \
+RUN dnf remove -y \
     bzip2-devel \
     libffi-devel \
     openssl-devel \
+    zlib-devel \
     wget \
     gcc \
-    && yum clean all \
-    && rm -rf /var/cache/yum
+    && dnf clean all \
+    && rm -rf /var/cache/dnf
 
 # Install mariadb
 RUN /usr/bin/mysql_install_db \
@@ -107,14 +112,14 @@ RUN /usr/bin/mysql_install_db \
   && chown -R mysql:mysql /var/log/mariadb
 
 # Install Slurm
-RUN yum localinstall --enablerepo=powertools -y \
+RUN dnf localinstall -y \
     /root/slurm-$SLURM_VERSION*.rpm \
     /root/slurm-slurmctld-$SLURM_VERSION*.rpm \
     /root/slurm-slurmd-$SLURM_VERSION*.rpm \
     /root/slurm-slurmdbd-$SLURM_VERSION*.rpm \
     /root/slurm-slurmrestd-$SLURM_VERSION*.rpm \
-    && yum clean all \
-    && rm -rf /var/cache/yum \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf \
     && rm -rf /root/slurm*.rpm
 
 # Slurm requires a dedicated user/group to run
