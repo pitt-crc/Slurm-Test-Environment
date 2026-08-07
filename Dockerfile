@@ -26,6 +26,8 @@ RUN dnf install -y epel-release \
       perl-ExtUtils-MakeMaker \
       libbpf-devel \
       dbus-devel \
+      autoconf \
+      automake \
       git \
       rpm-build \
       wget \
