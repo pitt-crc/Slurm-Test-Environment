@@ -111,6 +111,9 @@ RUN groupadd -r slurm && useradd -r -g slurm slurm
 COPY --chown=slurm slurm_config/$SLURM_VERSION/slurm.conf /etc/slurm/slurm.conf
 COPY --chown=slurm --chmod=600 slurm_config/$SLURM_VERSION/slurmdbd.conf /etc/slurm/slurmdbd.conf
 
+# Container tests
+COPY tests /tests
+
 # The entrypoint script starts the DB and defines necessary DB constructs
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

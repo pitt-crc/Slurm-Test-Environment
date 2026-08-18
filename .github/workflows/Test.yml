@@ -38,7 +38,7 @@ jobs:
       - name: Run tests
         run: |
           image_name="ghcr.io/pitt-crc/test-env:${{ matrix.slurm-version }}"
-          docker run  -i -v $(pwd)/tests:/tests $image_name bats /tests
+          docker run  -i $image_name bats /tests
 
  # Use this job for branch protection rules
   report-test-status:
