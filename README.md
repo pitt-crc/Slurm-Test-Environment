@@ -24,13 +24,6 @@ See [here](https://github.com/pitt-crc/Slurm-Test-Environment/pkgs/container/tes
 
 ### Building an Image Locally
 
-You will need to enable [Docker Buildkit](https://docs.docker.com/develop/develop-images/build_enhancements/) to build the image.
-To do so, export the following environmental variable:
-
-```bash
-export DOCKER_BUILDKIT=1
-```
-
 The Dockerfile is designed to be reusable for different Slurm versions.
 The Slurm version needs to be specified when building an image.
 The following example builds an image called `test_env:local` using Slurm version 23.02.5:
@@ -65,7 +58,8 @@ jobs:
         run: /usr/local/bin/entrypoint.sh
 ```
 
-If you want to run a job several times using different containers (e.g., to test software against multiple Slurm versions) use the `strategy` directive:
+If you want to run a job several times using different containers (e.g., to test software against multiple 
+Slurm versions) use the `strategy` directive:
 
 ```yaml
 jobs:
@@ -80,10 +74,10 @@ jobs:
           - "22.05.11"
           - "23.02.5"
         python_version:
-          - "3.9"
-          - "3.10"
           - "3.11"
           - "3.12"
+          - "3.13"
+          - "3.14"
 
     container:
       image: ghcr.io/pitt-crc/test-env:${{ matrix.slurm_version }}
@@ -126,7 +120,8 @@ The following services are automatically launched when spinning up a new contain
 
 ### Python versions
 
-Python versions 3.9 through 3.12 are included in the test environment, each having dedicated a dedicated `pip3.x` installation.
+Python versions 3.11 through 3.14 are included in the test environment, 
+each having dedicated a dedicated `pip3.x` installation.
 
 ### General Utilities
 

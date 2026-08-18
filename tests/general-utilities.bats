@@ -12,34 +12,34 @@
   [ "$status" -eq 0 ]
 }
 
-@test "python tools should be installed (python 3.8)" {
-  run python3.8 --version
-  [[ "$output" = "Python 3.8"* ]]
-
-  run pip3.8 --version
-  [ "$status" -eq 0 ]
-}
-
-@test "python tools should be installed (python 3.9)" {
-  run python3.9 --version
-  [[ "$output" = "Python 3.9"* ]]
-
-  run pip3.9 --version
-  [ "$status" -eq 0 ]
-}
-
-@test "python tools should be installed (python 3.10)" {
-  run python3.10 --version
-  [[ "$output" = "Python 3.10"* ]]
-
-  run pip3.10 --version
-  [ "$status" -eq 0 ]
-}
-
 @test "python tools should be installed (python 3.11)" {
   run python3.11 --version
   [[ "$output" = "Python 3.11"* ]]
 
   run pip3.11 --version
+  [ "$status" -eq 0 ]
+}
+
+@test "python tools should be installed (python 3.12)" {
+  run python3.12 --version
+  [[ "$output" = "Python 3.12"* ]]
+
+  run pip3.12 --version
+  [ "$status" -eq 0 ]
+}
+
+@test "python tools should be installed (python 3.13)" {
+  run python3.13 --version
+  [[ "$output" = "Python 3.13"* ]]
+
+  run pip3.13 --version
+  [ "$status" -eq 0 ]
+}
+
+@test "python tools should be installed (python 3.14)" {
+  run python3.14 --version
+  [[ "$output" = "Python 3.14"* ]]
+
+  run pip3.14 --version
   [ "$status" -eq 0 ]
 }

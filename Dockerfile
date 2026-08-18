@@ -41,9 +41,6 @@ RUN wget https://download.schedmd.com/slurm/slurm-$SLURM_VERSION.tar.bz2 \
     && rpmbuild -ta slurm-$SLURM_VERSION.tar.bz2 --with slurmrestd \
     && rm -rf slurm-$SLURM_VERSION.tar.bz2
 
-
-
-
 FROM rockylinux:9
 COPY --from=slurmbuild \
     /root/rpmbuild/RPMS/x86_64/slurm-$SLURM_VERSION*.rpm \
@@ -60,11 +57,14 @@ RUN dnf install -y epel-release  \
   && dnf config-manager --set-enabled crb \
   && dnf install -y \
       # Support multiple Python versions for downstream testing scenarios
-      python39 \
       python3.11 \
       python3.11-pip \
       python3.12 \
       python3.12-pip \
+      python3.13 \
+      python3.13-pip \
+      python3.14 \
+      python3.14-pip \
       # Required by Slurm
       mariadb-server \
       munge \
@@ -87,26 +87,6 @@ RUN dnf install -y epel-release  \
       zlib-devel \
   && dnf clean all \
   && rm -rf /var/cache/dnf
-
-# Install Python versions not availible via dnf
-RUN wget https://www.python.org/ftp/python/3.10.0/Python-3.10.0.tgz \
-    && tar -xzf Python-3.10.0.tgz \
-    && cd Python-3.10.0 \
-    && ./configure --enable-optimizations \
-    && make altinstall \
-    && cd / && rm -rf Python-3.10.0.tgz \
-    && rm -rf Python-3.10.0
-
-# Clean up tools required for building Python
-RUN dnf remove -y \
-    bzip2-devel \
-    libffi-devel \
-    openssl-devel \
-    zlib-devel \
-    wget \
-    gcc \
-    && dnf clean all \
-    && rm -rf /var/cache/dnf
 
 # Install mariadb
 RUN /usr/bin/mysql_install_db \
