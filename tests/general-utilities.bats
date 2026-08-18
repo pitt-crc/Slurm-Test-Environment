@@ -12,11 +12,11 @@
   [ "$status" -eq 0 ]
 }
 
-@test "python tools should be installed (python 3.11)" {
-  run python3.11 --version
+@test "python tools should be installed (python 3.15)" {
+  run python3.15 --version
   [[ "$output" = "Python 3.11"* ]]
 
-  run pip3.11 --version
+  run pip3.15 --version
   [ "$status" -eq 0 ]
 }
 
