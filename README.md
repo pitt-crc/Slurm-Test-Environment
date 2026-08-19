@@ -90,7 +90,7 @@ jobs:
 ## Testing Fixtures
 
 The test environment comes partially configured with various tools, running services, and mock data.
-All images are built using the [Rocky 8](https://hub.docker.com/_/rockylinux) operating system.
+All images are built using the Rocky 9 operating system.
 
 ### Slurm Configuration
 
