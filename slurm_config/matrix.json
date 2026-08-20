@@ -18,7 +18,7 @@
         "image-tags": "ghcr.io/pitt-crc/test-env:25.05.7"
       }, {
         "slurm-version": "25.11.7",
-        "image-tags": "ghcr.io/pitt-crc/test-env:25.05.7,ghcr.io/pitt-crc/test-env:latest"
+        "image-tags": "ghcr.io/pitt-crc/test-env:25.11.7,ghcr.io/pitt-crc/test-env:latest"
       }
     ]
   }
